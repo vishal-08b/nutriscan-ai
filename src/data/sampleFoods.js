@@ -1,0 +1,843 @@
+// Comprehensive Indian Foods Database & Presets for NutriScan AI
+export const SAMPLE_FOODS = [
+  // ==================== BREAKFAST ====================
+  {
+    id: 'masala-dosa',
+    name: 'Crispy Masala Dosa with Sambar & Coconut Chutney',
+    category: 'Breakfast',
+    image: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'South Indian',
+    confidence: 'High (98%)',
+    estimatedWeightGrams: 350,
+    servingDescription: '1 large crisp dosa with spiced potato filling (180g) + 1 bowl sambar (120ml) + chutney (50g)',
+    calories: 460,
+    healthScore: 8.4,
+    nutriGrade: 'B',
+    dietaryFlags: ['Vegetarian', 'Naturally Fermented', 'Gluten-Free Batter'],
+    allergens: ['Mustard Seeds'],
+    keywords: ['dosa', 'masala dosa', 'sambar', 'chutney', 'south indian', 'crepe', 'potato dosa'],
+    macros: {
+      protein: 12,
+      carbs: 72,
+      fat: 14,
+      fiber: 8,
+      sugar: 4,
+      sodium: 620,
+    },
+    micros: [
+      { name: 'Folate', amount: '95µg', dailyValue: '24%' },
+      { name: 'Iron', amount: '2.8mg', dailyValue: '16%' },
+      { name: 'B Vitamins', amount: 'Natural', dailyValue: 'Fermented' },
+    ],
+    ingredients: [
+      { name: 'Fermented Rice & Urad Dal Batter Crepe', amount: '120g', calories: 230, protein: 5, carbs: 42, fat: 5 },
+      { name: 'Spiced Mustard & Onion Potato Masala', amount: '110g', calories: 140, protein: 2.5, carbs: 24, fat: 4 },
+      { name: 'Lentil & Mixed Vegetable Sambar', amount: '120g', calories: 75, protein: 4, carbs: 12, fat: 1 },
+    ],
+    nutritionistReview: 'Fermenting rice and urad dal enhances gut microbiome diversity and increases B-vitamin and mineral bioavailability.',
+    healthierSwaps: [
+      'Increase the portion of lentil sambar to double the protein and fiber.',
+      'Request low oil or ghee preparation on the tawa.'
+    ]
+  },
+  {
+    id: 'idli-sambar',
+    name: 'Steamed Idli (3 pcs) with Sambar & Podi Ghee',
+    category: 'Breakfast',
+    image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'South Indian',
+    confidence: 'High (99%)',
+    estimatedWeightGrams: 320,
+    servingDescription: '3 fluffy steamed idlis (180g) + 1 bowl vegetable sambar (150ml)',
+    calories: 330,
+    healthScore: 9.6,
+    nutriGrade: 'A',
+    dietaryFlags: ['Steamed', 'Zero Oil Batter', 'Gut Friendly', 'High Fiber', 'Gluten-Free'],
+    allergens: ['Mustard'],
+    keywords: ['idli', 'idli sambar', 'steamed idli', 'podi', 'south indian breakfast', 'steamed'],
+    macros: {
+      protein: 14,
+      carbs: 62,
+      fat: 3.5,
+      fiber: 7,
+      sugar: 3,
+      sodium: 480,
+    },
+    micros: [
+      { name: 'Potassium', amount: '420mg', dailyValue: '9%' },
+      { name: 'Iron', amount: '2.4mg', dailyValue: '13%' },
+      { name: 'Magnesium', amount: '65mg', dailyValue: '16%' },
+    ],
+    ingredients: [
+      { name: 'Steamed Fermented Idlis (3 pcs)', amount: '180g', calories: 210, protein: 7, carbs: 45, fat: 1 },
+      { name: 'Toor Dal & Drumstick Sambar', amount: '140g', calories: 95, protein: 5.5, carbs: 15, fat: 1.5 },
+      { name: 'Fresh Coconut Chutney', amount: '30g', calories: 45, protein: 1, carbs: 2, fat: 3.5 },
+    ],
+    nutritionistReview: 'One of the healthiest breakfasts globally. 100% steam cooked with zero added fat in the batter and paired with proteinaceous toor dal.',
+    healthierSwaps: [
+      'Sprinkle roasted flaxseed podi for an omega-3 boost.',
+      'Add an extra ladle of drumsticks and carrots from the sambar for fiber.'
+    ]
+  },
+  {
+    id: 'kanda-poha',
+    name: 'Maharashtra Kanda Poha with Peanuts & Lemon',
+    category: 'Breakfast',
+    image: 'https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'Maharashtrian / West Indian',
+    confidence: 'High (97%)',
+    estimatedWeightGrams: 240,
+    servingDescription: '1 medium plate flattened rice tempered with mustard, curry leaves, turmeric & roasted peanuts',
+    calories: 340,
+    healthScore: 9.1,
+    nutriGrade: 'A',
+    dietaryFlags: ['Gluten-Free', 'Iron Rich', 'Heart Healthy', 'Low Glycemic'],
+    allergens: ['Peanuts', 'Mustard'],
+    keywords: ['poha', 'kanda poha', 'pohe', 'flattened rice', 'batata poha', 'breakfast'],
+    macros: {
+      protein: 8.5,
+      carbs: 54,
+      fat: 10.5,
+      fiber: 4.5,
+      sugar: 2.5,
+      sodium: 360,
+    },
+    micros: [
+      { name: 'Iron (from flattened rice)', amount: '4.2mg', dailyValue: '23%' },
+      { name: 'Vitamin C (Fresh Lemon)', amount: '18mg', dailyValue: '20%' },
+      { name: 'Curcumin (Turmeric)', amount: 'High', dailyValue: 'Anti-inflammatory' },
+    ],
+    ingredients: [
+      { name: 'Flattened Rice (Poha)', amount: '140g', calories: 200, protein: 3.5, carbs: 44, fat: 1 },
+      { name: 'Roasted Peanuts', amount: '25g', calories: 135, protein: 4.5, carbs: 4, fat: 8.5 },
+      { name: 'Sautéed Onions, Mustard & Curry Leaves', amount: '60g', calories: 45, protein: 1, carbs: 6, fat: 2 },
+    ],
+    nutritionistReview: 'Traditional iron-rich breakfast. Squeezing fresh lemon provides ascorbic acid that exponentially boosts non-heme iron absorption.',
+    healthierSwaps: [
+      'Toss in green peas (matar) and sprouts for extra plant protein.',
+      'Use cold-pressed peanut or mustard oil for authentic unrefined fats.'
+    ]
+  },
+  {
+    id: 'aloo-paratha',
+    name: 'Punjabi Aloo Paratha with Fresh Curd & Butter',
+    category: 'Breakfast',
+    image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'North Indian / Punjabi',
+    confidence: 'High (98%)',
+    estimatedWeightGrams: 280,
+    servingDescription: '1 large tawa-roasted stuffed whole wheat paratha (180g) with 100g home-set curd and 10g white butter',
+    calories: 460,
+    healthScore: 7.8,
+    nutriGrade: 'B',
+    dietaryFlags: ['Vegetarian', 'Whole Grain (Atta)', 'Probiotic Curd'],
+    allergens: ['Gluten', 'Dairy'],
+    keywords: ['aloo paratha', 'paratha', 'parantha', 'aloo parantha', 'punjabi', 'curd', 'dahi'],
+    macros: {
+      protein: 13,
+      carbs: 64,
+      fat: 17,
+      fiber: 6.5,
+      sugar: 5,
+      sodium: 540,
+    },
+    micros: [
+      { name: 'Calcium (from Curd)', amount: '220mg', dailyValue: '22%' },
+      { name: 'Potassium', amount: '560mg', dailyValue: '12%' },
+      { name: 'B Complex Vitamins', amount: 'Moderate', dailyValue: 'Energy' },
+    ],
+    ingredients: [
+      { name: 'Whole Wheat Flour Dough (Chakki Atta)', amount: '90g', calories: 230, protein: 7, carbs: 48, fat: 1.5 },
+      { name: 'Spiced Potato, Coriander & Ajwain Filling', amount: '90g', calories: 110, protein: 2, carbs: 22, fat: 1 },
+      { name: 'Fresh Plain Cow Curd (Dahi)', amount: '100g', calories: 65, protein: 3.5, carbs: 4.5, fat: 3.5 },
+      { name: 'Desi Ghee / Butter Roasting', amount: '10g', calories: 85, protein: 0, carbs: 0, fat: 9.5 },
+    ],
+    nutritionistReview: 'Whole-wheat atta provides insoluble fiber, while paired curd adds gut-healthy Lactobacillus probiotics.',
+    healthierSwaps: [
+      'Roast with a light brush of cold-pressed oil rather than deep frying in butter.',
+      'Mix grated paneer or boiled peas into the filling for higher protein density.'
+    ]
+  },
+  {
+    id: 'moong-dal-chilla',
+    name: 'High-Protein Moong Dal Chilla with Grated Paneer',
+    category: 'Breakfast',
+    image: 'https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'North / Central Indian',
+    confidence: 'High (98%)',
+    estimatedWeightGrams: 250,
+    servingDescription: '2 savory yellow lentil pancakes stuffed with fresh crumbled paneer & mint chutney',
+    calories: 360,
+    healthScore: 9.7,
+    nutriGrade: 'A',
+    dietaryFlags: ['High Protein', 'Gluten-Free', 'Low Glycemic', 'Fitness Favorite'],
+    allergens: ['Dairy (Paneer)'],
+    keywords: ['chilla', 'cheela', 'moong dal chilla', 'puda', 'lentil crepe', 'high protein indian'],
+    macros: {
+      protein: 24,
+      carbs: 38,
+      fat: 12,
+      fiber: 9,
+      sugar: 2,
+      sodium: 380,
+    },
+    micros: [
+      { name: 'Folate', amount: '180µg', dailyValue: '45%' },
+      { name: 'Iron', amount: '3.6mg', dailyValue: '20%' },
+      { name: 'Zinc', amount: '2.4mg', dailyValue: '22%' },
+    ],
+    ingredients: [
+      { name: 'Yellow Moong Lentil Batter', amount: '150g', calories: 210, protein: 14, carbs: 34, fat: 2 },
+      { name: 'Fresh Grated Paneer & Herbs', amount: '60g', calories: 130, protein: 8, carbs: 1, fat: 10 },
+      { name: 'Pudina Mint & Coriander Chutney', amount: '30g', calories: 25, protein: 1, carbs: 3, fat: 0.5 },
+    ],
+    nutritionistReview: 'An absolute champion for Indian fitness and weight management. Packed with 24g bioavailable vegetarian protein with a very gentle glycemic index.',
+    healthierSwaps: [
+      'Add finely shredded spinach or grated carrots into the batter for vitamins A & C.',
+      'Use low-fat paneer or tofu if restricting saturated fats.'
+    ]
+  },
+  {
+    id: 'vegetable-upma',
+    name: 'South Indian Vegetable Rava Upma with Roasted Cashews',
+    category: 'Breakfast',
+    image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'South Indian',
+    confidence: 'High (96%)',
+    estimatedWeightGrams: 260,
+    servingDescription: '1 medium bowl roasted semolina with diced carrots, peas, mustard & curry leaves',
+    calories: 310,
+    healthScore: 8.6,
+    nutriGrade: 'B',
+    dietaryFlags: ['Vegetarian', 'Easily Digestible', 'Comfort Food'],
+    allergens: ['Gluten (Semolina)', 'Tree Nuts (Cashews)', 'Mustard'],
+    keywords: ['upma', 'rava upma', 'uppumavu', 'sooji upma', 'breakfast'],
+    macros: {
+      protein: 8,
+      carbs: 52,
+      fat: 9,
+      fiber: 5,
+      sugar: 3.5,
+      sodium: 410,
+    },
+    micros: [
+      { name: 'Magnesium', amount: '55mg', dailyValue: '14%' },
+      { name: 'Iron', amount: '2.1mg', dailyValue: '12%' },
+      { name: 'Beta-Carotene', amount: 'Moderate', dailyValue: 'Eye Health' },
+    ],
+    ingredients: [
+      { name: 'Roasted Semolina (Rava / Sooji)', amount: '120g', calories: 190, protein: 5, carbs: 42, fat: 1 },
+      { name: 'Mixed Veggies (Carrots, Beans, Peas)', amount: '80g', calories: 45, protein: 1.5, carbs: 8, fat: 0.2 },
+      { name: 'Tadka (Mustard, Chana Dal, Ghee & Cashews)', amount: '25g', calories: 85, protein: 2, carbs: 3, fat: 7.5 },
+    ],
+    nutritionistReview: 'Warm, soothing, and easy on the digestive tract. The inclusion of chana dal in the tadka adds an enzymatic crunch with extra amino acids.',
+    healthierSwaps: [
+      'Replace regular rava with cracked wheat (daliya) or oats for triple the dietary fiber.',
+      'Garnish with grated fresh coconut for healthy MCT fats.'
+    ]
+  },
+
+  // ==================== LUNCH ====================
+  {
+    id: 'rajma-chawal',
+    name: 'Home-Style Punjabi Rajma Chawal with Kachumber',
+    category: 'Lunch',
+    image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'North Indian',
+    confidence: 'High (99%)',
+    estimatedWeightGrams: 420,
+    servingDescription: '1 plate slow-simmered red kidney beans (220g) over steamed basmati rice (180g) with onion kachumber',
+    calories: 520,
+    healthScore: 9.5,
+    nutriGrade: 'A',
+    dietaryFlags: ['High Fiber', 'Complete Plant Protein', 'Gluten-Free', 'Heart Healthy'],
+    allergens: ['None'],
+    keywords: ['rajma', 'rajma chawal', 'kidney beans', 'rice', 'punjabi rajma', 'dal chawal'],
+    macros: {
+      protein: 21,
+      carbs: 88,
+      fat: 9,
+      fiber: 14,
+      sugar: 4,
+      sodium: 520,
+    },
+    micros: [
+      { name: 'Dietary Fiber', amount: '14g', dailyValue: '56%' },
+      { name: 'Folate', amount: '220µg', dailyValue: '55%' },
+      { name: 'Molybdenum', amount: 'High', dailyValue: 'Detox Support' },
+      { name: 'Iron', amount: '4.6mg', dailyValue: '26%' },
+    ],
+    ingredients: [
+      { name: 'Slow-Cooked Kashmiri Red Kidney Beans', amount: '220g', calories: 260, protein: 16, carbs: 42, fat: 4 },
+      { name: 'Steamed Long-Grain Basmati Rice', amount: '180g', calories: 230, protein: 4.5, carbs: 48, fat: 0.5 },
+      { name: 'Onion, Tomato & Cumin Tadka', amount: '40g', calories: 45, protein: 1, carbs: 3, fat: 3.5 },
+    ],
+    nutritionistReview: 'The quintessential Indian pairing: combining kidney beans with rice creates a complete protein profile containing all 9 essential amino acids with an astounding 14g of prebiotic fiber.',
+    healthierSwaps: [
+      'Substitute white basmati for brown rice to further flatten insulin response.',
+      'Enjoy with sliced cucumbers and green chilies for extra hydration.'
+    ]
+  },
+  {
+    id: 'palak-paneer-roti',
+    name: 'Nutrient-Dense Palak Paneer with Whole Wheat Rotis',
+    category: 'Lunch',
+    image: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'North Indian',
+    confidence: 'High (98%)',
+    estimatedWeightGrams: 380,
+    servingDescription: '1 bowl fresh spinach paneer gravy (220g) with 2 whole wheat rotis (100g) & salad',
+    calories: 480,
+    healthScore: 9.6,
+    nutriGrade: 'A',
+    dietaryFlags: ['High Protein', 'Iron Rich', 'Calcium Rich', 'Vegetarian'],
+    allergens: ['Dairy (Paneer)', 'Gluten (Roti)'],
+    keywords: ['palak paneer', 'paneer', 'spinach', 'roti', 'phulka', 'saag paneer', 'healthy indian'],
+    macros: {
+      protein: 26,
+      carbs: 48,
+      fat: 20,
+      fiber: 9.5,
+      sugar: 4,
+      sodium: 540,
+    },
+    micros: [
+      { name: 'Iron', amount: '5.2mg', dailyValue: '29%' },
+      { name: 'Calcium', amount: '440mg', dailyValue: '44%' },
+      { name: 'Vitamin K', amount: '145µg', dailyValue: '120%' },
+      { name: 'Folate', amount: '160µg', dailyValue: '40%' },
+    ],
+    ingredients: [
+      { name: 'Pureed Fresh Spinach & Garlic Gravy', amount: '140g', calories: 65, protein: 3, carbs: 6, fat: 2 },
+      { name: 'Fresh Soft Malai Paneer Cubes', amount: '90g', calories: 235, protein: 15, carbs: 2, fat: 18 },
+      { name: 'Handmade Whole Wheat Phulkas (2 pcs)', amount: '100g', calories: 190, protein: 7, carbs: 38, fat: 1.5 },
+    ],
+    nutritionistReview: 'Powerhouse of plant micronutrients. Spinach supplies lutein, zeaxanthin, and bioavailable folate, while paneer offers sustained casein protein release.',
+    healthierSwaps: [
+      'Skip heavy cream in the gravy and blend a handful of soaked cashews instead.',
+      'Squeeze fresh lemon directly over the spinach to dramatically boost iron absorption.'
+    ]
+  },
+  {
+    id: 'chole-bhature',
+    name: 'Amritsari Chole with Fluffy Bhatura & Pickled Onions',
+    category: 'Lunch',
+    image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'Punjabi Street & Dine',
+    confidence: 'High (98%)',
+    estimatedWeightGrams: 420,
+    servingDescription: '1 bowl spiced chickpea curry (220g) with 1 golden fried bhatura (110g) & pickled onions',
+    calories: 640,
+    healthScore: 7.2,
+    nutriGrade: 'B',
+    dietaryFlags: ['High Protein', 'High Fiber', 'Indulgent Comfort Food'],
+    allergens: ['Gluten (Bhatura)'],
+    keywords: ['chole', 'chole bhature', 'bhature', 'chana masala', 'punjabi chole', 'amritsari'],
+    macros: {
+      protein: 22,
+      carbs: 84,
+      fat: 25,
+      fiber: 12,
+      sugar: 5,
+      sodium: 780,
+    },
+    micros: [
+      { name: 'Manganese', amount: '1.9mg', dailyValue: '82%' },
+      { name: 'Dietary Fiber', amount: '12g', dailyValue: '48%' },
+      { name: 'Iron', amount: '4.8mg', dailyValue: '27%' },
+    ],
+    ingredients: [
+      { name: 'Spiced Kabuli Chickpea Masala with Tea Decoction', amount: '220g', calories: 280, protein: 16, carbs: 48, fat: 6 },
+      { name: 'Crisp Fermented Bhatura (Deep Fried)', amount: '110g', calories: 340, protein: 6, carbs: 42, fat: 18 },
+      { name: 'Sirka Pickled Onions & Green Chili', amount: '35g', calories: 20, protein: 0.5, carbs: 4, fat: 0 },
+    ],
+    nutritionistReview: 'Chickpeas provide high-satiety legume protein and slow-digesting resistant starch, though the fried bhatura contributes higher calories.',
+    healthierSwaps: [
+      'Swap the fried bhatura for tandoori roti or steamed rice to cut 180 kcal and 15g fat.',
+      'Load up on the pickled sirka onions for digestion-assisting acetic acid.'
+    ]
+  },
+  {
+    id: 'homestyle-chicken-curry',
+    name: 'Ghar Ka Desi Chicken Curry with Steamed Basmati Rice',
+    category: 'Lunch',
+    image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'North / Central Indian Homestyle',
+    confidence: 'High (98%)',
+    estimatedWeightGrams: 420,
+    servingDescription: '1 bowl aromatic homestyle chicken curry (220g) with 1 plate steamed basmati rice (180g)',
+    calories: 550,
+    healthScore: 9.3,
+    nutriGrade: 'A',
+    dietaryFlags: ['High Protein', 'Lean Poultry', 'Gluten-Free', 'Muscle Recovery'],
+    allergens: ['None'],
+    keywords: ['chicken curry', 'chicken rice', 'tari wala chicken', 'desi chicken', 'ghar ka chicken', 'chicken'],
+    macros: {
+      protein: 42,
+      carbs: 58,
+      fat: 14,
+      fiber: 4,
+      sugar: 3,
+      sodium: 590,
+    },
+    micros: [
+      { name: 'Niacin (B3)', amount: '12.8mg', dailyValue: '80%' },
+      { name: 'Vitamin B6', amount: '0.8mg', dailyValue: '47%' },
+      { name: 'Phosphorus', amount: '340mg', dailyValue: '27%' },
+      { name: 'Zinc', amount: '3.1mg', dailyValue: '28%' },
+    ],
+    ingredients: [
+      { name: 'Bone-in / Boneless Tender Chicken Pieces', amount: '160g', calories: 240, protein: 36, carbs: 0, fat: 9 },
+      { name: 'Steamed Fragrant Basmati Rice', amount: '180g', calories: 230, protein: 4.5, carbs: 48, fat: 0.5 },
+      { name: 'Onion, Ginger, Garlic & Coriander Tari Gravy', amount: '80g', calories: 85, protein: 2, carbs: 8, fat: 4.5 },
+    ],
+    nutritionistReview: 'Homestyle chicken curry cooked in thin aromatic broth (tari) provides complete amino acids for muscular tissue repair without excess saturated fat.',
+    healthierSwaps: [
+      'Choose skinless chicken breast cuts for minimum lipid density.',
+      'Add bone broth to the gravy for natural collagen and joint health support.'
+    ]
+  },
+  {
+    id: 'classic-indian-thali',
+    name: 'Traditional Balanced Indian Thali (Roti, Dal, Sabzi & Rice)',
+    category: 'Lunch',
+    image: 'https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'Traditional Indian',
+    confidence: 'High (99%)',
+    estimatedWeightGrams: 460,
+    servingDescription: 'Complete thali: 2 phulkas (80g), yellow dal tadka (120g), seasonal sabzi (100g), steamed rice (80g), curd & salad',
+    calories: 560,
+    healthScore: 9.7,
+    nutriGrade: 'A',
+    dietaryFlags: ['Balanced Ayurvedic Diet', 'High Fiber', 'Nutrient Diverse', 'Vegetarian'],
+    allergens: ['Gluten', 'Dairy'],
+    keywords: ['thali', 'indian thali', 'dal roti', 'dal chawal', 'lunch thali', 'ghar ka khana', 'balanced meal'],
+    macros: {
+      protein: 21,
+      carbs: 86,
+      fat: 14,
+      fiber: 12,
+      sugar: 5,
+      sodium: 580,
+    },
+    micros: [
+      { name: 'Folate', amount: '190µg', dailyValue: '48%' },
+      { name: 'Iron', amount: '4.4mg', dailyValue: '24%' },
+      { name: 'Magnesium', amount: '110mg', dailyValue: '26%' },
+      { name: 'Carotenoids', amount: 'High', dailyValue: 'Cellular Protection' },
+    ],
+    ingredients: [
+      { name: 'Yellow Moong / Toor Dal Tadka with Ghee', amount: '120g', calories: 140, protein: 7.5, carbs: 18, fat: 4 },
+      { name: 'Seasonal Vegetable Sabzi (Bhindi/Gobi)', amount: '100g', calories: 85, protein: 2.5, carbs: 10, fat: 3.5 },
+      { name: 'Handmade Whole Wheat Phulkas (2 pcs)', amount: '80g', calories: 180, protein: 6, carbs: 36, fat: 1 },
+      { name: 'Steamed Rice with Fresh Curd & Cucumber', amount: '130g', calories: 155, protein: 5, carbs: 24, fat: 4.5 },
+    ],
+    nutritionistReview: 'The gold standard of balanced nutrition: provides grain + legume synergy, fresh dietary fiber, active probiotics from dahi, and anti-inflammatory spices.',
+    healthierSwaps: [
+      'Increase dal to 2 bowls to hit 30g+ protein effortlessly.',
+      'Savor the raw salad first to flatten the glucose spike from rice and wheat.'
+    ]
+  },
+
+  // ==================== DINNER ====================
+  {
+    id: 'chicken-biryani',
+    name: 'Hyderabadi Chicken Dum Biryani with Cooling Mint Raita',
+    category: 'Dinner',
+    image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'Hyderabadi / Mughlai',
+    confidence: 'High (98%)',
+    estimatedWeightGrams: 420,
+    servingDescription: '1 full plate fragrant saffron basmati rice (240g) with marinated dum chicken (140g) & onion-cucumber raita (60g)',
+    calories: 685,
+    healthScore: 8.0,
+    nutriGrade: 'B',
+    dietaryFlags: ['High Protein', 'Gluten-Free', 'Antioxidant Spices'],
+    allergens: ['Dairy (Yogurt Raita)'],
+    keywords: ['biryani', 'chicken biryani', 'dum biryani', 'hyderabadi biryani', 'rice', 'chicken rice'],
+    macros: {
+      protein: 38,
+      carbs: 76,
+      fat: 23,
+      fiber: 5,
+      sugar: 3.5,
+      sodium: 760,
+    },
+    micros: [
+      { name: 'Saffron & Spices', amount: 'Active', dailyValue: 'Antioxidant' },
+      { name: 'Zinc', amount: '3.4mg', dailyValue: '31%' },
+      { name: 'Niacin (B3)', amount: '9.8mg', dailyValue: '61%' },
+      { name: 'Selenium', amount: '28µg', dailyValue: '51%' },
+    ],
+    ingredients: [
+      { name: 'Spiced Saffron Dum Basmati Rice', amount: '220g', calories: 330, protein: 6, carbs: 68, fat: 5 },
+      { name: 'Marinated Tender Chicken Pieces', amount: '150g', calories: 270, protein: 30, carbs: 2, fat: 15 },
+      { name: 'Cucumber, Mint & Cumin Dahi Raita', amount: '60g', calories: 45, protein: 2, carbs: 3, fat: 2 },
+      { name: 'Fried Caramelized Onions (Birista)', amount: '15g', calories: 45, protein: 0.5, carbs: 3, fat: 3 },
+    ],
+    nutritionistReview: 'Loaded with thermogenic spices like cardamom, cloves, cinnamon, and turmeric. Dum cooking traps volatile nutrient vapors inside the pot.',
+    healthierSwaps: [
+      'Choose skinless chicken breast cuts to save ~80 kcal in saturated fats.',
+      'Double the raita portion for cooling gut hydration and extra calcium.'
+    ]
+  },
+  {
+    id: 'paneer-butter-masala',
+    name: 'Shahi Paneer Butter Masala with Tandoori Garlic Naan',
+    category: 'Dinner',
+    image: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'North Indian / Mughlai',
+    confidence: 'High (97%)',
+    estimatedWeightGrams: 390,
+    servingDescription: '1 bowl rich paneer makhani gravy (220g) with 1 clay-oven tandoori naan (120g)',
+    calories: 690,
+    healthScore: 7.0,
+    nutriGrade: 'B',
+    dietaryFlags: ['Vegetarian', 'High Calcium', 'Rich & Creamy'],
+    allergens: ['Dairy (Paneer/Butter)', 'Gluten (Naan)', 'Cashews/Nuts'],
+    keywords: ['paneer', 'paneer butter masala', 'shahi paneer', 'makhani', 'naan', 'garlic naan', 'curry'],
+    macros: {
+      protein: 26,
+      carbs: 65,
+      fat: 36,
+      fiber: 5,
+      sugar: 7,
+      sodium: 760,
+    },
+    micros: [
+      { name: 'Calcium', amount: '480mg', dailyValue: '48%' },
+      { name: 'Phosphorus', amount: '360mg', dailyValue: '29%' },
+      { name: 'Vitamin A', amount: '220µg', dailyValue: '24%' },
+    ],
+    ingredients: [
+      { name: 'Fresh Malai Paneer Cubes', amount: '120g', calories: 320, protein: 18, carbs: 3, fat: 26 },
+      { name: 'Tomato, Butter & Cashew Makhani Gravy', amount: '120g', calories: 160, protein: 3, carbs: 12, fat: 11 },
+      { name: 'Clay Oven Tandoori Garlic Naan', amount: '110g', calories: 270, protein: 7, carbs: 50, fat: 4 },
+    ],
+    nutritionistReview: 'Substantial source of vegetarian casein protein and calcium. The butter and cashew gravy provides dense satiety for post-fast or workout nutrition.',
+    healthierSwaps: [
+      'Swap garlic naan for 2 whole wheat tandoori rotis to shave off 120 kcal and triple the fiber.',
+      'Ask for tofu or reduction in butter for lower saturated lipids.'
+    ]
+  },
+  {
+    id: 'dal-makhani-rice',
+    name: 'Slow-Simmered Dal Makhani with Fragrant Jeera Rice',
+    category: 'Dinner',
+    image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'Punjabi Dine',
+    confidence: 'High (98%)',
+    estimatedWeightGrams: 420,
+    servingDescription: '1 bowl overnight slow-cooked black urad dal & rajma (220g) with cumin-tempered basmati rice (180g)',
+    calories: 580,
+    healthScore: 8.5,
+    nutriGrade: 'B',
+    dietaryFlags: ['High Fiber', 'Iron Rich', 'Vegetarian', 'Gluten-Free'],
+    allergens: ['Dairy (Butter/Cream)'],
+    keywords: ['dal makhani', 'dal', 'makhani', 'jeera rice', 'black dal', 'urad dal', 'punjabi dal'],
+    macros: {
+      protein: 20,
+      carbs: 82,
+      fat: 18,
+      fiber: 13,
+      sugar: 3.5,
+      sodium: 680,
+    },
+    micros: [
+      { name: 'Dietary Fiber', amount: '13g', dailyValue: '52%' },
+      { name: 'Iron', amount: '4.8mg', dailyValue: '27%' },
+      { name: 'Magnesium', amount: '125mg', dailyValue: '30%' },
+    ],
+    ingredients: [
+      { name: 'Black Gram (Urad Sabut) & Red Kidney Beans', amount: '200g', calories: 270, protein: 15, carbs: 38, fat: 6 },
+      { name: 'Steamed Cumin-Tempered Basmati Rice', amount: '180g', calories: 240, protein: 4.5, carbs: 48, fat: 2 },
+      { name: 'Slow-Cooked Butter & Cream Simmer', amount: '25g', calories: 95, protein: 0.5, carbs: 1, fat: 10 },
+    ],
+    nutritionistReview: 'Whole black gram (urad sabut) is one of the most fiber-dense legumes known, supporting healthy bowel transit and steady insulin release.',
+    healthierSwaps: [
+      'Prepare with low-fat milk instead of heavy cream to reduce total calories by 15%.',
+      'Pair with fresh cucumber salad to improve enzyme digestion.'
+    ]
+  },
+  {
+    id: 'tandoori-chicken-tikka',
+    name: 'Clay-Oven Tandoori Chicken Tikka with Mint Chutney',
+    category: 'Dinner',
+    image: 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'North Indian / Tandoor',
+    confidence: 'High (99%)',
+    estimatedWeightGrams: 280,
+    servingDescription: '6 pieces succulent charcoal-grilled chicken breast tikka (220g) with green mint chutney and lemon wedges',
+    calories: 360,
+    healthScore: 9.8,
+    nutriGrade: 'A',
+    dietaryFlags: ['High Protein', 'Keto Friendly', 'Low Carb', 'Ultra Lean', 'Charcoal Grilled'],
+    allergens: ['Dairy (Yogurt Marinade)'],
+    keywords: ['chicken tikka', 'tandoori chicken', 'tikka', 'grilled chicken', 'tandoori', 'tandoor', 'kebab'],
+    macros: {
+      protein: 52,
+      carbs: 6,
+      fat: 12,
+      fiber: 2,
+      sugar: 2,
+      sodium: 620,
+    },
+    micros: [
+      { name: 'High Protein', amount: '52g', dailyValue: '104%' },
+      { name: 'Zinc', amount: '4.2mg', dailyValue: '38%' },
+      { name: 'Vitamin B12', amount: '2.4µg', dailyValue: '100%' },
+      { name: 'Potassium', amount: '620mg', dailyValue: '13%' },
+    ],
+    ingredients: [
+      { name: 'Marinated Boneless Chicken Breast Fillet', amount: '220g', calories: 290, protein: 48, carbs: 1, fat: 8.5 },
+      { name: 'Hung Curd & Degi Mirch Tandoori Marinade', amount: '40g', calories: 50, protein: 3, carbs: 2, fat: 3 },
+      { name: 'Fresh Mint & Coriander Chutney with Lemon', amount: '30g', calories: 25, protein: 1, carbs: 3, fat: 0.5 },
+    ],
+    nutritionistReview: 'An extraordinary low-carb, high-protein meal. Clay-oven grilling allows excess fat to drip off while locking in succulence and essential amino acids.',
+    healthierSwaps: [
+      'Pair with a side of mixed greens or onions rather than butter naan to maintain keto status.',
+      'Squeeze generous lemon juice to maximize iron and zinc assimilation.'
+    ]
+  },
+  {
+    id: 'moong-dal-khichdi',
+    name: 'Ayurvedic Moong Dal Khichdi with Pure Cow Ghee & Papad',
+    category: 'Dinner',
+    image: 'https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'Ayurvedic / Pan-Indian',
+    confidence: 'High (99%)',
+    estimatedWeightGrams: 360,
+    servingDescription: '1 warm soothing bowl yellow moong dal & rice porridge (320g) with 1 tsp pure desi ghee (10g) & roasted papad',
+    calories: 390,
+    healthScore: 9.8,
+    nutriGrade: 'A',
+    dietaryFlags: ['Ayurvedic Detox', 'Gentle on Stomach', 'Gluten-Free', 'High Satiety'],
+    allergens: ['Dairy (Desi Ghee)'],
+    keywords: ['khichdi', 'moong dal khichdi', 'khichuri', 'ayurvedic', 'comfort food', 'ghee', 'dal khichdi'],
+    macros: {
+      protein: 16,
+      carbs: 62,
+      fat: 9.5,
+      fiber: 8,
+      sugar: 2,
+      sodium: 460,
+    },
+    micros: [
+      { name: 'Butyric Acid (from Desi Ghee)', amount: 'Active', dailyValue: 'Gut Lining Support' },
+      { name: 'Folate', amount: '160µg', dailyValue: '40%' },
+      { name: 'Iron', amount: '3.2mg', dailyValue: '18%' },
+    ],
+    ingredients: [
+      { name: 'Split Yellow Moong Dal (Cooked)', amount: '150g', calories: 155, protein: 11, carbs: 26, fat: 1 },
+      { name: 'Soft Simmered Rice Porridge', amount: '150g', calories: 160, protein: 3, carbs: 35, fat: 0.5 },
+      { name: 'Tempered Desi Ghee with Cumin & Hing', amount: '10g', calories: 85, protein: 0, carbs: 0, fat: 9.5 },
+    ],
+    nutritionistReview: 'The ultimate healing comfort food in Indian tradition. The ratio of split moong and rice is easily assimilated, and butyrate from ghee nourishes intestinal colonocytes.',
+    healthierSwaps: [
+      'Toss in grated bottle gourd (lauki) or pumpkin for high-volume hydration.',
+      'Opt for roasted papad instead of fried papad to keep oils low.'
+    ]
+  },
+
+  // ==================== SNACKS & STREET FOOD ====================
+  {
+    id: 'mumbai-pav-bhaji',
+    name: 'Mumbai Street Pav Bhaji with Butter-Toasted Pav',
+    category: 'Snacks',
+    image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'Mumbai Street Food',
+    confidence: 'High (98%)',
+    estimatedWeightGrams: 380,
+    servingDescription: '1 bowl spiced mashed potato, cauliflower & tomato bhaji (240g) with 2 butter-toasted pav buns (110g)',
+    calories: 520,
+    healthScore: 7.9,
+    nutriGrade: 'B',
+    dietaryFlags: ['Vegetable Rich', 'Lycopene Rich', 'Vegetarian'],
+    allergens: ['Dairy (Butter)', 'Gluten (Pav)'],
+    keywords: ['pav bhaji', 'bhaji', 'pav', 'mumbai street food', 'street food', 'butter pav'],
+    macros: {
+      protein: 12,
+      carbs: 76,
+      fat: 18,
+      fiber: 8.5,
+      sugar: 7,
+      sodium: 780,
+    },
+    micros: [
+      { name: 'Vitamin C', amount: '45mg', dailyValue: '50%' },
+      { name: 'Lycopene', amount: '6.2mg', dailyValue: 'Cardioprotective' },
+      { name: 'Potassium', amount: '610mg', dailyValue: '13%' },
+    ],
+    ingredients: [
+      { name: 'Mashed Mixed Vegetable Bhaji (Potatoes, Cauliflower, Peas)', amount: '220g', calories: 230, protein: 5, carbs: 38, fat: 6 },
+      { name: 'Toasted Bakery Pav Buns (2 pcs)', amount: '100g', calories: 250, protein: 7, carbs: 46, fat: 3 },
+      { name: 'Amul Butter for Topping & Sauté', amount: '15g', calories: 110, protein: 0, carbs: 0, fat: 12 },
+    ],
+    nutritionistReview: 'Surprisingly vegetable-dense: contains over 200g of cooked tomatoes, carrots, peas, and cauliflower supplying lycopene and prebiotic fibers.',
+    healthierSwaps: [
+      'Swap refined white pav for whole wheat pav or multi-grain buns.',
+      'Ask for single-slice butter to reduce calories by ~80 kcal.'
+    ]
+  },
+  {
+    id: 'punjabi-samosa',
+    name: 'Crispy Punjabi Aloo Samosa (2 pcs) with Chutneys',
+    category: 'Snacks',
+    image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'North Indian Snacks',
+    confidence: 'High (99%)',
+    estimatedWeightGrams: 220,
+    servingDescription: '2 golden triangular pastries stuffed with spiced potatoes and peas with sweet tamarind & green chutney',
+    calories: 440,
+    healthScore: 6.2,
+    nutriGrade: 'C',
+    dietaryFlags: ['Vegetarian', 'Crunchy Pastry', 'Chutney Pairing'],
+    allergens: ['Gluten'],
+    keywords: ['samosa', 'aloo samosa', 'punjabi samosa', 'singara', 'indian snack', 'fried snack'],
+    macros: {
+      protein: 8,
+      carbs: 58,
+      fat: 20,
+      fiber: 4.5,
+      sugar: 6,
+      sodium: 620,
+    },
+    micros: [
+      { name: 'Potassium', amount: '480mg', dailyValue: '10%' },
+      { name: 'Iron', amount: '2.4mg', dailyValue: '13%' },
+      { name: 'Antioxidants (Ajwain & Cumin)', amount: 'Active', dailyValue: 'Digestive' },
+    ],
+    ingredients: [
+      { name: 'Crispy Ajwain Pastry Crust', amount: '90g', calories: 240, protein: 4, carbs: 32, fat: 11 },
+      { name: 'Spiced Potato, Green Peas & Coriander Filling', amount: '100g', calories: 140, protein: 3, carbs: 24, fat: 3.5 },
+      { name: 'Imli Tamarind & Pudina Mint Chutneys', amount: '35g', calories: 60, protein: 1, carbs: 14, fat: 0.2 },
+    ],
+    nutritionistReview: 'India’s most iconic tea-time indulgence. Ajwain (carom seeds) in the crust aids gastric digestion of the starch.',
+    healthierSwaps: [
+      'Air-fry or bake the samosa to eliminate up to 60% of the frying oil.',
+      'Pair with a cup of un-sweetened spiced masala chai.'
+    ]
+  },
+  {
+    id: 'pani-puri',
+    name: 'Street-Style Crisp Pani Puri / Golgappe (6 pieces)',
+    category: 'Snacks',
+    image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'Pan-Indian Street Food',
+    confidence: 'High (98%)',
+    estimatedWeightGrams: 210,
+    servingDescription: '6 crisp hollow semolina puris filled with black chana, potato mash & chilled spicy mint-hing water',
+    calories: 220,
+    healthScore: 8.8,
+    nutriGrade: 'A',
+    dietaryFlags: ['Low Calorie Snack', 'Digestive Mint-Hing Water', 'Vegetarian'],
+    allergens: ['Gluten (Semolina)'],
+    keywords: ['pani puri', 'golgappe', 'puchka', 'paani poori', 'batashe', 'street food'],
+    macros: {
+      protein: 5.5,
+      carbs: 42,
+      fat: 4.5,
+      fiber: 4,
+      sugar: 4.5,
+      sodium: 490,
+    },
+    micros: [
+      { name: 'Iron (from Mint & Black Chana)', amount: '2.6mg', dailyValue: '14%' },
+      { name: 'Hing (Asafoetida) & Cumin', amount: 'Active', dailyValue: 'Anti-Bloating' },
+      { name: 'Vitamin C', amount: '15mg', dailyValue: '16%' },
+    ],
+    ingredients: [
+      { name: 'Crisp Puris (6 pieces)', amount: '60g', calories: 120, protein: 2.5, carbs: 22, fat: 3 },
+      { name: 'Boiled Black Chana & Potato Filling', amount: '70g', calories: 65, protein: 2.5, carbs: 14, fat: 0.5 },
+      { name: 'Spicy Teekha Mint-Coriander & Imli Water', amount: '90ml', calories: 35, protein: 0.5, carbs: 8, fat: 0.2 },
+    ],
+    nutritionistReview: 'Surprisingly low in calories! The spicy water is infused with rock salt (kala namak), mint, cumin, and hing, which actively promote digestive enzyme secretion.',
+    healthierSwaps: [
+      'Fill primarily with sprouted moong and boiled black chickpeas rather than pure potatoes.',
+      'Ask for less sweet tamarind chutney to keep refined sugars near zero.'
+    ]
+  },
+  {
+    id: 'khaman-dhokla',
+    name: 'Steamed Gujarati Khaman Dhokla with Mustard Tempering',
+    category: 'Snacks',
+    image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80',
+    cuisine: 'Gujarati',
+    confidence: 'High (98%)',
+    estimatedWeightGrams: 220,
+    servingDescription: '4 steamed spongy chickpea squares with mustard seed tempering, green chilies & fresh coconut',
+    calories: 260,
+    healthScore: 9.4,
+    nutriGrade: 'A',
+    dietaryFlags: ['Steamed', 'High Protein Gram Flour', 'Gluten-Free', 'Low Calorie', 'Vegetarian'],
+    allergens: ['Mustard'],
+    keywords: ['dhokla', 'khaman', 'khaman dhokla', 'gujarati snack', 'steamed snack', 'besan'],
+    macros: {
+      protein: 11,
+      carbs: 39,
+      fat: 6.5,
+      fiber: 6,
+      sugar: 5,
+      sodium: 460,
+    },
+    micros: [
+      { name: 'Zinc', amount: '1.9mg', dailyValue: '17%' },
+      { name: 'Folate', amount: '110µg', dailyValue: '28%' },
+      { name: 'Magnesium', amount: '58mg', dailyValue: '14%' },
+    ],
+    ingredients: [
+      { name: 'Steamed Besan (Gram Flour) Sponge', amount: '170g', calories: 190, protein: 9.5, carbs: 32, fat: 2 },
+      { name: 'Mustard, Green Chili & Curry Leaf Tempering', amount: '35g', calories: 55, protein: 1, carbs: 5, fat: 4 },
+      { name: 'Fresh Shredded Coconut & Coriander Garnish', amount: '15g', calories: 25, protein: 0.5, carbs: 1, fat: 2 },
+    ],
+    nutritionistReview: 'An exemplary healthy Indian snack. Made with 100% protein-rich chickpea flour (besan) and gently steamed rather than fried.',
+    healthierSwaps: [
+      'Prepare the sugar syrup glaze with stevia or fresh lemon juice only to lower glycemic load.',
+      'Enjoy with raw mint coriander chutney.'
+    ]
+  }
+];
+
+export const DEFAULT_GOALS = {
+  dailyCalories: 2000,
+  proteinGrams: 130, // ~26%
+  carbsGrams: 240,   // ~48%
+  fatGrams: 58,      // ~26%
+  waterMl: 2500,     // 2.5 Liters
+  profile: 'Healthy Maintenance'
+};
+
+export const GOAL_PRESETS = [
+  {
+    name: 'Fat Loss & Cutting',
+    description: 'Higher protein, moderate deficit for fat loss while preserving lean mass.',
+    calories: 1650,
+    protein: 140,
+    carbs: 160,
+    fat: 45,
+  },
+  {
+    name: 'Balanced Indian Diet',
+    description: 'Well-rounded macronutrient balance for daily energy, dal, roti, sabzi and wellness.',
+    calories: 1950,
+    protein: 120,
+    carbs: 235,
+    fat: 58,
+  },
+  {
+    name: 'Muscle Gain & Bulking',
+    description: 'Caloric surplus with high carbohydrates and protein for muscle synthesis.',
+    calories: 2500,
+    protein: 165,
+    carbs: 310,
+    fat: 68,
+  },
+  {
+    name: 'Low Carb / High Protein',
+    description: 'Reduced grains with high paneer, chicken tikka, eggs, and green vegetable saag.',
+    calories: 1800,
+    protein: 145,
+    carbs: 90,
+    fat: 95,
+  }
+];
