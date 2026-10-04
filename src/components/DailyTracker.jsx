@@ -183,7 +183,7 @@ export default function DailyTracker({
       </div>
 
       {/* Hero Calorie & Macro Dashboard Card */}
-      <div className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-md">
+      <div className="bg-slate-900/80 border border-slate-800 rounded-3xl p-4 sm:p-8 shadow-2xl backdrop-blur-md">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
           
           {/* Circular Calorie Gauge */}

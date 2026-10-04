@@ -12,7 +12,15 @@ import {
   getStoredMockMode,
   setStoredMockMode 
 } from './services/aiVisionService';
-import { AlertCircle, Camera, CheckCircle2, Sparkles, Settings } from 'lucide-react';
+import { 
+  AlertCircle, 
+  Camera, 
+  CheckCircle2, 
+  Sparkles, 
+  Settings,
+  CalendarDays,
+  Sliders
+} from 'lucide-react';
 
 const STORAGE_MEALS_KEY = 'nutriscan_logged_meals_v2';
 const STORAGE_GOALS_KEY = 'nutriscan_goals_v2';
@@ -235,7 +243,7 @@ export default function App() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-8 pb-28 sm:pb-8">
         
         {/* API Key missing notice banner (subtle, helpful) */}
         {!hasApiKey && !isMockMode && (
@@ -333,8 +341,71 @@ export default function App() {
 
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
+      {/* Mobile Floating Bottom Navigation Bar (Visible on mobile only) */}
+      <nav 
+        aria-label="Mobile Navigation"
+        className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/90 pb-[max(10px,env(safe-area-inset-bottom))] px-3 pt-2 shadow-2xl"
+      >
+        <div className="grid grid-cols-4 items-center justify-around max-w-md mx-auto">
+          {/* Scanner Tab */}
+          <button
+            onClick={() => setActiveTab('scanner')}
+            className={`flex flex-col items-center justify-center py-1.5 px-2 rounded-xl transition-all ${
+              activeTab === 'scanner'
+                ? 'text-emerald-400 font-bold'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className={`p-1 rounded-lg transition-transform ${activeTab === 'scanner' ? 'bg-emerald-500/15 scale-110' : ''}`}>
+              <Camera className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] mt-0.5 tracking-tight">Scanner</span>
+          </button>
+
+          {/* Diary Tab */}
+          <button
+            onClick={() => setActiveTab('diary')}
+            className={`flex flex-col items-center justify-center py-1.5 px-2 rounded-xl transition-all relative ${
+              activeTab === 'diary'
+                ? 'text-emerald-400 font-bold'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <div className={`p-1 rounded-lg transition-transform ${activeTab === 'diary' ? 'bg-emerald-500/15 scale-110' : ''}`}>
+              <CalendarDays className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] mt-0.5 tracking-tight">Diary</span>
+            {todayMeals.length > 0 && (
+              <span className="absolute top-1.5 right-6 w-2 h-2 rounded-full bg-emerald-400" />
+            )}
+          </button>
+
+          {/* Goals Button */}
+          <button
+            onClick={() => setIsGoalsOpen(true)}
+            className="flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-slate-400 hover:text-slate-200 transition-all"
+          >
+            <div className="p-1 rounded-lg">
+              <Sliders className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] mt-0.5 tracking-tight">Goals</span>
+          </button>
+
+          {/* Settings Button */}
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            className="flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-slate-400 hover:text-slate-200 transition-all"
+          >
+            <div className="p-1 rounded-lg">
+              <Settings className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] mt-0.5 tracking-tight">Settings</span>
+          </button>
+        </div>
+      </nav>
+
+      {/* Footer (Desktop only) */}
+      <footer className="hidden sm:block border-t border-slate-900 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center space-x-2">
             <span className="font-bold text-slate-400">NutriScan AI</span>

@@ -166,7 +166,7 @@ export default function AnalysisResult({
           </div>
 
           {/* Dish Details & Main Metrics */}
-          <div className="md:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-5">
+          <div className="md:col-span-7 p-4 sm:p-8 flex flex-col justify-between space-y-4 sm:space-y-5">
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <div className="flex items-center space-x-2 text-xs font-semibold text-emerald-400">
@@ -297,7 +297,7 @@ export default function AnalysisResult({
         </div>
 
         {/* Nutritional Breakdown Body */}
-        <div className="p-6 sm:p-8 space-y-8">
+        <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
           
           {/* Macronutrients Cards & Calorie Ratio Bar */}
           <div>
@@ -540,7 +540,7 @@ export default function AnalysisResult({
             </div>
 
             {/* Log Button */}
-            <div className="flex items-center justify-between pt-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
               <span className="text-xs text-slate-400">
                 Total to log:{' '}
                 <strong className="text-emerald-400 font-bold text-sm">
@@ -553,7 +553,7 @@ export default function AnalysisResult({
                 type="button"
                 onClick={handleLogMeal}
                 disabled={isLogged}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-xl ${
+                className={`flex items-center justify-center space-x-2 w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-xl ${
                   isLogged
                     ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 cursor-default'
                     : 'bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 hover:scale-105 active:scale-95 shadow-emerald-500/25'
