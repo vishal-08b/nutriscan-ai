@@ -154,10 +154,12 @@ export default function CameraCapture({ onAnalyze, isAnalyzing }) {
     reader.readAsDataURL(file);
   };
 
-  // Handle Drag & Drop
+  // Handle Drag & Drop (desktop files only, do not block mobile touch scrolling)
   const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
+    if (e.dataTransfer && e.dataTransfer.types && Array.from(e.dataTransfer.types).includes('Files')) {
+      e.preventDefault();
+      setIsDragging(true);
+    }
   };
 
   const handleDragLeave = (e) => {
@@ -497,15 +499,16 @@ export default function CameraCapture({ onAnalyze, isAnalyzing }) {
             <div
               key={sample.id}
               onClick={() => handleSelectSample(sample)}
-              className="group relative bg-slate-900/70 hover:bg-slate-800/90 border border-slate-800 hover:border-emerald-500/50 rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 active:scale-95 shadow-md flex flex-col"
+              className="group relative bg-slate-900/70 hover:bg-slate-800/90 border border-slate-800 hover:border-emerald-500/50 rounded-2xl overflow-hidden cursor-pointer transition-all duration-200 active:scale-95 shadow-md flex flex-col touch-pan-y select-none"
             >
               {/* Image Thumbnail with exact verified picture */}
-              <div className="aspect-[4/3] w-full overflow-hidden bg-slate-950 relative">
+              <div className="aspect-[4/3] w-full overflow-hidden bg-slate-950 relative pointer-events-none select-none">
                 <img
                   src={sample.image}
                   alt={sample.name}
                   loading="lazy"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  draggable={false}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 pointer-events-none select-none"
                 />
                 <div className="absolute top-2 right-2 bg-slate-950/85 backdrop-blur-md px-1.5 py-0.5 rounded-md text-[10px] font-bold text-emerald-400 border border-emerald-500/30">
                   {sample.calories} kcal

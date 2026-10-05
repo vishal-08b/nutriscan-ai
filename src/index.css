@@ -11,17 +11,39 @@
   * {
     box-sizing: border-box;
   }
-  html, body {
+  
+  html {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    background-color: #020617;
+  }
+
+  body {
     margin: 0;
     padding: 0;
     width: 100%;
     min-height: 100%;
     overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
     background-color: #020617;
     color: #f1f5f9;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevent image dragging from intercepting vertical touch scroll in Android WebViews */
+  img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
   }
 }
 

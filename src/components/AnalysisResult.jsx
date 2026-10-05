@@ -149,7 +149,8 @@ export default function AnalysisResult({
             <img
               src={imageSrc || result.image}
               alt={result.foodName || result.name}
-              className="w-full h-full object-cover"
+              draggable={false}
+              className="w-full h-full object-cover pointer-events-none select-none"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent md:hidden" />
             

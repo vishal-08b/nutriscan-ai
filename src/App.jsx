@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import CameraCapture from './components/CameraCapture';
 import AnalysisResult from './components/AnalysisResult';
@@ -222,6 +222,35 @@ export default function App() {
   const todayMeals = meals.filter((m) => m.date === todayStr);
   const todayCalories = todayMeals.reduce((sum, m) => sum + (m.calories || 0), 0);
 
+  // Horizontal swipe between tabs (Scanner <-> Diary) without blocking vertical scrolling
+  const touchStartXRef = useRef(0);
+  const touchStartYRef = useRef(0);
+
+  const handleTouchStart = (e) => {
+    touchStartXRef.current = e.touches[0].clientX;
+    touchStartYRef.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (!touchStartXRef.current) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartXRef.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartYRef.current;
+
+    // Do not trigger tab swipe if user was scrolling horizontally inside category pills
+    if (e.target && e.target.closest && e.target.closest('.overflow-x-auto')) {
+      return;
+    }
+
+    // Only switch tabs on clear horizontal swipes (> 60px) that dominate vertical movement (2.5x)
+    if (Math.abs(deltaX) > 60 && Math.abs(deltaX) > Math.abs(deltaY) * 2.5) {
+      if (deltaX < 0 && activeTab === 'scanner') {
+        setActiveTab('diary');
+      } else if (deltaX > 0 && activeTab === 'diary') {
+        setActiveTab('scanner');
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-emerald-500 selection:text-slate-950">
       
@@ -242,8 +271,12 @@ export default function App() {
         dailyGoalCalories={goals.dailyCalories}
       />
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-8 pb-28 sm:pb-8">
+      {/* Main Content Area (touch-pan-y allows 100% unrestricted native vertical scroll everywhere) */}
+      <main 
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        className="flex-1 max-w-7xl w-full mx-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-8 pb-28 sm:pb-8 touch-pan-y"
+      >
         
         {/* API Key missing notice banner (subtle, helpful) */}
         {!hasApiKey && !isMockMode && (
@@ -344,7 +377,7 @@ export default function App() {
       {/* Mobile Floating Bottom Navigation Bar (Visible on mobile only) */}
       <nav 
         aria-label="Mobile Navigation"
-        className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/90 pb-[max(10px,env(safe-area-inset-bottom))] px-3 pt-2 shadow-2xl"
+        className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/90 pb-[max(10px,env(safe-area-inset-bottom))] px-3 pt-2 shadow-2xl touch-manipulation select-none"
       >
         <div className="grid grid-cols-4 items-center justify-around max-w-md mx-auto">
           {/* Scanner Tab */}
