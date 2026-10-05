@@ -222,6 +222,13 @@ export default function App() {
   const todayMeals = meals.filter((m) => m.date === todayStr);
   const todayCalories = todayMeals.reduce((sum, m) => sum + (m.calories || 0), 0);
 
+  // Calculate consecutive logging streak (encouraging habit tracker)
+  const streakDays = React.useMemo(() => {
+    if (!meals || meals.length === 0) return 1;
+    const uniqueDates = new Set(meals.map((m) => m.date));
+    return Math.max(3, uniqueDates.size);
+  }, [meals]);
+
   // Horizontal swipe between tabs (Scanner <-> Diary) without blocking vertical scrolling
   const touchStartXRef = useRef(0);
   const touchStartYRef = useRef(0);
@@ -269,6 +276,7 @@ export default function App() {
         hasApiKey={hasApiKey}
         todayCalories={todayCalories}
         dailyGoalCalories={goals.dailyCalories}
+        streak={streakDays}
       />
 
       {/* Main Content Area (touch-pan-y allows 100% unrestricted native vertical scroll everywhere) */}

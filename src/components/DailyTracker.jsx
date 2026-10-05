@@ -16,6 +16,9 @@ import {
   AlertCircle,
   GlassWater
 } from 'lucide-react';
+import MacroRings from './MacroRings';
+import SmartMealSuggester from './SmartMealSuggester';
+import ShareModal from './ShareModal';
 
 export default function DailyTracker({
   meals = [],
@@ -29,6 +32,7 @@ export default function DailyTracker({
   setSelectedDate
 }) {
   const [showManualModal, setShowManualModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   const [manualName, setManualName] = useState('');
   const [manualCalories, setManualCalories] = useState('');
   const [manualProtein, setManualProtein] = useState('');
@@ -99,18 +103,32 @@ export default function DailyTracker({
     setManualFat('');
   };
 
-  const exportSummary = () => {
-    const text = `🥗 NutriScan AI - Daily Summary (${selectedDate})\n` +
-      `🔥 Calories: ${totalCalories} / ${goals?.dailyCalories} kcal (${remainingCalories} remaining)\n` +
-      `💪 Protein: ${totalProtein}g / ${proteinGoal}g\n` +
-      `🌾 Carbs: ${totalCarbs}g / ${carbsGoal}g\n` +
-      `🥑 Fat: ${totalFat}g / ${fatGoal}g\n` +
-      `💧 Water: ${waterMl}ml / ${waterGoal}ml\n\n` +
-      `Logged Meals (${filteredMeals.length}):\n` +
-      filteredMeals.map(m => `- [${m.mealType}] ${m.foodName}: ${m.calories} kcal (${m.macros?.protein}g P)`).join('\n');
+  const handleSelectSuggestion = (dish) => {
+    const newMeal = {
+      id: 'sugg_' + Date.now(),
+      foodName: dish.name,
+      mealType: 'Snacks',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      date: selectedDate,
+      image: dish.image,
+      portionMultiplier: 1,
+      weightGrams: dish.estimatedWeightGrams || 200,
+      calories: dish.calories,
+      macros: {
+        protein: dish.macros?.protein || 0,
+        carbs: dish.macros?.carbs || 0,
+        fat: dish.macros?.fat || 0,
+      },
+      healthScore: dish.healthScore || 8.5,
+      nutriGrade: dish.nutriGrade || 'A'
+    };
+    if (onAddManualMeal) {
+      onAddManualMeal(newMeal);
+    }
+  };
 
-    navigator.clipboard.writeText(text);
-    alert('Daily summary copied to clipboard!');
+  const exportSummary = () => {
+    setShowShareModal(true);
   };
 
   const changeDay = (days) => {
@@ -174,65 +192,39 @@ export default function DailyTracker({
 
           <button
             onClick={exportSummary}
-            className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition"
-            title="Export Summary"
+            className="px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 hover:text-emerald-200 border border-emerald-500/30 transition flex items-center space-x-1.5 shadow-sm active:scale-95"
+            title="Share Daily Summary to WhatsApp, Instagram, X, FB"
           >
             <Share2 className="w-4 h-4" />
+            <span className="text-xs font-bold">Share</span>
           </button>
         </div>
       </div>
 
       {/* Hero Calorie & Macro Dashboard Card */}
-      <div className="bg-slate-900/80 border border-slate-800 rounded-3xl p-4 sm:p-8 shadow-2xl backdrop-blur-md">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+      <div className="bg-slate-900/80 border border-slate-800 rounded-3xl p-4 sm:p-7 shadow-2xl backdrop-blur-md">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
           
-          {/* Circular Calorie Gauge */}
+          {/* Concentric Neon Macro Rings */}
           <div className="md:col-span-5 flex flex-col items-center justify-center">
-            <div className="relative w-44 h-44 flex items-center justify-center">
-              {/* SVG Ring */}
-              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="42"
-                  className="text-slate-800 stroke-current"
-                  strokeWidth="8"
-                  fill="transparent"
-                />
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="42"
-                  className="text-emerald-400 stroke-current transition-all duration-1000 ease-out"
-                  strokeWidth="8"
-                  strokeDasharray="264"
-                  strokeDashoffset={264 - (264 * caloriePercent) / 100}
-                  strokeLinecap="round"
-                  fill="transparent"
-                />
-              </svg>
+            <MacroRings
+              calories={totalCalories}
+              calorieGoal={goals?.dailyCalories || 2000}
+              protein={totalProtein}
+              proteinGoal={proteinGoal}
+              carbs={totalCarbs}
+              carbsGoal={carbsGoal}
+              fat={totalFat}
+              fatGoal={fatGoal}
+              size={185}
+            />
 
-              {/* Inner Stats */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                <Flame className="w-6 h-6 text-amber-400 mb-1" />
-                <span className="text-3xl font-black text-white tracking-tight">
-                  {totalCalories}
-                </span>
-                <span className="text-xs text-slate-400 font-medium">
-                  of {goals?.dailyCalories || 2000} kcal
-                </span>
-                <span className="text-[11px] text-emerald-400 font-semibold mt-1">
-                  {remainingCalories} kcal left
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-4 text-center">
+            <div className="mt-2 text-center">
               <span className="text-xs text-slate-400">
                 {caloriePercent >= 100 ? (
-                  <span className="text-amber-400 font-semibold">Daily goal reached!</span>
+                  <span className="text-amber-400 font-semibold">Daily calorie target reached!</span>
                 ) : (
-                  <span>{100 - caloriePercent}% remaining to reach target</span>
+                  <span>{remainingCalories} kcal left to reach target</span>
                 )}
               </span>
             </div>
@@ -342,6 +334,13 @@ export default function DailyTracker({
 
         </div>
       </div>
+
+      {/* AI Smart Meal Suggester Engine ("What should I eat next?") */}
+      <SmartMealSuggester
+        remainingCalories={remainingCalories}
+        remainingProtein={Math.max(0, Math.round(proteinGoal - totalProtein))}
+        onSelectSuggestion={handleSelectSuggestion}
+      />
 
       {/* Quick Actions Row */}
       <div className="flex items-center justify-between">
@@ -578,6 +577,24 @@ export default function DailyTracker({
           </div>
         </div>
       )}
+
+      {/* Social Media Share Modal (WhatsApp, Instagram, X, Facebook) */}
+      <ShareModal
+        isOpen={showShareModal}
+        onClose={() => setShowShareModal(false)}
+        type="day"
+        data={{
+          date: selectedDate,
+          calories: totalCalories,
+          goalCalories: goals?.dailyCalories || 2000,
+          protein: totalProtein,
+          carbs: totalCarbs,
+          fat: totalFat,
+          waterMl: waterMl,
+          mealsCount: filteredMeals.length,
+          grade: totalCalories <= (goals?.dailyCalories || 2000) ? 'A' : 'B'
+        }}
+      />
 
     </div>
   );

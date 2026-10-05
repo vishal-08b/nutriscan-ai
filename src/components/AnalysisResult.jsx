@@ -17,10 +17,13 @@ import {
   Scale, 
   Utensils,
   Edit3,
-  ChevronDown
+  ChevronDown,
+  Share2,
+  Check
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { SAMPLE_FOODS } from '../data/sampleFoods';
+import ShareModal from './ShareModal';
 
 export default function AnalysisResult({
   result: initialResult,
@@ -34,23 +37,56 @@ export default function AnalysisResult({
   const [selectedMealType, setSelectedMealType] = useState(initialResult.category || 'Lunch');
   const [isLogged, setIsLogged] = useState(false);
   const [isChangingDish, setIsChangingDish] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [includedIngredients, setIncludedIngredients] = useState(() => {
+    return initialResult?.ingredients ? initialResult.ingredients.map(() => true) : [];
+  });
 
   useEffect(() => {
     setCurrentResult(initialResult);
+    if (initialResult?.ingredients && initialResult.ingredients.length > 0) {
+      setIncludedIngredients(initialResult.ingredients.map(() => true));
+    } else {
+      setIncludedIngredients([]);
+    }
   }, [initialResult]);
 
   const result = currentResult;
 
-  // Scaled nutritional metrics based on portion multiplier
-  const calories = Math.round((result.calories || 0) * portionMultiplier);
-  const weightGrams = Math.round((result.estimatedWeightGrams || 250) * portionMultiplier);
+  // Toggle individual component inclusion
+  const toggleIngredient = (idx) => {
+    setIncludedIngredients((prev) => {
+      const next = [...prev];
+      next[idx] = !next[idx];
+      return next;
+    });
+  };
+
+  // Multi-item dynamic calculation
+  const hasIngredients = Boolean(result.ingredients && result.ingredients.length > 0);
+  const totalBaseIngredientsCal = hasIngredients
+    ? result.ingredients.reduce((sum, item) => sum + (item.calories || 0), 0)
+    : 0;
   
-  const protein = Math.round((result.macros?.protein || 0) * portionMultiplier * 10) / 10;
-  const carbs = Math.round((result.macros?.carbs || 0) * portionMultiplier * 10) / 10;
-  const fat = Math.round((result.macros?.fat || 0) * portionMultiplier * 10) / 10;
-  const fiber = Math.round((result.macros?.fiber || 0) * portionMultiplier * 10) / 10;
-  const sodium = Math.round((result.macros?.sodium || 0) * portionMultiplier);
-  const sugar = Math.round((result.macros?.sugar || 0) * portionMultiplier * 10) / 10;
+  const activeBaseIngredientsCal = hasIngredients && totalBaseIngredientsCal > 0
+    ? result.ingredients.reduce((sum, item, idx) => sum + (includedIngredients[idx] ? (item.calories || 0) : 0), 0)
+    : 0;
+
+  // Multiplier ratio based on selected items (if ingredients have calorie breakdown)
+  const plateRatio = (totalBaseIngredientsCal > 0) 
+    ? (activeBaseIngredientsCal / totalBaseIngredientsCal)
+    : 1;
+
+  // Scaled nutritional metrics based on portion multiplier & included plate items
+  const calories = Math.round((result.calories || 0) * portionMultiplier * plateRatio);
+  const weightGrams = Math.round((result.estimatedWeightGrams || 250) * portionMultiplier * plateRatio);
+  
+  const protein = Math.round((result.macros?.protein || 0) * portionMultiplier * plateRatio * 10) / 10;
+  const carbs = Math.round((result.macros?.carbs || 0) * portionMultiplier * plateRatio * 10) / 10;
+  const fat = Math.round((result.macros?.fat || 0) * portionMultiplier * plateRatio * 10) / 10;
+  const fiber = Math.round((result.macros?.fiber || 0) * portionMultiplier * plateRatio * 10) / 10;
+  const sodium = Math.round((result.macros?.sodium || 0) * portionMultiplier * plateRatio);
+  const sugar = Math.round((result.macros?.sugar || 0) * portionMultiplier * plateRatio * 10) / 10;
 
   // Macro calorie ratios
   const proteinCal = protein * 4;
@@ -70,6 +106,11 @@ export default function AnalysisResult({
       foodName: dish.name,
       isSimulated: true,
     });
+    if (dish.ingredients) {
+      setIncludedIngredients(dish.ingredients.map(() => true));
+    } else {
+      setIncludedIngredients([]);
+    }
     setSelectedMealType(dish.category || 'Lunch');
     setIsChangingDish(false);
   };
@@ -120,22 +161,33 @@ export default function AnalysisResult({
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto pb-12 animate-fadeIn">
-      {/* Top Navigation */}
-      <div className="flex items-center justify-between">
+      {/* Top Navigation Strip */}
+      <div className="flex items-center justify-between gap-2">
         <button
           onClick={onReset}
-          className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 text-xs sm:text-sm font-medium transition"
+          className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 text-xs sm:text-sm font-medium transition active:scale-95"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Scan Another Meal</span>
         </button>
 
-        {result.isSimulated && (
-          <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20 text-xs">
-            <Info className="w-3.5 h-3.5" />
-            <span>Curated Demo Analysis</span>
-          </span>
-        )}
+        <div className="flex items-center space-x-2">
+          {result.isSimulated && (
+            <span className="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20 text-xs">
+              <Info className="w-3.5 h-3.5" />
+              <span>Curated Demo</span>
+            </span>
+          )}
+
+          <button
+            onClick={() => setShowShareModal(true)}
+            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 hover:text-emerald-200 border border-emerald-500/30 text-xs sm:text-sm font-bold transition active:scale-95 shadow-sm"
+            title="Share Meal on WhatsApp, Instagram, X, FB"
+          >
+            <Share2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400" />
+            <span>Share Meal</span>
+          </button>
+        </div>
       </div>
 
       {/* Main Analysis Card */}
@@ -407,32 +459,93 @@ export default function AnalysisResult({
             )}
           </div>
 
-          {/* Itemized Detected Ingredients */}
+          {/* Multi-Item Plate Breakdown (Thali & Composite Meals) */}
           {result.ingredients && result.ingredients.length > 0 && (
-            <div>
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center space-x-2">
-                <Utensils className="w-4 h-4 text-emerald-400" />
-                <span>Detected Ingredients & Portions</span>
-              </h3>
+            <div className="bg-slate-950/60 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-800/80">
+                <div className="flex items-center space-x-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center text-emerald-400">
+                    <Utensils className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider">
+                      Multi-Item Plate Breakdown
+                    </h3>
+                    <p className="text-[11px] text-slate-400">
+                      Uncheck any item you skipped or left on your plate to recalculate meal totals
+                    </p>
+                  </div>
+                </div>
 
-              <div className="divide-y divide-slate-800/60 border border-slate-800 rounded-2xl overflow-hidden bg-slate-950/40">
+                <div className="flex items-center space-x-2 text-xs">
+                  <button
+                    type="button"
+                    onClick={() => setIncludedIngredients(result.ingredients.map(() => true))}
+                    className="text-emerald-400 hover:text-emerald-300 font-bold text-xs hover:underline cursor-pointer"
+                  >
+                    Select All
+                  </button>
+                  <span className="text-slate-600">•</span>
+                  <span className="text-slate-400 text-xs font-medium">
+                    {includedIngredients.filter(Boolean).length}/{result.ingredients.length} items active
+                  </span>
+                </div>
+              </div>
+
+              <div className="divide-y divide-slate-800/70 border border-slate-800/80 rounded-xl overflow-hidden bg-slate-900/40">
                 {result.ingredients.map((ing, idx) => {
+                  const isIncluded = includedIngredients[idx] ?? true;
                   const ingGrams = Math.round(parseFloat(ing.amount) * portionMultiplier) || ing.amount;
                   const ingCals = Math.round((ing.calories || 0) * portionMultiplier);
+                  const ingProtein = ing.protein ? Math.round(ing.protein * portionMultiplier * 10) / 10 : null;
+
                   return (
-                    <div key={idx} className="p-3.5 sm:px-4 flex items-center justify-between text-xs sm:text-sm hover:bg-slate-900/40 transition">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-2 h-2 rounded-full bg-emerald-400" />
-                        <div>
-                          <p className="font-semibold text-slate-200">{ing.name}</p>
-                          <p className="text-[11px] text-slate-500">
-                            {typeof ing.amount === 'string' && ing.amount.includes('g') ? `${ingGrams}g` : ing.amount}
-                            {ing.protein ? ` • ${Math.round(ing.protein * portionMultiplier)}g protein` : ''}
+                    <div
+                      key={idx}
+                      onClick={() => toggleIngredient(idx)}
+                      className={`p-3 sm:px-4 flex items-center justify-between text-xs sm:text-sm cursor-pointer transition select-none ${
+                        isIncluded ? 'hover:bg-slate-900/90 bg-transparent' : 'bg-slate-950/80 opacity-55'
+                      }`}
+                    >
+                      <div className="flex items-center space-x-3 min-w-0 pr-2">
+                        {/* Interactive Checkbox */}
+                        <div
+                          className={`w-5 h-5 rounded-md flex items-center justify-center transition shrink-0 border ${
+                            isIncluded
+                              ? 'bg-emerald-500 border-emerald-400 text-slate-950 shadow-sm'
+                              : 'bg-slate-900 border-slate-700 text-transparent'
+                          }`}
+                        >
+                          <Check className="w-3.5 h-3.5 stroke-[3]" />
+                        </div>
+
+                        <div className="truncate">
+                          <p className={`font-semibold transition truncate ${isIncluded ? 'text-slate-200' : 'line-through text-slate-500'}`}>
+                            {ing.name}
                           </p>
+                          <div className="flex items-center space-x-2 text-[11px] text-slate-500 mt-0.5">
+                            <span>
+                              {typeof ing.amount === 'string' && ing.amount.includes('g') ? `${ingGrams}g` : ing.amount}
+                            </span>
+                            {ingProtein && (
+                              <>
+                                <span>•</span>
+                                <span className="text-cyan-400 font-medium">{ingProtein}g protein</span>
+                              </>
+                            )}
+                            {!isIncluded && (
+                              <span className="px-1.5 py-0.2 rounded bg-rose-500/20 text-rose-300 text-[10px] font-bold">
+                                Excluded
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <span className="font-bold text-white">{ingCals}</span>
+
+                      <div className="text-right shrink-0">
+                        <span className={`font-bold ${isIncluded ? 'text-white' : 'text-slate-500 line-through'}`}>
+                          {ingCals}
+                        </span>
                         <span className="text-slate-500 text-xs ml-1">kcal</span>
                       </div>
                     </div>
@@ -578,6 +691,26 @@ export default function AnalysisResult({
         </div>
 
       </div>
+
+      {/* Social Media Share Modal (WhatsApp, Instagram, X, Facebook) */}
+      <ShareModal
+        isOpen={showShareModal}
+        onClose={() => setShowShareModal(false)}
+        type="meal"
+        data={{
+          foodName: result.foodName || result.name,
+          calories: calories,
+          macros: {
+            protein,
+            carbs,
+            fat
+          },
+          grade: result.nutriGrade || 'A',
+          healthScore: result.healthScore || 8.5,
+          image: imageSrc || result.image
+        }}
+      />
+
     </div>
   );
 }

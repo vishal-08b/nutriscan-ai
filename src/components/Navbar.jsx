@@ -18,7 +18,8 @@ export default function Navbar({
   isMockMode,
   hasApiKey,
   todayCalories,
-  dailyGoalCalories
+  dailyGoalCalories,
+  streak = 3
 }) {
   const percentComplete = Math.min(100, Math.round((todayCalories / (dailyGoalCalories || 2000)) * 100));
 
@@ -85,6 +86,16 @@ export default function Navbar({
 
         {/* Right Action Icons & Status */}
         <div className="flex items-center space-x-1.5 sm:space-x-3">
+          {/* Habit Streak Badge */}
+          <div 
+            className="flex items-center space-x-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-orange-500/10 border border-orange-500/30 text-orange-400 text-[11px] sm:text-xs font-bold shadow-sm"
+            title={`${streak} day logging streak! Keep it up!`}
+          >
+            <span className="text-xs">🔥</span>
+            <span>{streak}d</span>
+            <span className="hidden md:inline text-[10px] text-orange-300 font-semibold">Streak</span>
+          </div>
+
           {/* Daily Quick Gauge Pill */}
           <div 
             onClick={onOpenGoals}

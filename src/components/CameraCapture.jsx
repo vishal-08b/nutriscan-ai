@@ -261,20 +261,58 @@ export default function CameraCapture({ onAnalyze, isAnalyzing }) {
                 className="w-full h-full object-cover"
               />
 
-              {/* Viewfinder crosshairs */}
-              <div className="absolute inset-6 sm:inset-8 border border-white/20 rounded-2xl pointer-events-none flex flex-col justify-between p-3">
-                <div className="flex justify-between">
-                  <div className="w-4 h-4 border-t-2 border-l-2 border-emerald-400 rounded-tl" />
-                  <div className="w-4 h-4 border-t-2 border-r-2 border-emerald-400 rounded-tr" />
+              {/* Futuristic Sci-Fi Viewfinder & HUD Overlays */}
+              <div className="absolute inset-4 sm:inset-6 pointer-events-none flex flex-col justify-between p-2">
+                
+                {/* HUD Header Bar */}
+                <div className="flex items-center justify-between text-[10px] font-mono text-emerald-400 font-bold tracking-widest px-1">
+                  <div className="flex items-center space-x-1.5 bg-slate-950/80 px-2 py-0.5 rounded border border-emerald-500/30 backdrop-blur-md">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                    <span>AI VISION HUD v2.5</span>
+                  </div>
+                  <div className="hidden xs:flex items-center space-x-1 text-teal-300 bg-slate-950/80 px-2 py-0.5 rounded border border-teal-500/30">
+                    <span>SPECTRUM: 540nm</span>
+                  </div>
                 </div>
-                <div className="text-center">
-                  <span className="bg-slate-950/80 text-slate-200 text-[11px] sm:text-xs px-3 py-1 rounded-full border border-slate-700/60 backdrop-blur-md">
-                    Center dish in frame
+
+                {/* Corner Tech Brackets with Neon Glow */}
+                <div className="absolute inset-4 sm:inset-6 pointer-events-none">
+                  {/* Top-Left */}
+                  <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-emerald-400 rounded-tl shadow-[0_0_10px_#10b981]" />
+                  {/* Top-Right */}
+                  <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-emerald-400 rounded-tr shadow-[0_0_10px_#10b981]" />
+                  {/* Bottom-Left */}
+                  <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-emerald-400 rounded-bl shadow-[0_0_10px_#10b981]" />
+                  {/* Bottom-Right */}
+                  <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-emerald-400 rounded-br shadow-[0_0_10px_#10b981]" />
+                </div>
+
+                {/* Center Pulsating Reticle Target */}
+                <div className="absolute inset-0 m-auto w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center pointer-events-none">
+                  {/* Outer rotating dashed ring */}
+                  <div className="absolute inset-0 rounded-full border border-dashed border-emerald-400/60 animate-hud-rotate" />
+                  {/* Inner pulsing ring */}
+                  <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full border border-emerald-400/40 animate-hud-pulse flex items-center justify-center">
+                    {/* Crosshairs */}
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#10b981]" />
+                  </div>
+                  <div className="absolute top-0 w-0.5 h-2 bg-emerald-400" />
+                  <div className="absolute bottom-0 w-0.5 h-2 bg-emerald-400" />
+                  <div className="absolute left-0 h-0.5 w-2 bg-emerald-400" />
+                  <div className="absolute right-0 h-0.5 w-2 bg-emerald-400" />
+                </div>
+
+                {/* Sweeping Laser Scanline Beam */}
+                <div className="absolute inset-x-3 h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_16px_#10b981] animate-laser-sweep pointer-events-none" />
+
+                {/* Bottom HUD Telemetry Status */}
+                <div className="flex items-center justify-between text-[10px] font-mono text-emerald-400 font-bold px-1 mb-16">
+                  <span className="bg-slate-950/85 px-2.5 py-0.5 rounded border border-emerald-500/30 backdrop-blur-md">
+                    LOCK: [TARGET DISH]
                   </span>
-                </div>
-                <div className="flex justify-between">
-                  <div className="w-4 h-4 border-b-2 border-l-2 border-emerald-400 rounded-bl" />
-                  <div className="w-4 h-4 border-b-2 border-r-2 border-emerald-400 rounded-br" />
+                  <span className="bg-slate-950/85 px-2.5 py-0.5 rounded border border-emerald-500/30 backdrop-blur-md hidden xs:inline">
+                    DEPTH: [ACTIVE]
+                  </span>
                 </div>
               </div>
 
@@ -317,19 +355,36 @@ export default function CameraCapture({ onAnalyze, isAnalyzing }) {
                 className="w-full h-full object-cover"
               />
 
-              {/* Scanning overlay effect when analyzing */}
+              {/* Sci-Fi Scanning overlay effect when analyzing */}
               {isAnalyzing && (
-                <div className="absolute inset-0 bg-slate-950/75 backdrop-blur-[2px] flex flex-col items-center justify-center space-y-3 z-30">
-                  <div className="relative">
-                    <div className="w-16 h-16 rounded-full border-4 border-emerald-500/20 border-t-emerald-400 animate-spin" />
-                    <Sparkles className="w-7 h-7 text-emerald-400 absolute inset-0 m-auto animate-pulse" />
+                <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm flex flex-col items-center justify-center space-y-4 z-30">
+                  {/* Sweeping laser line across preview image */}
+                  <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_20px_#10b981] animate-laser-sweep pointer-events-none" />
+
+                  {/* Corner Brackets */}
+                  <div className="absolute inset-6 pointer-events-none">
+                    <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-emerald-400 rounded-tl shadow-[0_0_8px_#10b981]" />
+                    <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-emerald-400 rounded-tr shadow-[0_0_8px_#10b981]" />
+                    <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-emerald-400 rounded-bl shadow-[0_0_8px_#10b981]" />
+                    <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-emerald-400 rounded-br shadow-[0_0_8px_#10b981]" />
                   </div>
-                  <div className="text-center px-4">
-                    <p className="text-white font-bold text-base sm:text-lg">Analyzing Food with AI...</p>
-                    <p className="text-slate-400 text-xs mt-0.5">Identifying portion geometry & macros</p>
+
+                  {/* Center Radar Scanner Reticle */}
+                  <div className="relative w-20 h-20 flex items-center justify-center">
+                    <div className="absolute inset-0 rounded-full border border-dashed border-emerald-400 animate-hud-rotate" />
+                    <div className="w-14 h-14 rounded-full border-2 border-emerald-400/50 animate-hud-pulse flex items-center justify-center">
+                      <Sparkles className="w-6 h-6 text-emerald-400 animate-pulse" />
+                    </div>
                   </div>
-                  {/* Visual laser scanline animation */}
-                  <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_15px_#10b981] animate-bounce" />
+
+                  <div className="text-center px-4 space-y-1">
+                    <p className="text-white font-extrabold text-base sm:text-lg tracking-wide">
+                      AI Food Vision Analyzing...
+                    </p>
+                    <p className="text-emerald-400 font-mono text-xs">
+                      [CALCULATING PORTION VOLUME & MACROS]
+                    </p>
+                  </div>
                 </div>
               )}
 

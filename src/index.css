@@ -78,3 +78,51 @@
 button, a {
   -webkit-touch-callout: none;
 }
+
+/* Sci-Fi HUD & Scanner Animations */
+@keyframes laserSweep {
+  0% {
+    top: 4%;
+    opacity: 0.85;
+  }
+  50% {
+    top: 93%;
+    opacity: 1;
+  }
+  100% {
+    top: 4%;
+    opacity: 0.85;
+  }
+}
+
+@keyframes hudRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hudPulse {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(0.97);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.03);
+  }
+}
+
+.animate-laser-sweep {
+  animation: laserSweep 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-hud-rotate {
+  animation: hudRotate 18s linear infinite;
+}
+
+.animate-hud-pulse {
+  animation: hudPulse 2.5s ease-in-out infinite;
+}
