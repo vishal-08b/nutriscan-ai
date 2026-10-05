@@ -6,6 +6,8 @@ export const USE_MOCK_STORAGE = 'nutriscan_use_mock_mode';
 export const PREFERRED_MODEL_STORAGE = 'nutriscan_preferred_model';
 
 export const getStoredApiKey = () => {
+  const envKey = import.meta.env.VITE_GEMINI_API_KEY;
+  if (envKey && envKey.trim()) return envKey.trim();
   return localStorage.getItem(GEMINI_API_KEY_STORAGE) || '';
 };
 
@@ -14,7 +16,11 @@ export const setStoredApiKey = (key) => {
 };
 
 export const getStoredMockMode = () => {
-  return localStorage.getItem(USE_MOCK_STORAGE) === 'true';
+  const saved = localStorage.getItem(USE_MOCK_STORAGE);
+  if (saved !== null) return saved === 'true';
+  const envKey = import.meta.env.VITE_GEMINI_API_KEY;
+  // If permanent API key is baked in, default to live AI
+  return !Boolean(envKey && envKey.trim());
 };
 
 export const setStoredMockMode = (enabled) => {
@@ -34,6 +40,8 @@ export const setStoredPreferredModel = (model) => {
  * while placing restricted models (e.g. gemini-3.8-flash with only 20 RPD) at the end.
  */
 export const MODEL_PRIORITY_ORDER = [
+  'gemini-flash-lite-latest',
+  'gemini-flash-latest',
   'gemini-2.0-flash',
   'gemini-2.0-flash-lite',
   'gemini-2.5-flash',

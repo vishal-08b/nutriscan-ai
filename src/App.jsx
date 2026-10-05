@@ -278,26 +278,6 @@ export default function App() {
         className="flex-1 max-w-7xl w-full mx-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-8 pb-28 sm:pb-8 touch-pan-y"
       >
         
-        {/* API Key missing notice banner (subtle, helpful) */}
-        {!hasApiKey && !isMockMode && (
-          <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-amber-950/40 via-amber-900/20 to-slate-900 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm">
-            <div className="flex items-center space-x-3">
-              <Sparkles className="w-5 h-5 text-amber-400 shrink-0" />
-              <div>
-                <span className="font-bold text-white">Running in Offline Demo Mode: </span>
-                <span className="text-slate-300">
-                  Instant realistic nutritional analyses are active. Add a free Google Gemini API key anytime to scan real custom photos live!
-                </span>
-              </div>
-            </div>
-            <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shrink-0 self-start sm:self-auto transition shadow-sm"
-            >
-              Add Gemini Key
-            </button>
-          </div>
-        )}
 
         {/* Error notification */}
         {analysisError && (
