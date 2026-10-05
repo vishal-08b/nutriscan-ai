@@ -5,14 +5,28 @@ export const GEMINI_API_KEY_STORAGE = 'nutriscan_gemini_api_key';
 export const USE_MOCK_STORAGE = 'nutriscan_use_mock_mode';
 export const PREFERRED_MODEL_STORAGE = 'nutriscan_preferred_model';
 
-export const getStoredApiKey = () => {
-  const envKey = import.meta.env.VITE_GEMINI_API_KEY;
-  if (envKey && envKey.trim()) return envKey.trim();
+export const hasBuiltInApiKey = () => {
+  return Boolean(import.meta.env.VITE_GEMINI_API_KEY && import.meta.env.VITE_GEMINI_API_KEY.trim());
+};
+
+export const getCustomApiKey = () => {
   return localStorage.getItem(GEMINI_API_KEY_STORAGE) || '';
 };
 
+export const getStoredApiKey = () => {
+  const custom = getCustomApiKey();
+  if (custom && custom.trim()) return custom.trim();
+  const envKey = import.meta.env.VITE_GEMINI_API_KEY;
+  if (envKey && envKey.trim()) return envKey.trim();
+  return '';
+};
+
 export const setStoredApiKey = (key) => {
-  localStorage.setItem(GEMINI_API_KEY_STORAGE, key.trim());
+  if (!key || !key.trim()) {
+    localStorage.removeItem(GEMINI_API_KEY_STORAGE);
+  } else {
+    localStorage.setItem(GEMINI_API_KEY_STORAGE, key.trim());
+  }
 };
 
 export const getStoredMockMode = () => {

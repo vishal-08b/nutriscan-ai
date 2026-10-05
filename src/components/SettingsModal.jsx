@@ -11,9 +11,14 @@ import {
   Sparkles, 
   Trash2,
   Cpu,
-  Layers
+  Layers,
+  ShieldCheck,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { 
+  hasBuiltInApiKey,
+  getCustomApiKey,
   getStoredApiKey, 
   setStoredApiKey, 
   getStoredMockMode, 
@@ -31,7 +36,9 @@ export default function SettingsModal({
 }) {
   if (!isOpen) return null;
 
-  const [apiKey, setApiKey] = useState(getStoredApiKey());
+  const hasBuiltIn = hasBuiltInApiKey();
+  const [customKey, setCustomKey] = useState(getCustomApiKey());
+  const [showCustomKeySection, setShowCustomKeySection] = useState(Boolean(getCustomApiKey()));
   const [showKey, setShowKey] = useState(false);
   const [mockMode, setMockMode] = useState(getStoredMockMode());
   const [preferredModel, setPreferredModel] = useState(getStoredPreferredModel());
@@ -40,7 +47,7 @@ export default function SettingsModal({
   const [detailedResults, setDetailedResults] = useState([]);
 
   const handleSave = () => {
-    setStoredApiKey(apiKey);
+    setStoredApiKey(customKey);
     setStoredMockMode(mockMode);
     setStoredPreferredModel(preferredModel);
     onSettingsUpdated();
@@ -48,9 +55,10 @@ export default function SettingsModal({
   };
 
   const handleTestApiKey = async () => {
-    if (!apiKey.trim()) {
+    const keyToTest = customKey.trim() || getStoredApiKey();
+    if (!keyToTest) {
       setTestStatus('error');
-      setTestMessage('Please enter an API key first.');
+      setTestMessage('No API key available to test.');
       return;
     }
 
@@ -59,12 +67,12 @@ export default function SettingsModal({
     setDetailedResults([]);
 
     try {
-      const { bestWorkingModel, modelResults } = await testGeminiModels(apiKey.trim());
+      const { bestWorkingModel, modelResults } = await testGeminiModels(keyToTest);
       setDetailedResults(modelResults);
 
       if (bestWorkingModel) {
         setTestStatus('success');
-        setTestMessage(`Connected! Best active model: "${bestWorkingModel}" with available quota.`);
+        setTestMessage(`Connected! Active model: "${bestWorkingModel}" with available quota.`);
       } else {
         const hasExhausted = modelResults.some((r) => r.status === 'exhausted');
         if (hasExhausted) {
@@ -93,7 +101,7 @@ export default function SettingsModal({
             </div>
             <div>
               <h3 className="text-base font-bold text-white">AI Vision & System Settings</h3>
-              <p className="text-xs text-slate-400">Configure Gemini API Key & auto-failover</p>
+              <p className="text-xs text-slate-400">Configure Gemini AI engine & failover</p>
             </div>
           </div>
           <button
@@ -104,94 +112,192 @@ export default function SettingsModal({
           </button>
         </div>
 
-        {/* Gemini Vision API Key Configuration */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <label className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center space-x-1.5">
-              <Key className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Google Gemini API Key</span>
-            </label>
-            <a
-              href="https://aistudio.google.com/app/apikey"
-              target="_blank"
-              rel="noreferrer"
-              className="text-xs text-emerald-400 hover:underline flex items-center space-x-1"
-            >
-              <span>Get Free Key</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
-          </div>
-
-          <div className="relative">
-            <input
-              type={showKey ? 'text' : 'password'}
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              placeholder="AIzaSy..."
-              className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-sm text-white pr-20 outline-none font-mono transition"
-            />
-            <button
-              type="button"
-              onClick={() => setShowKey(!showKey)}
-              className="absolute right-2 top-2.5 p-1 text-slate-400 hover:text-white cursor-pointer"
-            >
-              {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-            </button>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <p className="text-[11px] text-slate-400">
-              Your key stays safely stored in your browser's localStorage.
-            </p>
-            <button
-              type="button"
-              onClick={handleTestApiKey}
-              disabled={testStatus === 'testing'}
-              className="text-xs font-semibold px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
-            >
-              {testStatus === 'testing' ? 'Testing Quotas...' : 'Test Connection'}
-            </button>
-          </div>
-
-          {testStatus && (
-            <div
-              className={`p-3.5 rounded-xl border text-xs flex flex-col space-y-2 ${
-                testStatus === 'success'
-                  ? 'bg-emerald-950/40 border-emerald-800 text-emerald-300'
-                  : testStatus === 'error'
-                  ? 'bg-red-950/40 border-red-800 text-red-300'
-                  : 'bg-slate-800 border-slate-700 text-slate-300'
-              }`}
-            >
-              <div className="flex items-center space-x-2">
-                {testStatus === 'success' ? (
-                  <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
-                ) : testStatus === 'error' ? (
-                  <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
-                ) : (
-                  <div className="w-4 h-4 border-2 border-slate-400 border-t-white rounded-full animate-spin shrink-0" />
-                )}
-                <span className="font-medium">{testMessage}</span>
+        {/* Gemini Vision AI Engine Status (Master Key is completely hidden) */}
+        {hasBuiltIn ? (
+          <div className="space-y-3">
+            {/* Built-in Status Box */}
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center text-emerald-400 shrink-0">
+                    <Sparkles className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <div>
+                    <div className="flex items-center space-x-2">
+                      <h4 className="text-xs font-bold text-white uppercase tracking-wider">NutriScan Cloud AI</h4>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30">
+                        Active & Built-in
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-400 mt-0.5">
+                      Powered by Google Gemini Vision. Built-in and ready for all users.
+                    </p>
+                  </div>
+                </div>
+                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
               </div>
 
-              {detailedResults.length > 0 && (
-                <div className="pt-2 border-t border-slate-800/80 space-y-1">
-                  <p className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Model Quota Breakdown:</p>
-                  <div className="grid grid-cols-1 gap-1">
-                    {detailedResults.map((r) => (
-                      <div key={r.model} className="flex items-center justify-between text-[11px] bg-slate-900/60 px-2 py-1 rounded">
-                        <span className="font-mono text-slate-300">{r.model}</span>
-                        <span className={r.status === 'ready' ? 'text-emerald-400 font-semibold' : r.status === 'exhausted' ? 'text-amber-400' : 'text-red-400'}>
-                          {r.status === 'ready' ? '✓ Ready' : r.status === 'exhausted' ? '⚠️ Quota Exceeded (20/day limit)' : '✗ Not Available'}
-                        </span>
-                      </div>
-                    ))}
+              <div className="flex items-center justify-between pt-2 border-t border-slate-800/80">
+                <span className="text-[11px] text-slate-400 flex items-center space-x-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <span>Developer Key is private & hidden</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={handleTestApiKey}
+                  disabled={testStatus === 'testing'}
+                  className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+                >
+                  {testStatus === 'testing' ? 'Testing...' : 'Test Connection'}
+                </button>
+              </div>
+
+              {testStatus && (
+                <div
+                  className={`p-3 rounded-xl border text-xs flex flex-col space-y-2 ${
+                    testStatus === 'success'
+                      ? 'bg-emerald-950/40 border-emerald-800 text-emerald-300'
+                      : testStatus === 'error'
+                      ? 'bg-red-950/40 border-red-800 text-red-300'
+                      : 'bg-slate-800 border-slate-700 text-slate-300'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2">
+                    {testStatus === 'success' ? (
+                      <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
+                    ) : testStatus === 'error' ? (
+                      <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+                    ) : (
+                      <div className="w-4 h-4 border-2 border-slate-400 border-t-white rounded-full animate-spin shrink-0" />
+                    )}
+                    <span className="font-medium">{testMessage}</span>
                   </div>
                 </div>
               )}
             </div>
-          )}
-        </div>
+
+            {/* Collapsible custom key override (never reveals master key) */}
+            <div className="border border-slate-800/80 rounded-2xl overflow-hidden bg-slate-950/40">
+              <button
+                type="button"
+                onClick={() => setShowCustomKeySection(!showCustomKeySection)}
+                className="w-full p-3.5 text-left flex items-center justify-between text-xs text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition cursor-pointer"
+              >
+                <span className="flex items-center space-x-2 font-medium">
+                  <Key className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Advanced: Override with Personal Key (Optional)</span>
+                </span>
+                {showCustomKeySection ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </button>
+
+              {showCustomKeySection && (
+                <div className="p-4 pt-1 border-t border-slate-800 space-y-3">
+                  <p className="text-[11px] text-slate-400">
+                    If you want to use your own personal Google AI Studio key instead of the built-in app engine:
+                  </p>
+                  <div className="relative">
+                    <input
+                      type={showKey ? 'text' : 'password'}
+                      value={customKey}
+                      onChange={(e) => setCustomKey(e.target.value)}
+                      placeholder="Paste your personal Gemini API key here..."
+                      className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-sm text-white pr-20 outline-none font-mono transition"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowKey(!showKey)}
+                      className="absolute right-2 top-2.5 p-1 text-slate-400 hover:text-white cursor-pointer"
+                    >
+                      {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                  {customKey && (
+                    <button
+                      type="button"
+                      onClick={() => setCustomKey('')}
+                      className="text-[11px] text-amber-400 hover:underline cursor-pointer"
+                    >
+                      ✕ Clear custom key & use built-in engine
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        ) : (
+          /* Standard key input if no built-in key */
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center space-x-1.5">
+                <Key className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Google Gemini API Key</span>
+              </label>
+              <a
+                href="https://aistudio.google.com/app/apikey"
+                target="_blank"
+                rel="noreferrer"
+                className="text-xs text-emerald-400 hover:underline flex items-center space-x-1"
+              >
+                <span>Get Free Key</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+
+            <div className="relative">
+              <input
+                type={showKey ? 'text' : 'password'}
+                value={customKey}
+                onChange={(e) => setCustomKey(e.target.value)}
+                placeholder="AIzaSy..."
+                className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-sm text-white pr-20 outline-none font-mono transition"
+              />
+              <button
+                type="button"
+                onClick={() => setShowKey(!showKey)}
+                className="absolute right-2 top-2.5 p-1 text-slate-400 hover:text-white cursor-pointer"
+              >
+                {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <p className="text-[11px] text-slate-400">
+                Your key stays safely stored in your browser's localStorage.
+              </p>
+              <button
+                type="button"
+                onClick={handleTestApiKey}
+                disabled={testStatus === 'testing'}
+                className="text-xs font-semibold px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
+              >
+                {testStatus === 'testing' ? 'Testing Quotas...' : 'Test Connection'}
+              </button>
+            </div>
+
+            {testStatus && (
+              <div
+                className={`p-3.5 rounded-xl border text-xs flex flex-col space-y-2 ${
+                  testStatus === 'success'
+                    ? 'bg-emerald-950/40 border-emerald-800 text-emerald-300'
+                    : testStatus === 'error'
+                    ? 'bg-red-950/40 border-red-800 text-red-300'
+                    : 'bg-slate-800 border-slate-700 text-slate-300'
+                }`}
+              >
+                <div className="flex items-center space-x-2">
+                  {testStatus === 'success' ? (
+                    <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
+                  ) : testStatus === 'error' ? (
+                    <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+                  ) : (
+                    <div className="w-4 h-4 border-2 border-slate-400 border-t-white rounded-full animate-spin shrink-0" />
+                  )}
+                  <span className="font-medium">{testMessage}</span>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Model Selection / Auto Failover */}
         <div className="space-y-2">
