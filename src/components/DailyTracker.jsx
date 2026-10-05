@@ -19,6 +19,7 @@ import {
 import MacroRings from './MacroRings';
 import SmartMealSuggester from './SmartMealSuggester';
 import ShareModal from './ShareModal';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function DailyTracker({
   meals = [],
@@ -33,6 +34,7 @@ export default function DailyTracker({
   userName = '',
   waterGlassSize = 250
 }) {
+  const { t, language } = useLanguage();
   const [showManualModal, setShowManualModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [manualName, setManualName] = useState('');
@@ -154,17 +156,17 @@ export default function DailyTracker({
             <div className="flex items-center space-x-2">
               <h2 className="text-base sm:text-lg font-bold text-white">
                 {isToday 
-                  ? (userName && userName.trim() ? `${userName.trim()}'s Nutrition Diary` : "Today's Nutrition Diary") 
-                  : `Diary: ${selectedDate}`}
+                  ? (userName && userName.trim() ? `${userName.trim()}'s ${t('nutritionDiary', 'Nutrition Diary')}` : t('todayDiary', "Today's Nutrition Diary")) 
+                  : `${t('nutritionDiary', 'Diary')}: ${selectedDate}`}
               </h2>
               {isToday && (
                 <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold">
-                  Today
+                  {t('today', 'Today')}
                 </span>
               )}
             </div>
             <p className="text-xs text-slate-400">
-              {filteredMeals.length} {filteredMeals.length === 1 ? 'meal' : 'meals'} logged
+              {filteredMeals.length} {filteredMeals.length === 1 ? t('mealLogged', 'meal logged') : t('mealsLogged', 'meals logged')}
             </p>
           </div>
         </div>
@@ -196,11 +198,11 @@ export default function DailyTracker({
 
           <button
             onClick={exportSummary}
-            className="px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 hover:text-emerald-200 border border-emerald-500/30 transition flex items-center space-x-1.5 shadow-sm active:scale-95"
+            className="px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 hover:text-emerald-200 border border-emerald-500/30 transition flex items-center space-x-1.5 shadow-sm active:scale-95 cursor-pointer"
             title="Share Daily Summary to WhatsApp, Instagram, X, FB"
           >
             <Share2 className="w-4 h-4" />
-            <span className="text-xs font-bold">Share</span>
+            <span className="text-xs font-bold">{t('share', 'Share')}</span>
           </button>
         </div>
       </div>
@@ -226,9 +228,9 @@ export default function DailyTracker({
             <div className="mt-2 text-center">
               <span className="text-xs text-slate-400">
                 {caloriePercent >= 100 ? (
-                  <span className="text-amber-400 font-semibold">Daily calorie target reached!</span>
+                  <span className="text-amber-400 font-semibold">{t('goalReached', 'Daily calorie target reached!')}</span>
                 ) : (
-                  <span>{remainingCalories} kcal left to reach target</span>
+                  <span>{remainingCalories} {t('remainingCalories', 'kcal left to reach target')}</span>
                 )}
               </span>
             </div>
@@ -237,7 +239,7 @@ export default function DailyTracker({
           {/* Macronutrients & Water Progress Bars */}
           <div className="md:col-span-7 space-y-4">
             <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
-              Daily Macronutrient Targets
+              {t('dailyMacroTargets', 'Daily Macronutrient Targets')}
             </h3>
 
             {/* Protein */}
@@ -245,7 +247,7 @@ export default function DailyTracker({
               <div className="flex items-center justify-between text-xs mb-1.5">
                 <span className="font-semibold text-cyan-400 flex items-center space-x-1.5">
                   <Dumbbell className="w-3.5 h-3.5" />
-                  <span>Protein</span>
+                  <span>{t('protein', 'Protein')}</span>
                 </span>
                 <span className="text-slate-300 font-medium">
                   <strong className="text-white">{totalProtein}g</strong> / {proteinGoal}g ({proteinPercent}%)
@@ -264,7 +266,7 @@ export default function DailyTracker({
               <div className="flex items-center justify-between text-xs mb-1.5">
                 <span className="font-semibold text-amber-400 flex items-center space-x-1.5">
                   <Wheat className="w-3.5 h-3.5" />
-                  <span>Carbohydrates</span>
+                  <span>{t('carbs', 'Carbohydrates')}</span>
                 </span>
                 <span className="text-slate-300 font-medium">
                   <strong className="text-white">{totalCarbs}g</strong> / {carbsGoal}g ({carbsPercent}%)
@@ -283,7 +285,7 @@ export default function DailyTracker({
               <div className="flex items-center justify-between text-xs mb-1.5">
                 <span className="font-semibold text-rose-400 flex items-center space-x-1.5">
                   <Droplet className="w-3.5 h-3.5" />
-                  <span>Healthy Fats</span>
+                  <span>{t('fat', 'Healthy Fats')}</span>
                 </span>
                 <span className="text-slate-300 font-medium">
                   <strong className="text-white">{totalFat}g</strong> / {fatGoal}g ({fatPercent}%)
@@ -305,10 +307,10 @@ export default function DailyTracker({
                 </div>
                 <div>
                   <div className="text-xs font-semibold text-sky-300">
-                    Water Hydration: <strong className="text-white">{waterMl} ml</strong> / {waterGoal} ml
+                    {t('waterHydration', 'Water Hydration')}: <strong className="text-white">{waterMl} ml</strong> / {waterGoal} ml
                   </div>
                   <div className="text-[11px] text-slate-400">
-                    {Math.round(waterMl / (waterGlassSize || 250))} glasses ({waterPercent}%)
+                    {Math.round(waterMl / (waterGlassSize || 250))} {t('glasses', 'glasses')} ({waterPercent}%)
                   </div>
                 </div>
               </div>
@@ -317,7 +319,7 @@ export default function DailyTracker({
                 <button
                   type="button"
                   onClick={() => onUpdateWater(Math.max(0, waterMl - (waterGlassSize || 250)))}
-                  className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 border border-slate-700 transition"
+                  className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 border border-slate-700 transition cursor-pointer"
                   title={`Remove ${waterGlassSize || 250}ml`}
                 >
                   -{waterGlassSize || 250}ml
@@ -325,11 +327,11 @@ export default function DailyTracker({
                 <button
                   type="button"
                   onClick={() => onUpdateWater(waterMl + (waterGlassSize || 250))}
-                  className="px-3 py-1 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs font-bold shadow-md shadow-sky-500/20 transition flex items-center space-x-1"
+                  className="px-3 py-1 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs font-bold shadow-md shadow-sky-500/20 transition flex items-center space-x-1 cursor-pointer active:scale-95"
                   title={`Add ${waterGlassSize || 250}ml Glass`}
                 >
                   <Plus className="w-3 h-3 text-slate-950" />
-                  <span>+ Glass ({waterGlassSize || 250}ml)</span>
+                  <span>+ {t('glasses', 'Glass')} ({waterGlassSize || 250}ml)</span>
                 </button>
               </div>
             </div>
@@ -349,22 +351,22 @@ export default function DailyTracker({
       {/* Quick Actions Row */}
       <div className="flex items-center justify-between">
         <h3 className="text-base font-bold text-white">
-          Logged Meals
+          {t('loggedMeals', 'Logged Meals')}
         </h3>
         <div className="flex items-center space-x-2">
           <button
             onClick={() => setShowManualModal(true)}
-            className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 text-xs font-semibold transition"
+            className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 text-xs font-semibold transition cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5 text-slate-400" />
-            <span>Manual Add</span>
+            <span>{t('manualAdd', 'Manual Add')}</span>
           </button>
           <button
             onClick={onSwitchToScanner}
-            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 text-xs font-bold shadow-md shadow-emerald-500/20 hover:scale-105 active:scale-95 transition"
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 text-xs font-bold shadow-md shadow-emerald-500/20 hover:scale-105 active:scale-95 transition cursor-pointer"
           >
             <Camera className="w-3.5 h-3.5 text-slate-950" />
-            <span>Scan with Camera</span>
+            <span>{t('scanWithCamera', 'Scan with Camera')}</span>
           </button>
         </div>
       </div>
@@ -374,6 +376,14 @@ export default function DailyTracker({
         {mealCategories.map((category) => {
           const categoryMeals = getMealsByCategory(category);
           const categoryCalories = categoryMeals.reduce((sum, m) => sum + (m.calories || 0), 0);
+          const categoryLabel = category === 'Breakfast' ? t('breakfast', 'Breakfast')
+            : category === 'Lunch' ? t('lunch', 'Lunch')
+            : category === 'Dinner' ? t('dinner', 'Dinner')
+            : t('snacks', 'Snacks');
+          const emptyText = category === 'Breakfast' ? t('noBreakfast', 'No breakfast logged yet today.')
+            : category === 'Lunch' ? t('noLunch', 'No lunch logged yet today.')
+            : category === 'Dinner' ? t('noDinner', 'No dinner logged yet today.')
+            : t('noSnacks', 'No snacks logged yet today.');
 
           return (
             <div
@@ -386,9 +396,9 @@ export default function DailyTracker({
                   <span className="text-lg">
                     {category === 'Breakfast' ? '🍳' : category === 'Lunch' ? '🥗' : category === 'Dinner' ? '🍲' : '🍎'}
                   </span>
-                  <h4 className="text-sm font-bold text-white">{category}</h4>
+                  <h4 className="text-sm font-bold text-white">{categoryLabel}</h4>
                   <span className="text-xs text-slate-500">
-                    ({categoryMeals.length} {categoryMeals.length === 1 ? 'item' : 'items'})
+                    ({categoryMeals.length} {categoryMeals.length === 1 ? t('item', 'item') : t('items', 'items')})
                   </span>
                 </div>
                 <div className="text-right">
@@ -400,12 +410,12 @@ export default function DailyTracker({
               {/* Items in this category */}
               {categoryMeals.length === 0 ? (
                 <div className="py-4 text-center text-xs text-slate-500 flex items-center justify-center space-x-2">
-                  <span>No {category.toLowerCase()} logged yet today.</span>
+                  <span>{emptyText}</span>
                   <button
                     onClick={onSwitchToScanner}
-                    className="text-emerald-400 hover:underline font-medium"
+                    className="text-emerald-400 hover:underline font-medium cursor-pointer"
                   >
-                    Scan meal
+                    {t('scanMeal', 'Scan meal')}
                   </button>
                 </div>
               ) : (

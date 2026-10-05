@@ -25,7 +25,8 @@ import {
   Scale,
   HardDrive,
   Heart,
-  Palette
+  Palette,
+  Globe
 } from 'lucide-react';
 import { 
   hasBuiltInApiKey,
@@ -45,6 +46,7 @@ import {
   exportDiaryAsCSV,
   getStorageStats
 } from '../services/preferencesService';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function SettingsModal({
   isOpen,
@@ -58,6 +60,9 @@ export default function SettingsModal({
 
   // Tabs: 'ai' | 'profile' | 'features' | 'data'
   const [activeTab, setActiveTab] = useState('profile');
+
+  // Multi-language support (English & Hindi)
+  const { language, setLanguage, t } = useLanguage();
 
   // AI Service state
   const hasBuiltIn = hasBuiltInApiKey();
@@ -193,64 +198,97 @@ export default function SettingsModal({
           <button
             type="button"
             onClick={() => setActiveTab('profile')}
-            className={`py-2 rounded-lg transition ${
+            className={`py-2 rounded-lg transition cursor-pointer ${
               activeTab === 'profile'
                 ? 'bg-emerald-500 text-slate-950 shadow-md font-bold'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            Profile
+            {t('profile', 'Profile')}
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('features')}
-            className={`py-2 rounded-lg transition ${
+            className={`py-2 rounded-lg transition cursor-pointer ${
               activeTab === 'features'
                 ? 'bg-emerald-500 text-slate-950 shadow-md font-bold'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            Features
+            {t('features', 'Features')}
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('ai')}
-            className={`py-2 rounded-lg transition ${
+            className={`py-2 rounded-lg transition cursor-pointer ${
               activeTab === 'ai'
                 ? 'bg-emerald-500 text-slate-950 shadow-md font-bold'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            AI Engine
+            {t('aiEngine', 'AI Engine')}
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('data')}
-            className={`py-2 rounded-lg transition ${
+            className={`py-2 rounded-lg transition cursor-pointer ${
               activeTab === 'data'
                 ? 'bg-emerald-500 text-slate-950 shadow-md font-bold'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            Backup & Info
+            {t('backupInfo', 'Backup & Info')}
           </button>
         </div>
 
         {/* TAB 1: PROFILE & PERSONALIZATION */}
         {activeTab === 'profile' && (
           <div className="space-y-4 animate-fadeIn">
+
+            {/* Language Selector Card */}
+            <div className="bg-slate-950/70 border border-slate-800 rounded-2xl p-4 flex flex-col xs:flex-row xs:items-center justify-between gap-3">
+              <div>
+                <span className="text-xs font-bold text-white flex items-center space-x-1.5">
+                  <Globe className="w-3.5 h-3.5 text-teal-400" />
+                  <span>{t('changeLanguage', 'Language / भाषा')}</span>
+                </span>
+                <p className="text-[11px] text-slate-400 mt-0.5">
+                  {language === 'hi' ? 'ऐप की भाषा चुनें (अंग्रेजी या हिन्दी)' : 'Select app interface language (English or Hindi)'}
+                </p>
+              </div>
+              <div className="flex items-center space-x-1 bg-slate-900 p-1 rounded-xl border border-slate-800 shrink-0 self-start xs:self-auto">
+                <button
+                  type="button"
+                  onClick={() => setLanguage('en')}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition cursor-pointer ${
+                    language === 'en' ? 'bg-emerald-500 text-slate-950 shadow-sm' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  English
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLanguage('hi')}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition cursor-pointer ${
+                    language === 'hi' ? 'bg-emerald-500 text-slate-950 shadow-sm' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  हिन्दी
+                </button>
+              </div>
+            </div>
             
             {/* Feature 1: User Display Name */}
             <div>
               <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-1.5 flex items-center space-x-1.5">
                 <User className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Your Name (Optional)</span>
+                <span>{t('yourName', 'Your Name (Optional)')}</span>
               </label>
               <input
                 type="text"
                 value={prefs.userName || ''}
                 onChange={(e) => updatePref('userName', e.target.value)}
-                placeholder="Enter your name (e.g. Vishal)..."
+                placeholder={t('enterYourName', 'Enter your name (e.g. Vishal)...')}
                 className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-sm text-white outline-none font-medium transition"
               />
             </div>
@@ -743,14 +781,14 @@ export default function SettingsModal({
             onClick={onClose}
             className="px-4 py-2 text-xs text-slate-400 hover:text-white cursor-pointer"
           >
-            Cancel
+            {t('cancel', 'Cancel')}
           </button>
           <button
             type="button"
             onClick={handleSave}
             className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:opacity-95 text-slate-950 font-extrabold text-xs shadow-lg shadow-emerald-500/20 active:scale-95 transition cursor-pointer"
           >
-            Save All Preferences
+            {t('saveSettings', 'Save All Preferences')}
           </button>
         </div>
 

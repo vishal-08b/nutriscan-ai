@@ -22,12 +22,14 @@ import {
   Sliders
 } from 'lucide-react';
 import { getUserPreferences } from './services/preferencesService';
+import { useLanguage } from './context/LanguageContext';
 
 const STORAGE_MEALS_KEY = 'nutriscan_logged_meals_v2';
 const STORAGE_GOALS_KEY = 'nutriscan_goals_v2';
 const STORAGE_WATER_KEY = 'nutriscan_water_v2';
 
 export default function App() {
+  const { t } = useLanguage();
   const todayStr = new Date().toISOString().split('T')[0];
 
   // Active navigation tab: 'scanner' | 'diary'
@@ -379,7 +381,7 @@ export default function App() {
           {/* Scanner Tab */}
           <button
             onClick={() => setActiveTab('scanner')}
-            className={`flex flex-col items-center justify-center py-1.5 px-2 rounded-xl transition-all ${
+            className={`flex flex-col items-center justify-center py-1.5 px-2 rounded-xl transition-all cursor-pointer ${
               activeTab === 'scanner'
                 ? 'text-emerald-400 font-bold'
                 : 'text-slate-400 hover:text-slate-200'
@@ -388,13 +390,13 @@ export default function App() {
             <div className={`p-1 rounded-lg transition-transform ${activeTab === 'scanner' ? 'bg-emerald-500/15 scale-110' : ''}`}>
               <Camera className="w-5 h-5" />
             </div>
-            <span className="text-[10px] mt-0.5 tracking-tight">Scanner</span>
+            <span className="text-[10px] mt-0.5 tracking-tight">{t('aiScanner', 'Scanner')}</span>
           </button>
 
           {/* Diary Tab */}
           <button
             onClick={() => setActiveTab('diary')}
-            className={`flex flex-col items-center justify-center py-1.5 px-2 rounded-xl transition-all relative ${
+            className={`flex flex-col items-center justify-center py-1.5 px-2 rounded-xl transition-all relative cursor-pointer ${
               activeTab === 'diary'
                 ? 'text-emerald-400 font-bold'
                 : 'text-slate-400 hover:text-slate-200'
@@ -403,7 +405,7 @@ export default function App() {
             <div className={`p-1 rounded-lg transition-transform ${activeTab === 'diary' ? 'bg-emerald-500/15 scale-110' : ''}`}>
               <CalendarDays className="w-5 h-5" />
             </div>
-            <span className="text-[10px] mt-0.5 tracking-tight">Diary</span>
+            <span className="text-[10px] mt-0.5 tracking-tight">{t('dailyDiary', 'Diary')}</span>
             {todayMeals.length > 0 && (
               <span className="absolute top-1.5 right-6 w-2 h-2 rounded-full bg-emerald-400" />
             )}
@@ -412,23 +414,23 @@ export default function App() {
           {/* Goals Button */}
           <button
             onClick={() => setIsGoalsOpen(true)}
-            className="flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-slate-400 hover:text-slate-200 transition-all"
+            className="flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-slate-400 hover:text-slate-200 transition-all cursor-pointer"
           >
             <div className="p-1 rounded-lg">
               <Sliders className="w-5 h-5" />
             </div>
-            <span className="text-[10px] mt-0.5 tracking-tight">Goals</span>
+            <span className="text-[10px] mt-0.5 tracking-tight">{t('goals', 'Goals')}</span>
           </button>
 
           {/* Settings Button */}
           <button
             onClick={() => setIsSettingsOpen(true)}
-            className="flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-slate-400 hover:text-slate-200 transition-all"
+            className="flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-slate-400 hover:text-slate-200 transition-all cursor-pointer"
           >
             <div className="p-1 rounded-lg">
               <Settings className="w-5 h-5" />
             </div>
-            <span className="text-[10px] mt-0.5 tracking-tight">Settings</span>
+            <span className="text-[10px] mt-0.5 tracking-tight">{t('settings', 'Settings')}</span>
           </button>
         </div>
       </nav>
@@ -439,7 +441,7 @@ export default function App() {
           <div className="flex items-center space-x-2">
             <span className="font-extrabold text-white">NutriScan AI</span>
             <span>•</span>
-            <span>Engineered with ❤️ by <strong className="text-emerald-400 font-bold">{userPrefs.userName || 'Vishal'}</strong></span>
+            <span>Engineered with ❤️ by <strong className="text-emerald-400 font-bold">Vishal</strong></span>
           </div>
           <div className="flex items-center space-x-4 text-[11px] text-slate-400">
             <span>Powered by Google Gemini Vision</span>

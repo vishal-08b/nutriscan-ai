@@ -18,6 +18,7 @@ import {
 import { SAMPLE_FOODS } from '../data/sampleFoods';
 import { Capacitor } from '@capacitor/core';
 import { Camera as CapCamera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function CameraCapture({ 
   onAnalyze, 
@@ -26,6 +27,7 @@ export default function CameraCapture({
   autoAnalyzeOnCapture = false,
   cameraQuality = '1080p'
 }) {
+  const { t, language } = useLanguage();
   const [selectedImage, setSelectedImage] = useState(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [cameraFacing, setCameraFacing] = useState('environment'); // 'user' or 'environment'
@@ -254,10 +256,10 @@ export default function CameraCapture({
             )}
           </div>
           <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Scan Meal & Calculate Calories
+            {t('scanMealTitle', 'Scan Meal & Calculate Calories')}
           </h1>
           <p className="text-slate-400 text-xs sm:text-sm mt-1 max-w-md mx-auto">
-            Point your camera at any Indian dish to get instant portion weight, macros, and calorie breakdown.
+            {t('scanMealSubtitle', 'Point your camera at any Indian dish to get instant portion weight, macros, and calorie breakdown.')}
           </p>
         </div>
 
@@ -450,10 +452,10 @@ export default function CameraCapture({
               </div>
 
               <h3 className="text-sm sm:text-base font-bold text-white mb-1">
-                Take a Photo of Your Food
+                {t('takePhoto', 'Take a Photo of Your Food')}
               </h3>
               <p className="text-xs text-slate-400 max-w-xs mb-4">
-                Use your device camera or pick a picture from your photo gallery.
+                {t('takePhotoDesc', 'Use your device camera or pick a picture from your photo gallery.')}
               </p>
 
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 w-full max-w-xs sm:max-w-none">
@@ -463,7 +465,7 @@ export default function CameraCapture({
                   className="flex items-center justify-center space-x-2 px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-bold text-xs sm:text-sm shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 transition cursor-pointer"
                 >
                   <Camera className="w-4 h-4" />
-                  <span>Take Live Photo</span>
+                  <span>{t('snapPhoto', 'Take Live Photo')}</span>
                 </button>
 
                 <button
@@ -472,7 +474,7 @@ export default function CameraCapture({
                   className="flex items-center justify-center space-x-2 px-5 py-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-semibold text-xs sm:text-sm border border-slate-700 transition cursor-pointer active:scale-95"
                 >
                   <Upload className="w-4 h-4" />
-                  <span>Choose from Gallery</span>
+                  <span>{t('browseGallery', 'Choose from Gallery')}</span>
                 </button>
               </div>
 
@@ -523,9 +525,9 @@ export default function CameraCapture({
                   setSelectedImage(null);
                   setCustomHint('');
                 }}
-                className="px-4 py-3 rounded-xl border border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-white text-xs font-semibold transition active:scale-95"
+                className="px-4 py-3 rounded-xl border border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-white text-xs font-semibold transition active:scale-95 cursor-pointer"
               >
-                Retake
+                {language === 'hi' ? 'दोबारा फोटो लें' : 'Retake'}
               </button>
 
               <button
@@ -535,7 +537,7 @@ export default function CameraCapture({
                 className="flex-1 flex items-center justify-center space-x-2 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-bold text-xs sm:text-sm shadow-lg shadow-emerald-500/25 active:scale-95 transition disabled:opacity-50 cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 text-slate-950" />
-                <span>Estimate Calories & Macros</span>
+                <span>{language === 'hi' ? 'कैलोरी और पोषण जांचें' : 'Estimate Calories & Macros'}</span>
               </button>
             </div>
           </div>
@@ -548,34 +550,41 @@ export default function CameraCapture({
           <div className="flex items-center space-x-2">
             <Flame className="w-4 h-4 text-amber-400" />
             <h2 className="text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider">
-              Authentic Indian Foods ({SAMPLE_FOODS.length})
+              {language === 'hi' ? 'प्रामाणिक भारतीय व्यंजन' : 'Authentic Indian Foods'} ({SAMPLE_FOODS.length})
             </h2>
           </div>
           <button
             type="button"
             onClick={() => setShowAllSamples(!showAllSamples)}
-            className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition"
+            className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition cursor-pointer"
           >
-            {showAllSamples ? 'Show Fewer' : `View All (${SAMPLE_FOODS.length})`}
+            {showAllSamples ? (language === 'hi' ? 'कम देखें' : 'Show Fewer') : (language === 'hi' ? `सभी देखें (${SAMPLE_FOODS.length})` : `View All (${SAMPLE_FOODS.length})`)}
           </button>
         </div>
 
         {/* Category Filter Pills (Scrollable horizontally on mobile) */}
         <div className="flex items-center space-x-1.5 overflow-x-auto pb-1 text-xs scrollbar-none">
-          {['All', 'Breakfast', 'Lunch', 'Dinner', 'Snacks'].map((cat) => (
-            <button
-              key={cat}
-              type="button"
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 rounded-xl font-medium transition shrink-0 text-xs cursor-pointer ${
-                selectedCategory === cat
-                  ? 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/20'
-                  : 'bg-slate-900/90 hover:bg-slate-800 text-slate-300 border border-slate-800'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+          {['All', 'Breakfast', 'Lunch', 'Dinner', 'Snacks'].map((cat) => {
+            const label = cat === 'All' ? (language === 'hi' ? 'सभी' : 'All')
+              : cat === 'Breakfast' ? t('breakfast', 'Breakfast')
+              : cat === 'Lunch' ? t('lunch', 'Lunch')
+              : cat === 'Dinner' ? t('dinner', 'Dinner')
+              : t('snacks', 'Snacks');
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-3 py-1.5 rounded-xl font-medium transition shrink-0 text-xs cursor-pointer ${
+                  selectedCategory === cat
+                    ? 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/20'
+                    : 'bg-slate-900/90 hover:bg-slate-800 text-slate-300 border border-slate-800'
+                }`}
+              >
+                {label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Responsive Food Card Grid: 2 columns on phone, 3 on tablet, 4 on desktop */}

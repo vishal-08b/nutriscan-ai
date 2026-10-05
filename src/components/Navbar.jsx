@@ -7,8 +7,10 @@ import {
   Settings, 
   Sliders, 
   CheckCircle2, 
-  AlertCircle 
+  AlertCircle,
+  Globe 
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Navbar({
   activeTab,
@@ -21,6 +23,7 @@ export default function Navbar({
   dailyGoalCalories,
   streak = 3
 }) {
+  const { language, toggleLanguage, t } = useLanguage();
   const percentComplete = Math.min(100, Math.round((todayCalories / (dailyGoalCalories || 2000)) * 100));
 
   return (
@@ -38,14 +41,14 @@ export default function Navbar({
           <div>
             <div className="flex items-center space-x-1.5">
               <span className="font-extrabold text-base sm:text-xl tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-                NutriScan AI
+                {t('appName')}
               </span>
               <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] uppercase tracking-wider font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                Indian Cuisine
+                {t('indianCuisine')}
               </span>
             </div>
             <p className="text-[10px] sm:text-[11px] text-slate-400 hidden sm:block">
-              Visual Food Recognition & Smart Calorie Estimator
+              {t('tagline')}
             </p>
           </div>
         </div>
@@ -61,7 +64,7 @@ export default function Navbar({
             }`}
           >
             <Camera className="w-4 h-4" />
-            <span>AI Scanner</span>
+            <span>{t('aiScanner')}</span>
           </button>
 
           <button
@@ -73,7 +76,7 @@ export default function Navbar({
             }`}
           >
             <CalendarDays className="w-4 h-4" />
-            <span>Daily Diary</span>
+            <span>{t('dailyDiary')}</span>
             {todayCalories > 0 && (
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
                 activeTab === 'diary' ? 'bg-slate-900 text-emerald-300' : 'bg-emerald-500/20 text-emerald-400'
@@ -85,15 +88,25 @@ export default function Navbar({
         </div>
 
         {/* Right Action Icons & Status */}
-        <div className="flex items-center space-x-1.5 sm:space-x-3">
+        <div className="flex items-center space-x-1.5 sm:space-x-2.5">
+          {/* Quick Language Toggle Button */}
+          <button
+            onClick={toggleLanguage}
+            className="flex items-center space-x-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition text-[11px] sm:text-xs font-bold cursor-pointer active:scale-95"
+            title="Switch Language / भाषा बदलें"
+          >
+            <Globe className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <span>{language === 'en' ? 'हिन्दी' : 'EN'}</span>
+          </button>
+
           {/* Habit Streak Badge */}
           <div 
             className="flex items-center space-x-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-orange-500/10 border border-orange-500/30 text-orange-400 text-[11px] sm:text-xs font-bold shadow-sm"
-            title={`${streak} day logging streak! Keep it up!`}
+            title={`${streak} day ${t('streak')}!`}
           >
             <span className="text-xs">🔥</span>
             <span>{streak}d</span>
-            <span className="hidden md:inline text-[10px] text-orange-300 font-semibold">Streak</span>
+            <span className="hidden md:inline text-[10px] text-orange-300 font-semibold">{t('streak')}</span>
           </div>
 
           {/* Daily Quick Gauge Pill */}
@@ -128,12 +141,12 @@ export default function Navbar({
             {isMockMode || !hasApiKey ? (
               <>
                 <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-                <span>Demo</span>
+                <span>{t('demoMode')}</span>
               </>
             ) : (
               <>
                 <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-400" />
-                <span>Live AI</span>
+                <span>{t('liveAi')}</span>
               </>
             )}
           </button>

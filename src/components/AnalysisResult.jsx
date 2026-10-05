@@ -24,6 +24,7 @@ import {
 import confetti from 'canvas-confetti';
 import { SAMPLE_FOODS } from '../data/sampleFoods';
 import ShareModal from './ShareModal';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function AnalysisResult({
   result: initialResult,
@@ -32,6 +33,7 @@ export default function AnalysisResult({
   onAddToDiary,
   onReset
 }) {
+  const { t, language } = useLanguage();
   const [currentResult, setCurrentResult] = useState(initialResult);
   const [portionMultiplier, setPortionMultiplier] = useState(1.0);
   const [selectedMealType, setSelectedMealType] = useState(initialResult.category || 'Lunch');
@@ -285,7 +287,7 @@ export default function AnalysisResult({
               <div>
                 <div className="flex items-center space-x-1.5 text-xs text-slate-400 font-medium mb-1">
                   <Flame className="w-4 h-4 text-amber-400" />
-                  <span>Estimated Calories</span>
+                  <span>{t('estimatedCalories', 'Estimated Calories')}</span>
                 </div>
                 <div className="flex items-baseline space-x-1">
                   <span className="text-3xl sm:text-4xl font-black text-white tracking-tight">
@@ -301,7 +303,7 @@ export default function AnalysisResult({
               <div>
                 <div className="flex items-center space-x-1.5 text-xs text-slate-400 font-medium mb-1">
                   <Scale className="w-4 h-4 text-teal-400" />
-                  <span>Estimated Mass</span>
+                  <span>{t('estimatedMass', 'Estimated Mass')}</span>
                 </div>
                 <div className="flex items-baseline space-x-1">
                   <span className="text-3xl sm:text-4xl font-black text-white tracking-tight">
@@ -310,7 +312,7 @@ export default function AnalysisResult({
                   <span className="text-sm font-semibold text-teal-400">grams</span>
                 </div>
                 <span className="text-[11px] text-slate-500">
-                  Portion: {portionMultiplier}x serving
+                  {t('portionSize', 'Portion')}: {portionMultiplier}x {t('serving', 'serving')}
                 </span>
               </div>
             </div>
@@ -318,7 +320,7 @@ export default function AnalysisResult({
             {/* Interactive Portion Multiplier */}
             <div>
               <div className="flex items-center justify-between text-xs text-slate-400 font-medium mb-2">
-                <span>Adjust Portion Size</span>
+                <span>{t('portionSize', 'Adjust Portion Size')}</span>
                 <span className="text-emerald-400 font-semibold">{portionMultiplier}x</span>
               </div>
               <div className="grid grid-cols-5 gap-1.5 sm:gap-2">
@@ -356,9 +358,9 @@ export default function AnalysisResult({
           <div>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-bold text-white uppercase tracking-wider">
-                Macronutrients Breakdown
+                {t('macroBreakdown', 'Macronutrients Breakdown')}
               </h3>
-              <span className="text-xs text-slate-400">Calculated per adjusted portion</span>
+              <span className="text-xs text-slate-400">{t('calculatedPortion', 'Calculated per adjusted portion')}</span>
             </div>
 
             {/* 3 Main Macro Cards */}
@@ -368,7 +370,7 @@ export default function AnalysisResult({
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-semibold text-cyan-400 flex items-center space-x-1.5">
                     <Dumbbell className="w-3.5 h-3.5" />
-                    <span>Protein</span>
+                    <span>{t('protein', 'Protein')}</span>
                   </span>
                   <span className="text-xs font-bold text-cyan-400/80">{proteinPct}% cals</span>
                 </div>
@@ -386,7 +388,7 @@ export default function AnalysisResult({
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-semibold text-amber-400 flex items-center space-x-1.5">
                     <Wheat className="w-3.5 h-3.5" />
-                    <span>Carbs</span>
+                    <span>{t('carbs', 'Carbs')}</span>
                   </span>
                   <span className="text-xs font-bold text-amber-400/80">{carbsPct}% cals</span>
                 </div>
@@ -404,7 +406,7 @@ export default function AnalysisResult({
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-semibold text-rose-400 flex items-center space-x-1.5">
                     <Droplet className="w-3.5 h-3.5" />
-                    <span>Healthy Fats</span>
+                    <span>{t('fat', 'Healthy Fats')}</span>
                   </span>
                   <span className="text-xs font-bold text-rose-400/80">{fatPct}% cals</span>
                 </div>
@@ -421,19 +423,19 @@ export default function AnalysisResult({
             {/* Secondary Nutrients Strip */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="bg-slate-950/40 border border-slate-800 rounded-xl p-3 flex justify-between items-center">
-                <span className="text-xs text-slate-400">Dietary Fiber</span>
+                <span className="text-xs text-slate-400">{t('dietaryFiber', 'Dietary Fiber')}</span>
                 <span className="text-sm font-bold text-slate-200">{fiber}g</span>
               </div>
               <div className="bg-slate-950/40 border border-slate-800 rounded-xl p-3 flex justify-between items-center">
-                <span className="text-xs text-slate-400">Sugars</span>
+                <span className="text-xs text-slate-400">{t('sugars', 'Sugars')}</span>
                 <span className="text-sm font-bold text-slate-200">{sugar}g</span>
               </div>
               <div className="bg-slate-950/40 border border-slate-800 rounded-xl p-3 flex justify-between items-center">
-                <span className="text-xs text-slate-400">Sodium</span>
+                <span className="text-xs text-slate-400">{t('sodium', 'Sodium')}</span>
                 <span className="text-sm font-bold text-slate-200">{sodium}mg</span>
               </div>
               <div className="bg-slate-950/40 border border-slate-800 rounded-xl p-3 flex justify-between items-center">
-                <span className="text-xs text-slate-400">Energy Density</span>
+                <span className="text-xs text-slate-400">{t('energyDensity', 'Energy Density')}</span>
                 <span className="text-sm font-bold text-emerald-400">
                   {((calories / (weightGrams || 1))).toFixed(1)} kcal/g
                 </span>
@@ -627,7 +629,7 @@ export default function AnalysisResult({
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider">
-                  Log this meal to your Daily Diary
+                  {t('logToDiary', 'Log this meal to your Daily Diary')}
                 </h3>
                 <p className="text-xs text-slate-400 mt-0.5">
                   Select meal slot and click add to log your daily intake.
@@ -636,20 +638,26 @@ export default function AnalysisResult({
 
               {/* Meal slot selector */}
               <div className="flex items-center space-x-1.5 bg-slate-900 p-1 rounded-xl border border-slate-800">
-                {['Breakfast', 'Lunch', 'Dinner', 'Snacks'].map((slot) => (
-                  <button
-                    key={slot}
-                    type="button"
-                    onClick={() => setSelectedMealType(slot)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                      selectedMealType === slot
-                        ? 'bg-emerald-500 text-slate-950 shadow-sm'
-                        : 'text-slate-400 hover:text-slate-200'
-                    }`}
-                  >
-                    {slot}
-                  </button>
-                ))}
+                {['Breakfast', 'Lunch', 'Dinner', 'Snacks'].map((slot) => {
+                  const slotLabel = slot === 'Breakfast' ? t('breakfast', 'Breakfast')
+                    : slot === 'Lunch' ? t('lunch', 'Lunch')
+                    : slot === 'Dinner' ? t('dinner', 'Dinner')
+                    : t('snacks', 'Snacks');
+                  return (
+                    <button
+                      key={slot}
+                      type="button"
+                      onClick={() => setSelectedMealType(slot)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer ${
+                        selectedMealType === slot
+                          ? 'bg-emerald-500 text-slate-950 shadow-sm'
+                          : 'text-slate-400 hover:text-slate-200'
+                      }`}
+                    >
+                      {slotLabel}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -667,7 +675,7 @@ export default function AnalysisResult({
                 type="button"
                 onClick={handleLogMeal}
                 disabled={isLogged}
-                className={`flex items-center justify-center space-x-2 w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-xl ${
+                className={`flex items-center justify-center space-x-2 w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-xl cursor-pointer ${
                   isLogged
                     ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 cursor-default'
                     : 'bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 hover:scale-105 active:scale-95 shadow-emerald-500/25'
@@ -676,12 +684,12 @@ export default function AnalysisResult({
                 {isLogged ? (
                   <>
                     <CheckCircle className="w-4 h-4 text-emerald-400" />
-                    <span>Logged to Today's Diary!</span>
+                    <span>{t('loggedToDiary', "Logged to Today's Diary!")}</span>
                   </>
                 ) : (
                   <>
                     <Plus className="w-4 h-4 text-slate-950" />
-                    <span>Add to {selectedMealType}</span>
+                    <span>{t('addTo', 'Add to')} {selectedMealType === 'Breakfast' ? t('breakfast', 'Breakfast') : selectedMealType === 'Lunch' ? t('lunch', 'Lunch') : selectedMealType === 'Dinner' ? t('dinner', 'Dinner') : t('snacks', 'Snacks')}</span>
                   </>
                 )}
               </button>
