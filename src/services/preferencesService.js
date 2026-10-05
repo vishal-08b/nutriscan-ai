@@ -3,8 +3,8 @@
 const PREFERENCES_STORAGE_KEY = 'nutriscan_user_preferences_v2';
 
 export const DEFAULT_USER_PREFERENCES = {
-  userName: 'Vishal',
-  userTitle: 'Founder & Pro Member',
+  userName: '',
+  userTitle: 'Member',
   userGoal: 'Fat Loss & Lean Muscle',
   dietType: 'All Indian Foods',
   units: 'metric', // 'metric' (g/ml/kcal) or 'imperial' (oz/lbs/cal)
@@ -46,7 +46,7 @@ export function setUserPreferences(newPrefs) {
 export function exportDiaryAsJSON(meals, goals) {
   const exportPayload = {
     appName: 'NutriScan AI',
-    exportedBy: getUserPreferences().userName || 'Vishal',
+    exportedBy: getUserPreferences().userName || 'NutriScan User',
     exportTimestamp: new Date().toISOString(),
     version: '2.5.0-pro',
     dailyGoals: goals,

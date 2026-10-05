@@ -149,16 +149,20 @@ export default function SettingsModal({
           </button>
         </div>
 
-        {/* User Profile Card (Featured User: Vishal) */}
+        {/* User Profile Card */}
         <div className="bg-gradient-to-r from-emerald-950/50 via-slate-950 to-teal-950/40 border border-emerald-500/30 rounded-2xl p-4 flex items-center justify-between shadow-lg">
           <div className="flex items-center space-x-3.5">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 text-xl font-black shadow-lg shadow-emerald-500/25 ring-2 ring-emerald-400/40 select-none">
-              {prefs.userName ? prefs.userName.charAt(0).toUpperCase() : 'V'}
+              {prefs.userName && prefs.userName.trim() ? (
+                prefs.userName.trim().charAt(0).toUpperCase()
+              ) : (
+                <User className="w-6 h-6 text-slate-950" />
+              )}
             </div>
             <div>
               <div className="flex items-center space-x-2">
                 <h4 className="text-base font-extrabold text-white tracking-tight">
-                  {prefs.userName || 'Vishal'}
+                  {prefs.userName && prefs.userName.trim() ? prefs.userName.trim() : 'My Profile'}
                 </h4>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center space-x-1">
                   <Sparkles className="w-2.5 h-2.5 text-emerald-400" />
@@ -166,7 +170,11 @@ export default function SettingsModal({
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-0.5">
-                Target: <span className="text-emerald-400 font-semibold">{prefs.userGoal}</span> • {prefs.dietType}
+                {prefs.userName && prefs.userName.trim() ? (
+                  <>Target: <span className="text-emerald-400 font-semibold">{prefs.userGoal}</span> • {prefs.dietType}</>
+                ) : (
+                  <span>Enter your name below to personalize your app</span>
+                )}
               </p>
             </div>
           </div>
@@ -236,13 +244,13 @@ export default function SettingsModal({
             <div>
               <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-1.5 flex items-center space-x-1.5">
                 <User className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Your Name (Personalizes Daily App)</span>
+                <span>Your Name (Optional)</span>
               </label>
               <input
                 type="text"
-                value={prefs.userName}
+                value={prefs.userName || ''}
                 onChange={(e) => updatePref('userName', e.target.value)}
-                placeholder="e.g. Vishal"
+                placeholder="Enter your name (e.g. Vishal)..."
                 className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-sm text-white outline-none font-medium transition"
               />
             </div>

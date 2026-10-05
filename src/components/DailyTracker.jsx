@@ -30,7 +30,7 @@ export default function DailyTracker({
   onUpdateWater,
   selectedDate,
   setSelectedDate,
-  userName = 'Vishal',
+  userName = '',
   waterGlassSize = 250
 }) {
   const [showManualModal, setShowManualModal] = useState(false);
@@ -153,7 +153,9 @@ export default function DailyTracker({
           <div>
             <div className="flex items-center space-x-2">
               <h2 className="text-base sm:text-lg font-bold text-white">
-                {isToday ? `${userName ? `${userName}'s` : "Today's"} Nutrition Diary` : `Diary: ${selectedDate}`}
+                {isToday 
+                  ? (userName && userName.trim() ? `${userName.trim()}'s Nutrition Diary` : "Today's Nutrition Diary") 
+                  : `Diary: ${selectedDate}`}
               </h2>
               {isToday && (
                 <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold">
