@@ -19,7 +19,13 @@ import { SAMPLE_FOODS } from '../data/sampleFoods';
 import { Capacitor } from '@capacitor/core';
 import { Camera as CapCamera, CameraResultType, CameraSource } from '@capacitor/camera';
 
-export default function CameraCapture({ onAnalyze, isAnalyzing }) {
+export default function CameraCapture({ 
+  onAnalyze, 
+  isAnalyzing,
+  sciFiHudEnabled = true,
+  autoAnalyzeOnCapture = false,
+  cameraQuality = '1080p'
+}) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [cameraFacing, setCameraFacing] = useState('environment'); // 'user' or 'environment'
@@ -62,6 +68,9 @@ export default function CameraCapture({ onAnalyze, isAnalyzing }) {
       });
       if (photo?.dataUrl) {
         setSelectedImage(photo.dataUrl);
+        if (autoAnalyzeOnCapture) {
+          onAnalyze({ imageSrc: photo.dataUrl, customHint });
+        }
       }
     } catch (err) {
       console.warn('Native camera capture dismissed or error:', err);
@@ -134,6 +143,9 @@ export default function CameraCapture({ onAnalyze, isAnalyzing }) {
 
     setSelectedImage(dataUrl);
     stopCamera();
+    if (autoAnalyzeOnCapture) {
+      onAnalyze({ imageSrc: dataUrl, customHint });
+    }
   };
 
   // Handle uploaded file
@@ -261,60 +273,78 @@ export default function CameraCapture({ onAnalyze, isAnalyzing }) {
                 className="w-full h-full object-cover"
               />
 
-              {/* Futuristic Sci-Fi Viewfinder & HUD Overlays */}
-              <div className="absolute inset-4 sm:inset-6 pointer-events-none flex flex-col justify-between p-2">
-                
-                {/* HUD Header Bar */}
-                <div className="flex items-center justify-between text-[10px] font-mono text-emerald-400 font-bold tracking-widest px-1">
-                  <div className="flex items-center space-x-1.5 bg-slate-950/80 px-2 py-0.5 rounded border border-emerald-500/30 backdrop-blur-md">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                    <span>AI VISION HUD v2.5</span>
+              {/* Viewfinder Overlay (Sci-Fi HUD vs Minimalist) */}
+              {sciFiHudEnabled ? (
+                <div className="absolute inset-4 sm:inset-6 pointer-events-none flex flex-col justify-between p-2">
+                  
+                  {/* HUD Header Bar */}
+                  <div className="flex items-center justify-between text-[10px] font-mono text-emerald-400 font-bold tracking-widest px-1">
+                    <div className="flex items-center space-x-1.5 bg-slate-950/80 px-2 py-0.5 rounded border border-emerald-500/30 backdrop-blur-md">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                      <span>AI VISION HUD v2.5</span>
+                    </div>
+                    <div className="hidden xs:flex items-center space-x-1 text-teal-300 bg-slate-950/80 px-2 py-0.5 rounded border border-teal-500/30">
+                      <span>SPECTRUM: 540nm</span>
+                    </div>
                   </div>
-                  <div className="hidden xs:flex items-center space-x-1 text-teal-300 bg-slate-950/80 px-2 py-0.5 rounded border border-teal-500/30">
-                    <span>SPECTRUM: 540nm</span>
+
+                  {/* Corner Tech Brackets with Neon Glow */}
+                  <div className="absolute inset-4 sm:inset-6 pointer-events-none">
+                    {/* Top-Left */}
+                    <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-emerald-400 rounded-tl shadow-[0_0_10px_#10b981]" />
+                    {/* Top-Right */}
+                    <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-emerald-400 rounded-tr shadow-[0_0_10px_#10b981]" />
+                    {/* Bottom-Left */}
+                    <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-emerald-400 rounded-bl shadow-[0_0_10px_#10b981]" />
+                    {/* Bottom-Right */}
+                    <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-emerald-400 rounded-br shadow-[0_0_10px_#10b981]" />
+                  </div>
+
+                  {/* Center Pulsating Reticle Target */}
+                  <div className="absolute inset-0 m-auto w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center pointer-events-none">
+                    {/* Outer rotating dashed ring */}
+                    <div className="absolute inset-0 rounded-full border border-dashed border-emerald-400/60 animate-hud-rotate" />
+                    {/* Inner pulsing ring */}
+                    <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full border border-emerald-400/40 animate-hud-pulse flex items-center justify-center">
+                      {/* Crosshairs */}
+                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#10b981]" />
+                    </div>
+                    <div className="absolute top-0 w-0.5 h-2 bg-emerald-400" />
+                    <div className="absolute bottom-0 w-0.5 h-2 bg-emerald-400" />
+                    <div className="absolute left-0 h-0.5 w-2 bg-emerald-400" />
+                    <div className="absolute right-0 h-0.5 w-2 bg-emerald-400" />
+                  </div>
+
+                  {/* Sweeping Laser Scanline Beam */}
+                  <div className="absolute inset-x-3 h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_16px_#10b981] animate-laser-sweep pointer-events-none" />
+
+                  {/* Bottom HUD Telemetry Status */}
+                  <div className="flex items-center justify-between text-[10px] font-mono text-emerald-400 font-bold px-1 mb-16">
+                    <span className="bg-slate-950/85 px-2.5 py-0.5 rounded border border-emerald-500/30 backdrop-blur-md">
+                      LOCK: [TARGET DISH]
+                    </span>
+                    <span className="bg-slate-950/85 px-2.5 py-0.5 rounded border border-emerald-500/30 backdrop-blur-md hidden xs:inline">
+                      DEPTH: [ACTIVE]
+                    </span>
                   </div>
                 </div>
-
-                {/* Corner Tech Brackets with Neon Glow */}
-                <div className="absolute inset-4 sm:inset-6 pointer-events-none">
-                  {/* Top-Left */}
-                  <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-emerald-400 rounded-tl shadow-[0_0_10px_#10b981]" />
-                  {/* Top-Right */}
-                  <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-emerald-400 rounded-tr shadow-[0_0_10px_#10b981]" />
-                  {/* Bottom-Left */}
-                  <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-emerald-400 rounded-bl shadow-[0_0_10px_#10b981]" />
-                  {/* Bottom-Right */}
-                  <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-emerald-400 rounded-br shadow-[0_0_10px_#10b981]" />
-                </div>
-
-                {/* Center Pulsating Reticle Target */}
-                <div className="absolute inset-0 m-auto w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center pointer-events-none">
-                  {/* Outer rotating dashed ring */}
-                  <div className="absolute inset-0 rounded-full border border-dashed border-emerald-400/60 animate-hud-rotate" />
-                  {/* Inner pulsing ring */}
-                  <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full border border-emerald-400/40 animate-hud-pulse flex items-center justify-center">
-                    {/* Crosshairs */}
-                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#10b981]" />
+              ) : (
+                <div className="absolute inset-8 border border-white/20 rounded-2xl pointer-events-none flex flex-col justify-between p-3">
+                  <div className="flex justify-between">
+                    <div className="w-4 h-4 border-t-2 border-l-2 border-slate-400 rounded-tl" />
+                    <div className="w-4 h-4 border-t-2 border-r-2 border-slate-400 rounded-tr" />
                   </div>
-                  <div className="absolute top-0 w-0.5 h-2 bg-emerald-400" />
-                  <div className="absolute bottom-0 w-0.5 h-2 bg-emerald-400" />
-                  <div className="absolute left-0 h-0.5 w-2 bg-emerald-400" />
-                  <div className="absolute right-0 h-0.5 w-2 bg-emerald-400" />
+                  <div className="text-center">
+                    <span className="bg-slate-950/80 text-slate-200 text-xs px-3 py-1 rounded-full border border-slate-700/60 backdrop-blur-md">
+                      Center dish in frame
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="w-4 h-4 border-b-2 border-l-2 border-slate-400 rounded-bl" />
+                    <div className="w-4 h-4 border-b-2 border-r-2 border-slate-400 rounded-br" />
+                  </div>
                 </div>
-
-                {/* Sweeping Laser Scanline Beam */}
-                <div className="absolute inset-x-3 h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_16px_#10b981] animate-laser-sweep pointer-events-none" />
-
-                {/* Bottom HUD Telemetry Status */}
-                <div className="flex items-center justify-between text-[10px] font-mono text-emerald-400 font-bold px-1 mb-16">
-                  <span className="bg-slate-950/85 px-2.5 py-0.5 rounded border border-emerald-500/30 backdrop-blur-md">
-                    LOCK: [TARGET DISH]
-                  </span>
-                  <span className="bg-slate-950/85 px-2.5 py-0.5 rounded border border-emerald-500/30 backdrop-blur-md hidden xs:inline">
-                    DEPTH: [ACTIVE]
-                  </span>
-                </div>
-              </div>
+              )}
 
               {/* Camera Controls Bar */}
               <div className="absolute bottom-5 inset-x-0 flex items-center justify-center space-x-6 z-20">

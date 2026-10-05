@@ -21,6 +21,7 @@ import {
   CalendarDays,
   Sliders
 } from 'lucide-react';
+import { getUserPreferences } from './services/preferencesService';
 
 const STORAGE_MEALS_KEY = 'nutriscan_logged_meals_v2';
 const STORAGE_GOALS_KEY = 'nutriscan_goals_v2';
@@ -36,9 +37,10 @@ export default function App() {
   const [isGoalsOpen, setIsGoalsOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  // Settings status
+  // Settings status & user preferences
   const [hasApiKey, setHasApiKey] = useState(Boolean(getStoredApiKey()));
   const [isMockMode, setIsMockMode] = useState(getStoredMockMode());
+  const [userPrefs, setUserPrefs] = useState(() => getUserPreferences());
 
   // Goals
   const [goals, setGoals] = useState(() => {
@@ -138,9 +140,10 @@ export default function App() {
   }, [waterMl, selectedDate]);
 
   // Sync settings
-  const refreshSettings = () => {
+  const refreshSettings = (newPrefs) => {
     setHasApiKey(Boolean(getStoredApiKey()));
     setIsMockMode(getStoredMockMode());
+    setUserPrefs(newPrefs || getUserPreferences());
   };
 
   const [lastAnalysisParams, setLastAnalysisParams] = useState(null);
@@ -337,6 +340,9 @@ export default function App() {
               <CameraCapture
                 onAnalyze={handleAnalyze}
                 isAnalyzing={isAnalyzing}
+                sciFiHudEnabled={userPrefs.sciFiHudEnabled}
+                autoAnalyzeOnCapture={userPrefs.autoAnalyzeOnCapture}
+                cameraQuality={userPrefs.cameraQuality}
               />
             )}
           </>
@@ -357,6 +363,8 @@ export default function App() {
             onUpdateWater={setWaterMl}
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
+            userName={userPrefs.userName}
+            waterGlassSize={userPrefs.waterGlassSize}
           />
         )}
 
@@ -425,18 +433,18 @@ export default function App() {
         </div>
       </nav>
 
-      {/* Footer (Desktop only) */}
+      {/* Footer */}
       <footer className="hidden sm:block border-t border-slate-900 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center space-x-2">
-            <span className="font-bold text-slate-400">NutriScan AI</span>
+            <span className="font-extrabold text-white">NutriScan AI</span>
             <span>•</span>
-            <span>Computer Vision & Calorie Estimation Engine</span>
+            <span>Engineered with ❤️ by <strong className="text-emerald-400 font-bold">{userPrefs.userName || 'Vishal'}</strong></span>
           </div>
-          <div className="flex items-center space-x-4 text-[11px] text-slate-500">
-            <span>Powered by Google Gemini 3.8 Flash</span>
+          <div className="flex items-center space-x-4 text-[11px] text-slate-400">
+            <span>Powered by Google Gemini Vision</span>
             <span>•</span>
-            <span>Local & Private</span>
+            <span className="text-emerald-400 font-semibold">Pro Edition</span>
           </div>
         </div>
       </footer>
@@ -454,6 +462,8 @@ export default function App() {
         onClose={() => setIsSettingsOpen(false)}
         onSettingsUpdated={refreshSettings}
         onResetAllData={handleResetAllData}
+        meals={meals}
+        goals={goals}
       />
 
     </div>

@@ -29,7 +29,9 @@ export default function DailyTracker({
   waterMl,
   onUpdateWater,
   selectedDate,
-  setSelectedDate
+  setSelectedDate,
+  userName = 'Vishal',
+  waterGlassSize = 250
 }) {
   const [showManualModal, setShowManualModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
@@ -151,7 +153,7 @@ export default function DailyTracker({
           <div>
             <div className="flex items-center space-x-2">
               <h2 className="text-base sm:text-lg font-bold text-white">
-                {isToday ? "Today's Nutrition Diary" : `Diary: ${selectedDate}`}
+                {isToday ? `${userName ? `${userName}'s` : "Today's"} Nutrition Diary` : `Diary: ${selectedDate}`}
               </h2>
               {isToday && (
                 <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold">
@@ -304,7 +306,7 @@ export default function DailyTracker({
                     Water Hydration: <strong className="text-white">{waterMl} ml</strong> / {waterGoal} ml
                   </div>
                   <div className="text-[11px] text-slate-400">
-                    {Math.round(waterMl / 250)} glasses ({waterPercent}%)
+                    {Math.round(waterMl / (waterGlassSize || 250))} glasses ({waterPercent}%)
                   </div>
                 </div>
               </div>
@@ -312,20 +314,20 @@ export default function DailyTracker({
               <div className="flex items-center space-x-2">
                 <button
                   type="button"
-                  onClick={() => onUpdateWater(Math.max(0, waterMl - 250))}
+                  onClick={() => onUpdateWater(Math.max(0, waterMl - (waterGlassSize || 250)))}
                   className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 border border-slate-700 transition"
-                  title="Remove 250ml"
+                  title={`Remove ${waterGlassSize || 250}ml`}
                 >
-                  -250ml
+                  -{waterGlassSize || 250}ml
                 </button>
                 <button
                   type="button"
-                  onClick={() => onUpdateWater(waterMl + 250)}
+                  onClick={() => onUpdateWater(waterMl + (waterGlassSize || 250))}
                   className="px-3 py-1 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs font-bold shadow-md shadow-sky-500/20 transition flex items-center space-x-1"
-                  title="Add 250ml Glass"
+                  title={`Add ${waterGlassSize || 250}ml Glass`}
                 >
                   <Plus className="w-3 h-3 text-slate-950" />
-                  <span>+ Glass (250ml)</span>
+                  <span>+ Glass ({waterGlassSize || 250}ml)</span>
                 </button>
               </div>
             </div>
