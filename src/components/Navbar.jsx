@@ -111,7 +111,7 @@ export default function Navbar({
           <button
             onClick={onOpenGoals}
             className="hidden sm:flex p-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-slate-800/80 transition"
-            title="Customize Daily Goals & Macros"
+            title={language === 'hi' ? 'दैनिक लक्ष्य और पोषक तत्व बदलें' : 'Customize Daily Goals & Macros'}
             aria-label="Customize Goals"
           >
             <Sliders className="w-4 h-4" />
@@ -121,7 +121,7 @@ export default function Navbar({
           <button
             onClick={onOpenSettings}
             className="hidden sm:flex p-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-slate-800/80 transition"
-            title="API Key & Application Settings"
+            title={language === 'hi' ? 'सेटिंग्स और प्रोफ़ाइल' : 'API Key & Application Settings'}
             aria-label="Settings"
           >
             <Settings className="w-4 h-4" />

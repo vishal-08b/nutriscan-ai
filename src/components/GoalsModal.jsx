@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
 import { X, Sliders, Check, Flame, Dumbbell, Wheat, Droplet, Sparkles } from 'lucide-react';
 import { GOAL_PRESETS } from '../data/sampleFoods';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function GoalsModal({ isOpen, onClose, currentGoals, onSaveGoals }) {
   if (!isOpen) return null;
 
+  const { t, language } = useLanguage();
   const [calories, setCalories] = useState(currentGoals.dailyCalories || 2000);
   const [protein, setProtein] = useState(currentGoals.proteinGrams || 140);
   const [carbs, setCarbs] = useState(currentGoals.carbsGrams || 210);
   const [fat, setFat] = useState(currentGoals.fatGrams || 65);
   const [water, setWater] = useState(currentGoals.waterMl || 2500);
+
+  const presetNameMap = {
+    'Fat Loss & Cutting': language === 'hi' ? 'फैट लॉस व कटिंग' : 'Fat Loss & Cutting',
+    'Balanced Indian Diet': language === 'hi' ? 'संतुलित भारतीय आहार' : 'Balanced Indian Diet',
+    'Muscle Gain & Bulking': language === 'hi' ? 'मसल्स गेन व बल्किंग' : 'Muscle Gain & Bulking',
+    'Low Carb / High Protein': language === 'hi' ? 'लो कार्ब / हाई प्रोटीन' : 'Low Carb / High Protein',
+  };
 
   const applyPreset = (preset) => {
     setCalories(preset.calories);
@@ -40,8 +49,8 @@ export default function GoalsModal({ isOpen, onClose, currentGoals, onSaveGoals 
               <Sliders className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white">Customize Nutritional Goals</h3>
-              <p className="text-xs text-slate-400">Set daily calorie targets & macro splits</p>
+              <h3 className="text-base font-bold text-white">{t('customizeGoals')}</h3>
+              <p className="text-xs text-slate-400">{t('setDailyTargets')}</p>
             </div>
           </div>
           <button
@@ -55,7 +64,7 @@ export default function GoalsModal({ isOpen, onClose, currentGoals, onSaveGoals 
         {/* Quick Presets */}
         <div>
           <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-2">
-            Goal Presets
+            {t('goalPresets')}
           </label>
           <div className="grid grid-cols-2 gap-2">
             {GOAL_PRESETS.map((preset) => (
@@ -69,12 +78,14 @@ export default function GoalsModal({ isOpen, onClose, currentGoals, onSaveGoals 
                     : 'border-slate-800 bg-slate-950/60 hover:bg-slate-800/60 text-slate-300'
                 }`}
               >
-                <div className="font-semibold text-xs text-white">{preset.name}</div>
+                <div className="font-semibold text-xs text-white">
+                  {presetNameMap[preset.name] || preset.name}
+                </div>
                 <div className="text-[11px] text-emerald-400 font-bold mt-0.5">
                   {preset.calories} kcal
                 </div>
                 <div className="text-[10px] text-slate-400 mt-0.5">
-                  {preset.protein}g P • {preset.carbs}g C • {preset.fat}g F
+                  {preset.protein}g {t('protein')} • {preset.carbs}g {t('carbs')} • {preset.fat}g {t('fat')}
                 </div>
               </button>
             ))}
@@ -86,7 +97,7 @@ export default function GoalsModal({ isOpen, onClose, currentGoals, onSaveGoals 
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-300 flex items-center space-x-1.5">
               <Flame className="w-4 h-4 text-amber-400" />
-              <span>Daily Calorie Target</span>
+              <span>{t('dailyCalorieTarget')}</span>
             </span>
             <div className="flex items-baseline space-x-1">
               <input
@@ -115,13 +126,13 @@ export default function GoalsModal({ isOpen, onClose, currentGoals, onSaveGoals 
         {/* Macros Breakdown Inputs */}
         <div className="space-y-3">
           <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
-            Macronutrient Targets (Grams)
+            {t('macroTargetsGrams')}
           </span>
 
           <div className="grid grid-cols-3 gap-3">
             {/* Protein */}
             <div className="bg-slate-950/60 border border-cyan-500/20 rounded-xl p-3">
-              <span className="text-[11px] font-semibold text-cyan-400 block mb-1">Protein</span>
+              <span className="text-[11px] font-semibold text-cyan-400 block mb-1">{t('protein')}</span>
               <div className="flex items-baseline space-x-1">
                 <input
                   type="number"
@@ -140,7 +151,7 @@ export default function GoalsModal({ isOpen, onClose, currentGoals, onSaveGoals 
 
             {/* Carbs */}
             <div className="bg-slate-950/60 border border-amber-500/20 rounded-xl p-3">
-              <span className="text-[11px] font-semibold text-amber-400 block mb-1">Carbs</span>
+              <span className="text-[11px] font-semibold text-amber-400 block mb-1">{t('carbs')}</span>
               <div className="flex items-baseline space-x-1">
                 <input
                   type="number"
@@ -159,7 +170,7 @@ export default function GoalsModal({ isOpen, onClose, currentGoals, onSaveGoals 
 
             {/* Fat */}
             <div className="bg-slate-950/60 border border-rose-500/20 rounded-xl p-3">
-              <span className="text-[11px] font-semibold text-rose-400 block mb-1">Fat</span>
+              <span className="text-[11px] font-semibold text-rose-400 block mb-1">{t('fat')}</span>
               <div className="flex items-baseline space-x-1">
                 <input
                   type="number"
@@ -181,8 +192,8 @@ export default function GoalsModal({ isOpen, onClose, currentGoals, onSaveGoals 
         {/* Water Intake Goal */}
         <div className="bg-slate-950/60 border border-sky-500/20 rounded-2xl p-4 flex items-center justify-between">
           <div>
-            <span className="text-xs font-semibold text-sky-400 block">Daily Hydration Target</span>
-            <span className="text-[11px] text-slate-400">Recommended 2,000 - 3,500 ml</span>
+            <span className="text-xs font-semibold text-sky-400 block">{t('dailyHydrationTarget')}</span>
+            <span className="text-[11px] text-slate-400">{t('hydrationRecommended')}</span>
           </div>
           <div className="flex items-baseline space-x-1">
             <input
@@ -205,14 +216,14 @@ export default function GoalsModal({ isOpen, onClose, currentGoals, onSaveGoals 
             onClick={onClose}
             className="px-4 py-2 text-xs font-medium text-slate-400 hover:text-white"
           >
-            Cancel
+            {t('cancel')}
           </button>
           <button
             type="button"
             onClick={handleSave}
             className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-bold text-xs shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 transition"
           >
-            Apply Targets
+            {t('applyTargets')}
           </button>
         </div>
 

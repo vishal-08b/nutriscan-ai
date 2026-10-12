@@ -142,8 +142,8 @@ export default function SettingsModal({
               <Settings className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base sm:text-lg font-extrabold text-white">App Settings & Profile</h3>
-              <p className="text-[11px] text-slate-400">Personalize AI, diet targets & features</p>
+              <h3 className="text-base sm:text-lg font-extrabold text-white">{t('appSettingsTitle')}</h3>
+              <p className="text-[11px] text-slate-400">{t('appSettingsSub')}</p>
             </div>
           </div>
           <button
@@ -167,28 +167,28 @@ export default function SettingsModal({
             <div>
               <div className="flex items-center space-x-2">
                 <h4 className="text-base font-extrabold text-white tracking-tight">
-                  {prefs.userName && prefs.userName.trim() ? prefs.userName.trim() : 'My Profile'}
+                  {prefs.userName && prefs.userName.trim() ? prefs.userName.trim() : t('myProfile')}
                 </h4>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center space-x-1">
                   <Sparkles className="w-2.5 h-2.5 text-emerald-400" />
-                  <span>PRO MEMBER</span>
+                  <span>{t('proMember')}</span>
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-0.5">
                 {prefs.userName && prefs.userName.trim() ? (
-                  <>Target: <span className="text-emerald-400 font-semibold">{prefs.userGoal}</span> • {prefs.dietType}</>
+                  <>{language === 'hi' ? 'लक्ष्य:' : 'Target:'} <span className="text-emerald-400 font-semibold">{prefs.userGoal}</span> • {prefs.dietType}</>
                 ) : (
-                  <span>Enter your name below to personalize your app</span>
+                  <span>{t('personalizeHelp')}</span>
                 )}
               </p>
             </div>
           </div>
 
           <div className="text-right hidden xs:block">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block">Edition</span>
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block">{t('edition')}</span>
             <span className="text-xs text-emerald-400 font-bold flex items-center space-x-1 justify-end">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Full Access</span>
+              <span>{t('fullAccess')}</span>
             </span>
           </div>
         </div>
@@ -297,18 +297,18 @@ export default function SettingsModal({
             <div>
               <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-1.5 flex items-center space-x-1.5">
                 <Scale className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Primary Nutrition Focus</span>
+                <span>{t('primaryGoal')}</span>
               </label>
               <select
                 value={prefs.userGoal}
                 onChange={(e) => updatePref('userGoal', e.target.value)}
                 className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white outline-none cursor-pointer"
               >
-                <option value="Fat Loss & Lean Muscle">🔥 Fat Loss & Lean Muscle (Calorie Deficit)</option>
-                <option value="Healthy Maintenance">⚖️ Healthy Maintenance (Steady Energy)</option>
-                <option value="Bulking & Strength">💪 Bulking & Muscle Gain (High Calorie & Protein)</option>
-                <option value="Low Carb & Keto">🥑 Low Carb & Ketogenic Focus</option>
-                <option value="Diabetes & Low GI">🩺 Blood Sugar Balance & Low GI</option>
+                <option value="Fat Loss & Lean Muscle">{language === 'hi' ? '🔥 फैट लॉस व लीन मसल्स (कैलोरी डेफिसिट)' : '🔥 Fat Loss & Lean Muscle (Calorie Deficit)'}</option>
+                <option value="Healthy Maintenance">{language === 'hi' ? '⚖️ स्वस्थ वजन बनाए रखना (स्थिर ऊर्जा)' : '⚖️ Healthy Maintenance (Steady Energy)'}</option>
+                <option value="Bulking & Strength">{language === 'hi' ? '💪 बल्किंग व स्ट्रेंथ (हाई कैलोरी व प्रोटीन)' : '💪 Bulking & Muscle Gain (High Calorie & Protein)'}</option>
+                <option value="Low Carb & Keto">{language === 'hi' ? '🥑 लो कार्ब व कीटोजेनिक' : '🥑 Low Carb & Ketogenic Focus'}</option>
+                <option value="Diabetes & Low GI">{language === 'hi' ? '🩺 ब्लड शुगर संतुलन व लो जीआई' : '🩺 Blood Sugar Balance & Low GI'}</option>
               </select>
             </div>
 
@@ -316,28 +316,28 @@ export default function SettingsModal({
             <div>
               <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-1.5 flex items-center space-x-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                <span>Dietary Preference & Cuisine Mode</span>
+                <span>{t('dietPreference')}</span>
               </label>
               <select
                 value={prefs.dietType}
                 onChange={(e) => updatePref('dietType', e.target.value)}
                 className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white outline-none cursor-pointer"
               >
-                <option value="All Indian Foods">🍛 All Authentic Indian Dishes (Pan-India)</option>
-                <option value="Pure Vegetarian (Shakahari)">🥬 Pure Vegetarian (Shakahari Only)</option>
-                <option value="Vegan (100% Plant-Based)">🌱 Vegan (No Dairy, No Ghee)</option>
-                <option value="Jain (No Root Veg / Onion / Garlic)">🪷 Jain Diet (No Onion, Garlic, Potatoes)</option>
-                <option value="Eggitarian">🍳 Eggitarian (Vegetarian + Eggs)</option>
-                <option value="High Protein Non-Veg">🍗 High Protein Non-Veg (Chicken, Fish, Eggs)</option>
+                <option value="All Indian Foods">{language === 'hi' ? '🍛 सभी भारतीय व्यंजन (Pan-India)' : '🍛 All Authentic Indian Dishes (Pan-India)'}</option>
+                <option value="Pure Vegetarian (Shakahari)">{language === 'hi' ? '🥬 शुद्ध शाकाहारी' : '🥬 Pure Vegetarian (Shakahari Only)'}</option>
+                <option value="Vegan (100% Plant-Based)">{language === 'hi' ? '🌱 वीगन (डेयरी व घी मुक्त)' : '🌱 Vegan (No Dairy, No Ghee)'}</option>
+                <option value="Jain (No Root Veg / Onion / Garlic)">{language === 'hi' ? '🪷 जैन आहार (बिना प्याज, लहसुन, आलू)' : '🪷 Jain Diet (No Onion, Garlic, Potatoes)'}</option>
+                <option value="Eggitarian">{language === 'hi' ? '🍳 एगिटेरियन (शाकाहारी + अंडा)' : '🍳 Eggitarian (Vegetarian + Eggs)'}</option>
+                <option value="High Protein Non-Veg">{language === 'hi' ? '🍗 हाई प्रोटीन नॉन-वेज (चिकन, मछली, अंडे)' : '🍗 High Protein Non-Veg (Chicken, Fish, Eggs)'}</option>
               </select>
             </div>
 
             {/* Feature 4: Units of Measurement */}
             <div className="bg-slate-950/60 border border-slate-800 rounded-2xl p-4 flex items-center justify-between">
               <div>
-                <span className="text-xs font-bold text-white block">Measurement System</span>
+                <span className="text-xs font-bold text-white block">{t('measurementSystem')}</span>
                 <p className="text-[11px] text-slate-400 mt-0.5">
-                  Choose between Metric (grams, ml, kcal) and Imperial (ounces, cal)
+                  {t('unitsDesc')}
                 </p>
               </div>
               <div className="flex items-center space-x-1 bg-slate-900 p-1 rounded-xl border border-slate-800">
@@ -348,7 +348,7 @@ export default function SettingsModal({
                     prefs.units === 'metric' ? 'bg-emerald-500 text-slate-950 shadow-sm' : 'text-slate-400'
                   }`}
                 >
-                  Metric
+                  {t('metric')}
                 </button>
                 <button
                   type="button"
@@ -357,7 +357,7 @@ export default function SettingsModal({
                     prefs.units === 'imperial' ? 'bg-emerald-500 text-slate-950 shadow-sm' : 'text-slate-400'
                   }`}
                 >
-                  Imperial
+                  {t('imperial')}
                 </button>
               </div>
             </div>
@@ -374,10 +374,10 @@ export default function SettingsModal({
               <div className="space-y-0.5">
                 <span className="text-xs font-bold text-white flex items-center space-x-1.5">
                   <GlassWater className="w-3.5 h-3.5 text-sky-400" />
-                  <span>Hydration Glass Increment</span>
+                  <span>{t('glassIncrement')}</span>
                 </span>
                 <p className="text-[11px] text-slate-400">
-                  Amount added when tapping "+ Glass" in Daily Diary
+                  {t('glassIncrementDesc')}
                 </p>
               </div>
               <select
@@ -385,10 +385,10 @@ export default function SettingsModal({
                 onChange={(e) => updatePref('waterGlassSize', Number(e.target.value))}
                 className="bg-slate-900 border border-slate-700 text-xs text-white rounded-xl px-2.5 py-1.5 outline-none font-bold cursor-pointer"
               >
-                <option value={200}>200 ml (Small Cup)</option>
-                <option value={250}>250 ml (Standard Glass)</option>
-                <option value={300}>300 ml (Mug)</option>
-                <option value={500}>500 ml (Bottle)</option>
+                <option value={200}>{language === 'hi' ? '200 मिली (छोटा कप)' : '200 ml (Small Cup)'}</option>
+                <option value={250}>{language === 'hi' ? '250 मिली (मानक ग्लास)' : '250 ml (Standard Glass)'}</option>
+                <option value={300}>{language === 'hi' ? '300 मिली (मग)' : '300 ml (Mug)'}</option>
+                <option value={500}>{language === 'hi' ? '500 मिली (बोतल)' : '500 ml (Bottle)'}</option>
               </select>
             </div>
 
@@ -397,10 +397,10 @@ export default function SettingsModal({
               <div className="space-y-0.5 pr-4">
                 <span className="text-xs font-bold text-white flex items-center space-x-1.5">
                   <Camera className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Sci-Fi Scanner HUD & Laser Reticle</span>
+                  <span>{t('hudLaser')}</span>
                 </span>
                 <p className="text-[11px] text-slate-400">
-                  Enable high-tech animated corner brackets, sweeping laser beam, and telemetry crosshairs
+                  {t('hudLaserDesc')}
                 </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer shrink-0">
@@ -419,10 +419,10 @@ export default function SettingsModal({
               <div className="space-y-0.5">
                 <span className="text-xs font-bold text-white flex items-center space-x-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Camera Vision Resolution</span>
+                  <span>{t('cameraResolution')}</span>
                 </span>
                 <p className="text-[11px] text-slate-400">
-                  High definition captures more ingredient details; battery saver uploads faster
+                  {t('cameraResolutionDesc')}
                 </p>
               </div>
               <select
@@ -430,8 +430,8 @@ export default function SettingsModal({
                 onChange={(e) => updatePref('cameraQuality', e.target.value)}
                 className="bg-slate-900 border border-slate-700 text-xs text-white rounded-xl px-2.5 py-1.5 outline-none font-bold cursor-pointer"
               >
-                <option value="1080p">1080p (Crystal AI)</option>
-                <option value="720p">720p (Battery Saver)</option>
+                <option value="1080p">{language === 'hi' ? '1080p (क्रिस्टल स्पष्ट AI)' : '1080p (Crystal AI)'}</option>
+                <option value="720p">{language === 'hi' ? '720p (बैटरी सेवर)' : '720p (Battery Saver)'}</option>
               </select>
             </div>
 
@@ -440,10 +440,10 @@ export default function SettingsModal({
               <div className="space-y-0.5 pr-4">
                 <span className="text-xs font-bold text-white flex items-center space-x-1.5">
                   <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Auto-Analyze on Photo Snapshot</span>
+                  <span>{t('autoAnalyze')}</span>
                 </span>
                 <p className="text-[11px] text-slate-400">
-                  Immediately starts AI nutrition breakdown upon taking photo without extra click
+                  {t('autoAnalyzeDesc')}
                 </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer shrink-0">
@@ -462,10 +462,10 @@ export default function SettingsModal({
               <div className="space-y-0.5 pr-4">
                 <span className="text-xs font-bold text-white flex items-center space-x-1.5">
                   <Vibrate className="w-3.5 h-3.5 text-purple-400" />
-                  <span>Mobile Haptic Feedback</span>
+                  <span>{t('hapticFeedback')}</span>
                 </span>
                 <p className="text-[11px] text-slate-400">
-                  Gentle tactile buzz on phone button clicks, photo capture, and meal logging
+                  {t('hapticFeedbackDesc')}
                 </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer shrink-0">
@@ -484,10 +484,10 @@ export default function SettingsModal({
               <div className="space-y-0.5 pr-4">
                 <span className="text-xs font-bold text-white flex items-center space-x-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Celebration Confetti Effects</span>
+                  <span>{t('confettiEffects')}</span>
                 </span>
                 <p className="text-[11px] text-slate-400">
-                  Display rewarding particle bursts when logging healthy meals and reaching goals
+                  {t('confettiEffectsDesc')}
                 </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer shrink-0">
@@ -506,10 +506,10 @@ export default function SettingsModal({
               <div className="space-y-0.5 pr-4">
                 <span className="text-xs font-bold text-white flex items-center space-x-1.5">
                   <Bell className="w-3.5 h-3.5 text-sky-400" />
-                  <span>Hydration Hourly Nudges</span>
+                  <span>{t('hydrationNudges')}</span>
                 </span>
                 <p className="text-[11px] text-slate-400">
-                  Subtle visual reminders to drink water during active working hours
+                  {t('hydrationNudgesDesc')}
                 </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer shrink-0">
@@ -540,13 +540,13 @@ export default function SettingsModal({
                       </div>
                       <div>
                         <div className="flex items-center space-x-2">
-                          <h4 className="text-xs font-bold text-white uppercase tracking-wider">NutriScan Cloud AI</h4>
+                          <h4 className="text-xs font-bold text-white uppercase tracking-wider">{t('cloudAiTitle')}</h4>
                           <span className="px-2 py-0.5 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30">
-                            Active & Permanent
+                            {t('activePermanent')}
                           </span>
                         </div>
                         <p className="text-[11px] text-slate-400 mt-0.5">
-                          Google Gemini Multimodal Vision API is securely integrated.
+                          {t('cloudAiDesc')}
                         </p>
                       </div>
                     </div>
@@ -556,7 +556,7 @@ export default function SettingsModal({
                   <div className="flex items-center justify-between pt-2 border-t border-slate-800/80">
                     <span className="text-[11px] text-slate-400 flex items-center space-x-1.5">
                       <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                      <span>Developer key is encrypted and hidden</span>
+                      <span>{t('keyProtected')}</span>
                     </span>
                     <button
                       type="button"
@@ -564,7 +564,7 @@ export default function SettingsModal({
                       disabled={testStatus === 'testing'}
                       className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer"
                     >
-                      {testStatus === 'testing' ? 'Testing...' : 'Test Connection'}
+                      {testStatus === 'testing' ? t('testingConnection') : t('testConnection')}
                     </button>
                   </div>
 
@@ -601,7 +601,7 @@ export default function SettingsModal({
                   >
                     <span className="flex items-center space-x-2 font-medium">
                       <Key className="w-3.5 h-3.5 text-slate-400" />
-                      <span>Advanced: Override with Personal Key (Optional)</span>
+                      <span>{t('advancedKeyOverride')}</span>
                     </span>
                     {showCustomKeySection ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                   </button>
@@ -609,14 +609,14 @@ export default function SettingsModal({
                   {showCustomKeySection && (
                     <div className="p-4 pt-1 border-t border-slate-800 space-y-3">
                       <p className="text-[11px] text-slate-400">
-                        Use your own personal Google AI Studio key instead of the built-in app engine:
+                        {t('personalKeyHelp')}
                       </p>
                       <div className="relative">
                         <input
                           type={showKey ? 'text' : 'password'}
                           value={customKey}
                           onChange={(e) => setCustomKey(e.target.value)}
-                          placeholder="Paste personal Gemini API key here..."
+                          placeholder={t('personalKeyPlaceholder')}
                           className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-sm text-white pr-20 outline-none font-mono transition"
                         />
                         <button
@@ -633,7 +633,7 @@ export default function SettingsModal({
                           onClick={() => setCustomKey('')}
                           className="text-[11px] text-amber-400 hover:underline cursor-pointer"
                         >
-                          ✕ Clear custom key & use built-in engine
+                          {t('clearPersonalKey')}
                         </button>
                       )}
                     </div>
@@ -646,14 +646,14 @@ export default function SettingsModal({
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center space-x-1.5">
                 <Layers className="w-3.5 h-3.5 text-emerald-400" />
-                <span>AI Vision Model Strategy</span>
+                <span>{t('aiStrategy')}</span>
               </label>
               <select
                 value={preferredModel}
                 onChange={(e) => setPreferredModel(e.target.value)}
                 className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-3 py-2 text-xs text-white outline-none cursor-pointer"
               >
-                <option value="auto">Auto-Failover (Recommended - prioritized for generous quotas)</option>
+                <option value="auto">{language === 'hi' ? 'ऑटो-फेलओवर (अनुशंसित - अधिकतम कोटा)' : 'Auto-Failover (Recommended - prioritized for generous quotas)'}</option>
                 <option value="gemini-2.0-flash">gemini-2.0-flash (1,500 req/day quota)</option>
                 <option value="gemini-2.0-flash-lite">gemini-2.0-flash-lite (fast & high quota)</option>
                 <option value="gemini-2.5-flash">gemini-2.5-flash</option>
@@ -666,10 +666,10 @@ export default function SettingsModal({
               <div className="space-y-0.5 pr-4">
                 <span className="text-xs font-bold text-white flex items-center space-x-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Offline Curated Demo Mode</span>
+                  <span>{t('offlineDemoTitle')}</span>
                 </span>
                 <p className="text-[11px] text-slate-400">
-                  Zero network calls required. Instant nutrition analyses for authentic Indian dishes even when offline.
+                  {t('offlineDemoDesc')}
                 </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer shrink-0">
@@ -693,10 +693,10 @@ export default function SettingsModal({
             <div className="bg-slate-950/60 border border-slate-800 rounded-2xl p-4 space-y-3">
               <span className="text-xs font-bold text-white flex items-center space-x-1.5">
                 <Download className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Export & Backup Diary Data</span>
+                <span>{t('exportBackup')}</span>
               </span>
               <p className="text-[11px] text-slate-400">
-                Download your logged meal records, macro splits, and calorie data directly to your device.
+                {t('exportBackupDesc')}
               </p>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-1">
                 <button
@@ -705,7 +705,7 @@ export default function SettingsModal({
                   className="flex-1 inline-flex items-center justify-center space-x-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white border border-slate-700 transition"
                 >
                   <Download className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Export JSON Backup</span>
+                  <span>{t('exportJson')}</span>
                 </button>
                 <button
                   type="button"
@@ -713,7 +713,7 @@ export default function SettingsModal({
                   className="flex-1 inline-flex items-center justify-center space-x-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white border border-slate-700 transition"
                 >
                   <FileSpreadsheet className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Export CSV (Excel / Sheets)</span>
+                  <span>{t('exportCsv')}</span>
                 </button>
               </div>
             </div>
@@ -725,9 +725,9 @@ export default function SettingsModal({
                   <HardDrive className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-xs font-bold text-white block">Local Storage Footprint</span>
+                  <span className="text-xs font-bold text-white block">{t('localStorage')}</span>
                   <p className="text-[11px] text-slate-400">
-                    {storageStats.itemsCount} stored records on this device
+                    {storageStats.itemsCount} {t('storedRecords')}
                   </p>
                 </div>
               </div>
@@ -739,22 +739,22 @@ export default function SettingsModal({
             {/* Feature 15: Danger Zone: Clear Diary */}
             <div className="bg-rose-950/20 border border-rose-900/40 rounded-2xl p-4 flex items-center justify-between">
               <div>
-                <span className="text-xs font-bold text-rose-300 block">Clear Diary History</span>
+                <span className="text-xs font-bold text-rose-300 block">{t('clearDiary')}</span>
                 <p className="text-[11px] text-slate-400">
-                  Resets logged meals back to initial setup
+                  {t('clearDiaryDesc')}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => {
-                  if (window.confirm('Clear all logged meals and diary entries?')) {
+                  if (window.confirm(t('clearConfirm'))) {
                     onResetAllData();
                     onClose();
                   }
                 }}
                 className="px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 text-xs font-bold transition cursor-pointer"
               >
-                Reset History
+                {t('resetHistory')}
               </button>
             </div>
 
@@ -764,13 +764,10 @@ export default function SettingsModal({
         {/* Creator & App Credits Footer (Featured Name: Vishal) */}
         <div className="pt-3 border-t border-slate-800/80 text-center space-y-1">
           <p className="text-xs text-slate-300 flex items-center justify-center space-x-1.5">
-            <span>Crafted & Engineered with</span>
-            <span className="text-rose-400">❤️</span>
-            <span>by</span>
-            <strong className="text-emerald-400 font-extrabold tracking-wide">Vishal</strong>
+            <span>{t('craftedBy')}</span>
           </p>
           <p className="text-[10px] text-slate-500 font-mono">
-            NutriScan AI v2.5.0-pro • Lead Architect: Vishal • Android APK & Web Edition
+            {t('leadArchitect')}
           </p>
         </div>
 

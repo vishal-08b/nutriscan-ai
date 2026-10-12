@@ -12,6 +12,7 @@ import {
   ShieldCheck, 
   Send
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function ShareModal({
   isOpen,
@@ -21,6 +22,7 @@ export default function ShareModal({
 }) {
   if (!isOpen || !data) return null;
 
+  const { t, language } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   const isDay = type === 'day';
@@ -29,6 +31,14 @@ export default function ShareModal({
   // Prepare text content for social sharing
   const generateShareText = () => {
     if (isDay) {
+      if (language === 'hi') {
+        return `🥗 न्यूट्रिस्कैन AI के साथ मेरी आज की पोषण डायरी (${data.date || 'आज'}):\n` +
+          `🔥 कैलोरी: ${data.calories || 0} / ${data.goalCalories || 2000} kcal\n` +
+          `💪 प्रोटीन: ${data.protein || 0}g | 🌾 कार्ब्स: ${data.carbs || 0}g | 🥑 वसा: ${data.fat || 0}g\n` +
+          `💧 पानी: ${data.waterMl || 0} ml\n` +
+          `🏆 न्यूट्री-ग्रेड: Grade ${data.grade || 'A'} (${data.mealsCount || 0} भोजन दर्ज)\n\n` +
+          `AI से अपना भोजन ट्रैक करें: ${appUrl} #NutriScanAI #Fitness`;
+      }
       return `🥗 My Nutrition Progress with NutriScan AI (${data.date || 'Today'}):\n` +
         `🔥 Calories: ${data.calories || 0} / ${data.goalCalories || 2000} kcal\n` +
         `💪 Protein: ${data.protein || 0}g | 🌾 Carbs: ${data.carbs || 0}g | 🥑 Fat: ${data.fat || 0}g\n` +
@@ -36,6 +46,14 @@ export default function ShareModal({
         `🏆 NutriGrade: Grade ${data.grade || 'A'} (${data.mealsCount || 0} meals tracked)\n\n` +
         `Track your meals with AI Food Vision: ${appUrl} #NutriScanAI #Fitness`;
     } else {
+      if (language === 'hi') {
+        return `🍽️ न्यूट्रिस्कैन AI से विश्लेषण:\n` +
+          `🍛 ${data.foodName || 'भारतीय भोजन'}\n` +
+          `🔥 कैलोरी: ${data.calories || 0} kcal\n` +
+          `💪 ${data.macros?.protein || 0}g प्रोटीन | 🌾 ${data.macros?.carbs || 0}g कार्ब्स | 🥑 ${data.macros?.fat || 0}g वसा\n` +
+          `⭐ ग्रेड ${data.nutriGrade || 'A'} (${data.healthScore || 9}/10 हेल्थ स्कोर)\n\n` +
+          `किसी भी भोजन का तुरंत विश्लेषण करें: ${appUrl} #NutriScanAI #Diet`;
+      }
       return `🍽️ Just analyzed with NutriScan AI:\n` +
         `🍛 ${data.foodName || 'Indian Meal'}\n` +
         `🔥 Calories: ${data.calories || 0} kcal\n` +
@@ -102,8 +120,8 @@ export default function ShareModal({
               <Share2 className="w-4 h-4 font-bold" />
             </div>
             <div>
-              <h3 className="text-sm sm:text-base font-bold text-white">Share to Socials</h3>
-              <p className="text-[11px] text-slate-400">WhatsApp, Instagram, X & Facebook</p>
+              <h3 className="text-sm sm:text-base font-bold text-white">{t('shareToSocials')}</h3>
+              <p className="text-[11px] text-slate-400">{t('shareSubtitle')}</p>
             </div>
           </div>
           <button
@@ -121,17 +139,17 @@ export default function ShareModal({
               <div className="w-6 h-6 rounded-lg bg-emerald-500 flex items-center justify-center text-slate-950">
                 <Sparkles className="w-3.5 h-3.5" />
               </div>
-              <span className="font-extrabold text-xs text-white tracking-tight">NutriScan AI</span>
+              <span className="font-extrabold text-xs text-white tracking-tight">{t('appName')}</span>
             </div>
             <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-              {isDay ? (data.date || 'Today') : 'Food Verified'}
+              {isDay ? (data.date || t('today')) : t('foodVerified')}
             </span>
           </div>
 
           {/* Core Stat */}
           {isDay ? (
             <div>
-              <div className="text-[11px] text-slate-400 font-medium">Daily Calorie Intake</div>
+              <div className="text-[11px] text-slate-400 font-medium">{t('dailyCalorieIntake')}</div>
               <div className="flex items-baseline space-x-1.5 mt-0.5">
                 <span className="text-3xl font-black text-white tracking-tight">{data.calories || 0}</span>
                 <span className="text-sm text-slate-400 font-semibold">/ {data.goalCalories || 2000} kcal</span>
@@ -142,7 +160,7 @@ export default function ShareModal({
               <h4 className="text-base font-bold text-white line-clamp-1">{data.foodName}</h4>
               <div className="flex items-baseline space-x-1.5 mt-0.5">
                 <span className="text-2xl font-black text-white tracking-tight">{data.calories || 0}</span>
-                <span className="text-xs text-emerald-400 font-semibold">kcal estimated</span>
+                <span className="text-xs text-emerald-400 font-semibold">kcal {t('portion')}</span>
               </div>
             </div>
           )}
@@ -150,15 +168,15 @@ export default function ShareModal({
           {/* Macro Split Pill Grid */}
           <div className="grid grid-cols-3 gap-2">
             <div className="bg-slate-950/70 border border-cyan-500/20 rounded-xl p-2 text-center">
-              <span className="text-[10px] text-cyan-400 font-bold block">Protein</span>
+              <span className="text-[10px] text-cyan-400 font-bold block">{t('protein')}</span>
               <span className="text-xs font-black text-white">{isDay ? data.protein : data.macros?.protein}g</span>
             </div>
             <div className="bg-slate-950/70 border border-amber-500/20 rounded-xl p-2 text-center">
-              <span className="text-[10px] text-amber-400 font-bold block">Carbs</span>
+              <span className="text-[10px] text-amber-400 font-bold block">{t('carbs')}</span>
               <span className="text-xs font-black text-white">{isDay ? data.carbs : data.macros?.carbs}g</span>
             </div>
             <div className="bg-slate-950/70 border border-rose-500/20 rounded-xl p-2 text-center">
-              <span className="text-[10px] text-rose-400 font-bold block">Fat</span>
+              <span className="text-[10px] text-rose-400 font-bold block">{t('fat')}</span>
               <span className="text-xs font-black text-white">{isDay ? data.fat : data.macros?.fat}g</span>
             </div>
           </div>
@@ -167,16 +185,16 @@ export default function ShareModal({
           <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
             <span className="flex items-center space-x-1">
               <ShieldCheck className="w-3 h-3 text-emerald-400" />
-              <span>AI Vision Verified</span>
+              <span>{language === 'hi' ? 'AI विज़न द्वारा सत्यापित' : 'AI Vision Verified'}</span>
             </span>
-            <span className="font-semibold text-emerald-300">Grade {data.grade || data.nutriGrade || 'A'}</span>
+            <span className="font-semibold text-emerald-300">{t('grade')} {data.grade || data.nutriGrade || 'A'}</span>
           </div>
         </div>
 
         {/* Share Action Buttons */}
         <div className="space-y-2.5">
           <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
-            Share Directly:
+            {language === 'hi' ? 'सीधे शेयर करें:' : 'Share Directly:'}
           </label>
 
           <div className="grid grid-cols-2 gap-2.5">
@@ -186,7 +204,7 @@ export default function ShareModal({
               className="flex items-center justify-center space-x-2 py-2.5 px-3 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-semibold text-xs transition cursor-pointer active:scale-95"
             >
               <span>💬</span>
-              <span>WhatsApp</span>
+              <span>{t('shareWhatsApp')}</span>
             </button>
 
             {/* X / Twitter */}
@@ -195,7 +213,7 @@ export default function ShareModal({
               className="flex items-center justify-center space-x-2 py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-semibold text-xs transition cursor-pointer active:scale-95"
             >
               <span className="font-bold">𝕏</span>
-              <span>X (Twitter)</span>
+              <span>{t('shareX')}</span>
             </button>
 
             {/* Facebook */}
@@ -204,7 +222,7 @@ export default function ShareModal({
               className="flex items-center justify-center space-x-2 py-2.5 px-3 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 font-semibold text-xs transition cursor-pointer active:scale-95"
             >
               <span>📘</span>
-              <span>Facebook</span>
+              <span>{t('shareFacebook')}</span>
             </button>
 
             {/* Instagram & System Share Sheet */}
@@ -213,7 +231,7 @@ export default function ShareModal({
               className="flex items-center justify-center space-x-2 py-2.5 px-3 rounded-xl bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 text-pink-200 border border-pink-500/30 font-semibold text-xs transition cursor-pointer active:scale-95"
             >
               <span>📸</span>
-              <span>Instagram / More</span>
+              <span>{language === 'hi' ? 'Instagram / अन्य ऐप्स' : 'Instagram / More'}</span>
             </button>
           </div>
 
@@ -225,12 +243,12 @@ export default function ShareModal({
             {copied ? (
               <>
                 <Check className="w-4 h-4 text-emerald-400" />
-                <span className="text-emerald-400 font-bold">Copied Summary to Clipboard!</span>
+                <span className="text-emerald-400 font-bold">{t('copiedText')}</span>
               </>
             ) : (
               <>
                 <Copy className="w-4 h-4 text-slate-400" />
-                <span>Copy Summary Text</span>
+                <span>{t('copySummary')}</span>
               </>
             )}
           </button>

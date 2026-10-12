@@ -480,20 +480,20 @@ export default function DailyTracker({
       {showManualModal && (
         <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
-            <h3 className="text-lg font-bold text-white">Manual Quick Add Meal</h3>
+            <h3 className="text-lg font-bold text-white">{t('addMealManually', 'Add Meal Manually')}</h3>
             <p className="text-xs text-slate-400">
-              Log an item directly with custom calories and macronutrients.
+              {t('addMealSubtitle', 'Log an item directly with custom calories and macronutrients.')}
             </p>
 
             <form onSubmit={handleManualSubmit} className="space-y-3.5">
               <div>
                 <label className="text-xs text-slate-300 font-medium block mb-1">
-                  Food / Dish Name
+                  {t('foodItemName', 'Food / Dish Name')}
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g., Whey Protein Shake, Banana, Apple"
+                  placeholder={language === 'hi' ? 'जैसे रोटी, दाल, पनीर भुर्जी, केला...' : 'e.g., Whey Protein Shake, Banana, Apple'}
                   value={manualName}
                   onChange={(e) => setManualName(e.target.value)}
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
@@ -503,23 +503,23 @@ export default function DailyTracker({
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs text-slate-300 font-medium block mb-1">
-                    Meal Type
+                    {t('mealType', 'Meal Type')}
                   </label>
                   <select
                     value={manualMealType}
                     onChange={(e) => setManualMealType(e.target.value)}
                     className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white outline-none focus:border-emerald-500"
                   >
-                    <option value="Breakfast">Breakfast</option>
-                    <option value="Lunch">Lunch</option>
-                    <option value="Dinner">Dinner</option>
-                    <option value="Snacks">Snacks</option>
+                    <option value="Breakfast">{t('breakfast', 'Breakfast')}</option>
+                    <option value="Lunch">{t('lunch', 'Lunch')}</option>
+                    <option value="Dinner">{t('dinner', 'Dinner')}</option>
+                    <option value="Snacks">{t('snacks', 'Snacks')}</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="text-xs text-slate-300 font-medium block mb-1">
-                    Calories (kcal)
+                    {t('calories', 'Calories')} (kcal)
                   </label>
                   <input
                     type="number"
@@ -535,7 +535,7 @@ export default function DailyTracker({
 
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <label className="text-xs text-cyan-400 font-medium block mb-1">Protein (g)</label>
+                  <label className="text-xs text-cyan-400 font-medium block mb-1">{t('protein', 'Protein')} (g)</label>
                   <input
                     type="number"
                     min="0"
@@ -547,7 +547,7 @@ export default function DailyTracker({
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-amber-400 font-medium block mb-1">Carbs (g)</label>
+                  <label className="text-xs text-amber-400 font-medium block mb-1">{t('carbs', 'Carbs')} (g)</label>
                   <input
                     type="number"
                     min="0"
@@ -559,7 +559,7 @@ export default function DailyTracker({
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-rose-400 font-medium block mb-1">Fat (g)</label>
+                  <label className="text-xs text-rose-400 font-medium block mb-1">{t('fat', 'Fat')} (g)</label>
                   <input
                     type="number"
                     min="0"
@@ -578,13 +578,13 @@ export default function DailyTracker({
                   onClick={() => setShowManualModal(false)}
                   className="px-4 py-2 rounded-xl text-xs text-slate-400 hover:text-white"
                 >
-                  Cancel
+                  {t('cancel', 'Cancel')}
                 </button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-md shadow-emerald-500/20"
                 >
-                  Save Entry
+                  {t('saveMeal', 'Save Entry')}
                 </button>
               </div>
             </form>

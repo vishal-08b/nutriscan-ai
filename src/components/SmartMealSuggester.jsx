@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Sparkles, Utensils, ChevronRight, Flame, Dumbbell, Compass } from 'lucide-react';
 import { SAMPLE_FOODS } from '../data/sampleFoods';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function SmartMealSuggester({
   remainingCalories = 600,
   remainingProtein = 35,
   onSelectSuggestion
 }) {
+  const { t } = useLanguage();
   const [mealFocus, setMealFocus] = useState('smart'); // 'smart' | 'protein' | 'light'
 
   // Pick intelligent Indian dishes matching current remaining budget
@@ -47,13 +49,13 @@ export default function SmartMealSuggester({
           </div>
           <div>
             <h4 className="text-xs sm:text-sm font-bold text-white flex items-center space-x-1.5">
-              <span>What Should I Eat Next?</span>
+              <span>{t('whatShouldIEat')}</span>
               <span className="text-[10px] uppercase font-bold text-emerald-400 px-1.5 py-0.2 rounded bg-emerald-500/10 border border-emerald-500/20">
-                AI Coach
+                {t('aiCoach')}
               </span>
             </h4>
             <p className="text-[11px] text-slate-400">
-              Budget: <strong className="text-emerald-400">{remainingCalories} kcal</strong> & <strong className="text-cyan-400">{remainingProtein}g protein</strong> remaining today
+              {t('budgetRemaining')} <strong className="text-emerald-400">{remainingCalories} kcal</strong> & <strong className="text-cyan-400">{remainingProtein}g {t('protein')}</strong> {t('remainingToday')}
             </p>
           </div>
         </div>
@@ -61,9 +63,9 @@ export default function SmartMealSuggester({
         {/* Filter Pills */}
         <div className="flex items-center space-x-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800 self-start sm:self-auto">
           {[
-            { id: 'smart', label: 'Balanced' },
-            { id: 'protein', label: 'High Protein' },
-            { id: 'light', label: 'Light' }
+            { id: 'smart', label: t('balanced') },
+            { id: 'protein', label: t('highProtein') },
+            { id: 'light', label: t('light') }
           ].map((tab) => (
             <button
               key={tab.id}

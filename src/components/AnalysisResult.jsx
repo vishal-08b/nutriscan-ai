@@ -170,14 +170,14 @@ export default function AnalysisResult({
           className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 text-xs sm:text-sm font-medium transition active:scale-95"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Scan Another Meal</span>
+          <span>{language === 'hi' ? 'दोबारा फोटो लें' : 'Scan Another Meal'}</span>
         </button>
 
         <div className="flex items-center space-x-2">
           {result.isSimulated && (
             <span className="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20 text-xs">
               <Info className="w-3.5 h-3.5" />
-              <span>Curated Demo</span>
+              <span>{t('curatedDemo', 'Curated Demo')}</span>
             </span>
           )}
 
@@ -187,7 +187,7 @@ export default function AnalysisResult({
             title="Share Meal on WhatsApp, Instagram, X, FB"
           >
             <Share2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400" />
-            <span>Share Meal</span>
+            <span>{t('share', 'Share')}</span>
           </button>
         </div>
       </div>
@@ -211,7 +211,7 @@ export default function AnalysisResult({
             {/* Nutri-grade & Health Score Pill */}
             <div className="absolute top-3 left-3 flex items-center space-x-2">
               <span className={`px-2.5 py-1 rounded-lg text-xs font-black tracking-wider uppercase border shadow-lg ${getNutriGradeColor(result.nutriGrade)}`}>
-                Grade {result.nutriGrade || 'A'}
+                {t('grade', 'Grade')} {result.nutriGrade || 'A'}
               </span>
               <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900/90 text-white border border-slate-700/80 backdrop-blur-md shadow-lg flex items-center space-x-1">
                 <Heart className="w-3 h-3 text-rose-400 fill-rose-400" />
@@ -225,9 +225,9 @@ export default function AnalysisResult({
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <div className="flex items-center space-x-2 text-xs font-semibold text-emerald-400">
-                  <span>{result.cuisine || 'Indian Regional'}</span>
+                  <span>{result.cuisine || (language === 'hi' ? 'भारतीय व्यंजन' : 'Indian Regional')}</span>
                   <span>•</span>
-                  <span className="text-slate-400">{result.confidence || 'High Confidence'}</span>
+                  <span className="text-slate-400">{result.confidence || (language === 'hi' ? 'सटीक पहचान' : 'High Confidence')}</span>
                 </div>
                 {/* Switch Dish Button */}
                 <button
@@ -236,7 +236,7 @@ export default function AnalysisResult({
                   className="text-xs text-amber-300 hover:text-amber-200 font-semibold px-2.5 py-1 rounded-lg bg-amber-500/15 border border-amber-500/30 hover:bg-amber-500/25 transition flex items-center space-x-1.5 shadow-sm"
                 >
                   <Edit3 className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Wrong dish? Change</span>
+                  <span>{language === 'hi' ? 'गलत व्यंजन? बदलें' : 'Wrong dish? Change'}</span>
                   <ChevronDown className="w-3 h-3 text-amber-400" />
                 </button>
               </div>
@@ -245,13 +245,15 @@ export default function AnalysisResult({
               {isChangingDish && (
                 <div className="mb-3 p-3 bg-slate-950 border border-amber-500/40 rounded-2xl space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-amber-400">Select Correct Indian Dish:</span>
+                    <span className="text-xs font-bold text-amber-400">
+                      {language === 'hi' ? 'सही भारतीय व्यंजन चुनें:' : 'Select Correct Indian Dish:'}
+                    </span>
                     <button
                       type="button"
                       onClick={() => setIsChangingDish(false)}
                       className="text-[11px] text-slate-400 hover:text-white"
                     >
-                      Close ✕
+                      {language === 'hi' ? 'बंद करें ✕' : 'Close ✕'}
                     </button>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 max-h-52 overflow-y-auto pr-1">
@@ -278,7 +280,7 @@ export default function AnalysisResult({
                 {result.foodName || result.name}
               </h1>
               <p className="text-slate-400 text-xs sm:text-sm mt-1.5 leading-relaxed">
-                {result.servingDescription || 'Standard single serving portion'}
+                {result.servingDescription || (language === 'hi' ? 'मानक एकल सर्विंग' : 'Standard single serving portion')}
               </p>
             </div>
 
@@ -296,7 +298,7 @@ export default function AnalysisResult({
                   <span className="text-sm font-semibold text-amber-400">kcal</span>
                 </div>
                 <span className="text-[11px] text-slate-500">
-                  {calorieDailyPct}% of {dailyGoalCalories} kcal goal
+                  {calorieDailyPct}% of {dailyGoalCalories} kcal
                 </span>
               </div>
 
@@ -309,7 +311,9 @@ export default function AnalysisResult({
                   <span className="text-3xl sm:text-4xl font-black text-white tracking-tight">
                     {weightGrams}
                   </span>
-                  <span className="text-sm font-semibold text-teal-400">grams</span>
+                  <span className="text-sm font-semibold text-teal-400">
+                    {language === 'hi' ? 'ग्राम' : 'grams'}
+                  </span>
                 </div>
                 <span className="text-[11px] text-slate-500">
                   {t('portionSize', 'Portion')}: {portionMultiplier}x {t('serving', 'serving')}
@@ -325,11 +329,11 @@ export default function AnalysisResult({
               </div>
               <div className="grid grid-cols-5 gap-1.5 sm:gap-2">
                 {[
-                  { label: '0.5x', value: 0.5, desc: 'Half' },
-                  { label: '0.75x', value: 0.75, desc: 'Small' },
-                  { label: '1.0x', value: 1.0, desc: 'Regular' },
-                  { label: '1.5x', value: 1.5, desc: 'Large' },
-                  { label: '2.0x', value: 2.0, desc: 'Double' },
+                  { label: '0.5x', value: 0.5, desc: language === 'hi' ? 'आधा' : 'Half' },
+                  { label: '0.75x', value: 0.75, desc: language === 'hi' ? 'छोटा' : 'Small' },
+                  { label: '1.0x', value: 1.0, desc: language === 'hi' ? 'सामान्य' : 'Regular' },
+                  { label: '1.5x', value: 1.5, desc: language === 'hi' ? 'बड़ा' : 'Large' },
+                  { label: '2.0x', value: 2.0, desc: language === 'hi' ? 'दोगुना' : 'Double' },
                 ].map((item) => (
                   <button
                     key={item.label}
@@ -445,7 +449,7 @@ export default function AnalysisResult({
             {/* Micronutrients Pill Tags */}
             {result.micros && result.micros.length > 0 && (
               <div className="mt-4 pt-3 border-t border-slate-800/80">
-                <span className="text-xs text-slate-400 font-medium mr-2">Key Micronutrients:</span>
+                <span className="text-xs text-slate-400 font-medium mr-2">{t('keyMicros')}:</span>
                 <div className="inline-flex flex-wrap gap-2 mt-1">
                   {result.micros.map((m, idx) => (
                     <span
@@ -471,10 +475,10 @@ export default function AnalysisResult({
                   </div>
                   <div>
                     <h3 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider">
-                      Multi-Item Plate Breakdown
+                      {t('plateBreakdown')}
                     </h3>
                     <p className="text-[11px] text-slate-400">
-                      Uncheck any item you skipped or left on your plate to recalculate meal totals
+                      {t('plateBreakdownSubtitle')}
                     </p>
                   </div>
                 </div>
@@ -485,11 +489,11 @@ export default function AnalysisResult({
                     onClick={() => setIncludedIngredients(result.ingredients.map(() => true))}
                     className="text-emerald-400 hover:text-emerald-300 font-bold text-xs hover:underline cursor-pointer"
                   >
-                    Select All
+                    {t('selectAll')}
                   </button>
                   <span className="text-slate-600">•</span>
                   <span className="text-slate-400 text-xs font-medium">
-                    {includedIngredients.filter(Boolean).length}/{result.ingredients.length} items active
+                    {includedIngredients.filter(Boolean).length}/{result.ingredients.length} {t('itemsActive')}
                   </span>
                 </div>
               </div>
@@ -532,12 +536,12 @@ export default function AnalysisResult({
                             {ingProtein && (
                               <>
                                 <span>•</span>
-                                <span className="text-cyan-400 font-medium">{ingProtein}g protein</span>
+                                <span className="text-cyan-400 font-medium">{ingProtein}g {t('protein')}</span>
                               </>
                             )}
                             {!isIncluded && (
                               <span className="px-1.5 py-0.2 rounded bg-rose-500/20 text-rose-300 text-[10px] font-bold">
-                                Excluded
+                                {t('excluded')}
                               </span>
                             )}
                           </div>
@@ -562,10 +566,10 @@ export default function AnalysisResult({
             {/* Dietary Flags */}
             <div className="bg-slate-950/50 border border-slate-800 rounded-2xl p-4">
               <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-2">
-                Dietary & Nutritional Attributes
+                {t('dietaryAttributes')}
               </span>
               <div className="flex flex-wrap gap-1.5">
-                {(result.dietaryFlags || ['Balanced', 'Whole Food']).map((tag, idx) => (
+                {(result.dietaryFlags || [language === 'hi' ? 'संतुलित आहार' : 'Balanced', language === 'hi' ? 'प्राकृतिक सामग्री' : 'Whole Food']).map((tag, idx) => (
                   <span
                     key={idx}
                     className="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-medium"
@@ -580,10 +584,10 @@ export default function AnalysisResult({
             <div className="bg-slate-950/50 border border-slate-800 rounded-2xl p-4">
               <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-2 flex items-center space-x-1.5">
                 <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
-                <span>Allergen & Sensitivity Alerts</span>
+                <span>{t('allergens')}</span>
               </span>
               <div className="flex flex-wrap gap-1.5">
-                {(result.allergens || ['None identified']).map((al, idx) => (
+                {(result.allergens || [language === 'hi' ? 'कोई एलर्जी नहीं' : 'None identified']).map((al, idx) => (
                   <span
                     key={idx}
                     className="px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-300 border border-amber-500/20 text-xs font-medium"
@@ -601,7 +605,7 @@ export default function AnalysisResult({
               <div className="flex items-center space-x-2 text-emerald-400">
                 <Lightbulb className="w-4 h-4" />
                 <h4 className="text-xs font-bold uppercase tracking-wider">
-                  AI Dietitian Insight & Healthy Swaps
+                  {t('dietitianInsight')}
                 </h4>
               </div>
 
@@ -632,7 +636,7 @@ export default function AnalysisResult({
                   {t('logToDiary', 'Log this meal to your Daily Diary')}
                 </h3>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  Select meal slot and click add to log your daily intake.
+                  {t('logToDiaryDesc', 'Select meal slot and click add to log your daily intake.')}
                 </p>
               </div>
 
@@ -664,11 +668,11 @@ export default function AnalysisResult({
             {/* Log Button */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
               <span className="text-xs text-slate-400">
-                Total to log:{' '}
+                {t('totalToLog')}{' '}
                 <strong className="text-emerald-400 font-bold text-sm">
                   {calories} kcal
                 </strong>{' '}
-                ({protein}g P • {carbs}g C • {fat}g F)
+                ({protein}g {t('protein')} • {carbs}g {t('carbs')} • {fat}g {t('fat')})
               </span>
 
               <button

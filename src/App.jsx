@@ -29,7 +29,7 @@ const STORAGE_GOALS_KEY = 'nutriscan_goals_v2';
 const STORAGE_WATER_KEY = 'nutriscan_water_v2';
 
 export default function App() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const todayStr = new Date().toISOString().split('T')[0];
 
   // Active navigation tab: 'scanner' | 'diary'
@@ -298,7 +298,9 @@ export default function App() {
             <div className="flex items-start space-x-3 w-full">
               <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
               <div className="flex-1">
-                <p className="font-semibold text-white">Analysis Error / Quota Notice</p>
+                <p className="font-semibold text-white">
+                  {language === 'hi' ? 'विश्लेषण त्रुटि / कोटा सूचना' : 'Analysis Error / Quota Notice'}
+                </p>
                 <p className="text-red-300 text-xs mt-0.5 leading-relaxed">{analysisError}</p>
                 <div className="flex flex-wrap items-center gap-2 mt-3">
                   <button
@@ -306,14 +308,14 @@ export default function App() {
                     className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-xs shadow-md transition-all active:scale-95 cursor-pointer"
                   >
                     <Sparkles className="w-3.5 h-3.5" />
-                    <span>Switch to Smart Demo & Scan Now</span>
+                    <span>{language === 'hi' ? 'स्मार्ट डेमो पर जाएं और तुरंत स्कैन करें' : 'Switch to Smart Demo & Scan Now'}</span>
                   </button>
                   <button
                     onClick={() => setIsSettingsOpen(true)}
                     className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium text-xs border border-slate-700 transition-all cursor-pointer"
                   >
                     <Settings className="w-3.5 h-3.5" />
-                    <span>Manage Key / Models</span>
+                    <span>{language === 'hi' ? 'API कुंजी / मॉडल प्रबंधित करें' : 'Manage Key / Models'}</span>
                   </button>
                 </div>
               </div>
@@ -322,7 +324,7 @@ export default function App() {
               onClick={() => setAnalysisError(null)}
               className="text-xs text-red-300 hover:text-white px-2 py-1 rounded-lg hover:bg-red-900/40 self-end sm:self-start"
             >
-              Dismiss
+              {language === 'hi' ? 'खारिज करें' : 'Dismiss'}
             </button>
           </div>
         )}
@@ -441,12 +443,14 @@ export default function App() {
           <div className="flex items-center space-x-2">
             <span className="font-extrabold text-white">NutriScan AI</span>
             <span>•</span>
-            <span>Engineered with ❤️ by <strong className="text-emerald-400 font-bold">Vishal</strong></span>
+            <span>
+              {language === 'hi' ? 'विशाल द्वारा निर्मित व डिज़ाइन किया गया' : <>Engineered with ❤️ by <strong className="text-emerald-400 font-bold">Vishal</strong></>}
+            </span>
           </div>
           <div className="flex items-center space-x-4 text-[11px] text-slate-400">
-            <span>Powered by Google Gemini Vision</span>
+            <span>{language === 'hi' ? 'Google Gemini विज़न द्वारा संचालित' : 'Powered by Google Gemini Vision'}</span>
             <span>•</span>
-            <span className="text-emerald-400 font-semibold">Pro Edition</span>
+            <span className="text-emerald-400 font-semibold">{language === 'hi' ? 'प्रो संस्करण' : 'Pro Edition'}</span>
           </div>
         </div>
       </footer>

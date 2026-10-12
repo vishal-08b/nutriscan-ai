@@ -262,7 +262,7 @@ export default function CameraCapture({
         <div className="text-center max-w-xl mx-auto mb-4 sm:mb-6">
           <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] sm:text-xs font-semibold mb-2">
             <Sparkles className="w-3 h-3" />
-            <span>AI Food Vision Model</span>
+            <span>{language === 'hi' ? 'AI फूड विज़न मॉडल' : 'AI Food Vision Model'}</span>
             {isNative && (
               <span className="ml-1 pl-1 border-l border-emerald-500/30 text-emerald-300 font-normal flex items-center space-x-1">
                 <Smartphone className="w-3 h-3" />
@@ -353,7 +353,7 @@ export default function CameraCapture({
                   </div>
                   <div className="text-center">
                     <span className="bg-slate-950/80 text-slate-200 text-xs px-3 py-1 rounded-full border border-slate-700/60 backdrop-blur-md">
-                      Center dish in frame
+                      {language === 'hi' ? 'भोजन को कैमरे के बीच में रखें' : 'Center dish in frame'}
                     </span>
                   </div>
                   <div className="flex justify-between">
@@ -426,10 +426,10 @@ export default function CameraCapture({
 
                   <div className="text-center px-4 space-y-1">
                     <p className="text-white font-extrabold text-base sm:text-lg tracking-wide">
-                      AI Food Vision Analyzing...
+                      {language === 'hi' ? 'AI पोषण गणना जारी है...' : 'AI Food Vision Analyzing...'}
                     </p>
                     <p className="text-emerald-400 font-mono text-xs">
-                      [CALCULATING PORTION VOLUME & MACROS]
+                      {language === 'hi' ? '[भोजन की मात्रा व पोषक तत्वों की जांच]' : '[CALCULATING PORTION VOLUME & MACROS]'}
                     </p>
                   </div>
                 </div>
@@ -527,15 +527,15 @@ export default function CameraCapture({
               <div className="flex items-center justify-between">
                 <label className="text-[11px] sm:text-xs font-semibold text-slate-300 flex items-center space-x-1.5">
                   <HelpCircle className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Optional: Specify Dish Name</span>
+                  <span>{language === 'hi' ? 'वैकल्पिक: व्यंजन का नाम लिखें' : 'Optional: Specify Dish Name'}</span>
                 </label>
-                <span className="text-[10px] text-slate-500">Helps AI accuracy</span>
+                <span className="text-[10px] text-slate-500">{language === 'hi' ? 'AI सटीकता बढ़ती है' : 'Helps AI accuracy'}</span>
               </div>
               <input
                 type="text"
                 value={customHint}
                 onChange={(e) => setCustomHint(e.target.value)}
-                placeholder="e.g. 'Masala Dosa with Sambar'..."
+                placeholder={language === 'hi' ? 'जैसे मसाला डोसा, पनीर पराठा, दाल मखनी...' : "e.g. 'Masala Dosa with Sambar'..."}
                 className="w-full bg-slate-900 border border-slate-800 focus:border-emerald-500 rounded-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 outline-none transition"
               />
             </div>
@@ -644,7 +644,7 @@ export default function CameraCapture({
                 </div>
 
                 <div className="mt-2 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
-                  <span className="text-emerald-400 font-bold">{sample.macros?.protein}g Protein</span>
+                  <span className="text-emerald-400 font-bold">{sample.macros?.protein}g {t('protein')}</span>
                   <span>{sample.estimatedWeightGrams}g</span>
                 </div>
               </div>
