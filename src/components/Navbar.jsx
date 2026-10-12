@@ -1,13 +1,10 @@
 import React from 'react';
 import { 
   Sparkles, 
-  Flame, 
   CalendarDays, 
   Camera, 
   Settings, 
   Sliders, 
-  CheckCircle2, 
-  AlertCircle,
   Globe 
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
@@ -24,7 +21,6 @@ export default function Navbar({
   streak = 3
 }) {
   const { language, toggleLanguage, t } = useLanguage();
-  const percentComplete = Math.min(100, Math.round((todayCalories / (dailyGoalCalories || 2000)) * 100));
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md pt-[max(0px,env(safe-area-inset-top))] transition-all">
@@ -109,47 +105,7 @@ export default function Navbar({
             <span className="hidden md:inline text-[10px] text-orange-300 font-semibold">{t('streak')}</span>
           </div>
 
-          {/* Daily Quick Gauge Pill */}
-          <div 
-            onClick={onOpenGoals}
-            title="Click to adjust daily target"
-            className="flex items-center space-x-1.5 sm:space-x-2 bg-slate-900/80 hover:bg-slate-800/80 border border-slate-800 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl cursor-pointer transition text-[11px] sm:text-xs"
-          >
-            <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 shrink-0" />
-            <div className="font-semibold text-slate-200">
-              <span>{todayCalories}</span>
-              <span className="text-slate-500 hidden sm:inline"> / {dailyGoalCalories} kcal</span>
-            </div>
-            <div className="w-7 sm:w-10 bg-slate-800 h-1.5 rounded-full overflow-hidden hidden xs:block">
-              <div 
-                className="bg-gradient-to-r from-emerald-500 to-amber-400 h-full rounded-full transition-all duration-500"
-                style={{ width: `${percentComplete}%` }}
-              />
-            </div>
-          </div>
 
-          {/* AI Mode Badge */}
-          <button
-            onClick={onOpenSettings}
-            className={`flex items-center space-x-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-semibold border transition ${
-              isMockMode || !hasApiKey
-                ? 'bg-amber-500/10 text-amber-300 border-amber-500/30 hover:bg-amber-500/20'
-                : 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/20'
-            }`}
-            title="Click to configure Gemini API Key or Demo Mode"
-          >
-            {isMockMode || !hasApiKey ? (
-              <>
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-                <span>{t('demoMode')}</span>
-              </>
-            ) : (
-              <>
-                <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-400" />
-                <span>{t('liveAi')}</span>
-              </>
-            )}
-          </button>
 
           {/* Desktop Goals button */}
           <button
