@@ -95,15 +95,7 @@ export default function Navbar({
             <span>{language === 'en' ? 'हिन्दी' : 'EN'}</span>
           </button>
 
-          {/* Habit Streak Badge */}
-          <div 
-            className="flex items-center space-x-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-orange-500/10 border border-orange-500/30 text-orange-400 text-[11px] sm:text-xs font-bold shadow-sm"
-            title={`${streak} day ${t('streak')}!`}
-          >
-            <span className="text-xs">🔥</span>
-            <span>{streak}d</span>
-            <span className="hidden md:inline text-[10px] text-orange-300 font-semibold">{t('streak')}</span>
-          </div>
+
 
 
 
