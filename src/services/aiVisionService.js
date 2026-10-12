@@ -32,9 +32,8 @@ export const setStoredApiKey = (key) => {
 export const getStoredMockMode = () => {
   const saved = localStorage.getItem(USE_MOCK_STORAGE);
   if (saved !== null) return saved === 'true';
-  const envKey = import.meta.env.VITE_GEMINI_API_KEY;
-  // If permanent API key is baked in, default to live AI
-  return !Boolean(envKey && envKey.trim());
+  // Default to live AI vision whenever any API key is active
+  return !Boolean(getStoredApiKey());
 };
 
 export const setStoredMockMode = (enabled) => {
@@ -50,23 +49,20 @@ export const setStoredPreferredModel = (model) => {
 };
 
 /**
- * Standard priority list favoring models with generous free-tier quotas (1,500 RPD)
- * while placing restricted models (e.g. gemini-3.8-flash with only 20 RPD) at the end.
+ * Modern priority list favoring actively supported Gemini models with high quotas
+ * and ultra-fast multimodal response times.
  */
 export const MODEL_PRIORITY_ORDER = [
   'gemini-flash-lite-latest',
+  'gemini-3.5-flash-lite',
+  'gemini-3.1-flash-lite',
+  'gemini-3.5-flash',
+  'gemini-3.6-flash',
   'gemini-flash-latest',
-  'gemini-2.0-flash',
-  'gemini-2.0-flash-lite',
-  'gemini-2.5-flash',
-  'gemini-1.5-flash-latest',
-  'gemini-1.5-flash',
-  'gemini-1.5-flash-8b',
-  'gemini-2.0-flash-exp',
-  'gemini-1.5-pro',
-  'gemini-2.5-pro',
-  'gemini-pro',
-  'gemini-3.8-flash', // Strict 20 requests/day quota on free tier
+  'gemini-3.8-flash',
+  'gemini-3.7-flash',
+  'gemini-3.1-flash-lite-preview',
+  'gemini-3-flash-preview',
 ];
 
 /**
@@ -160,7 +156,7 @@ export async function getCandidateGeminiModels(apiKey) {
     }
 
     if (ordered.length > 0) return ordered;
-    return ['gemini-2.0-flash', 'gemini-1.5-flash'];
+    return ['gemini-flash-lite-latest', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite'];
   } catch (err) {
     console.warn('Could not query ListModels, using default prioritized fallback list:', err);
     return MODEL_PRIORITY_ORDER;
@@ -172,7 +168,7 @@ export async function getCandidateGeminiModels(apiKey) {
  */
 export async function getAvailableGeminiModel(apiKey) {
   const candidates = await getCandidateGeminiModels(apiKey);
-  return candidates[0] || 'gemini-2.0-flash';
+  return candidates[0] || 'gemini-flash-lite-latest';
 }
 
 /**
@@ -236,10 +232,10 @@ export async function analyzeFoodImage({
   const activeKey = apiKey || getStoredApiKey();
   const mockEnabled = forceMock || getStoredMockMode();
 
-  // If mock mode is explicitly chosen or no API key is provided, use high-fidelity demo analysis
-  if (mockEnabled || !activeKey) {
+  // If mock mode is explicitly chosen, use curated demo analysis
+  if (mockEnabled) {
     // Artificial small delay for realistic UX scan experience
-    await new Promise((r) => setTimeout(r, 1000));
+    await new Promise((r) => setTimeout(r, 800));
 
     // Check if the image source matches any sample food ID or url
     let matched = SAMPLE_FOODS.find((f) =>
@@ -262,6 +258,7 @@ export async function analyzeFoodImage({
         name: customHint ? `${customHint} (Matched)` : matched.name,
         foodName: customHint ? `${customHint} (Matched)` : matched.name,
         isSimulated: true,
+        isDemoFallback: false,
         analyzedAt: new Date().toISOString(),
       };
     }
@@ -270,11 +267,19 @@ export async function analyzeFoodImage({
     const randomPick = SAMPLE_FOODS[Math.floor(Math.random() * SAMPLE_FOODS.length)];
     return {
       ...randomPick,
-      name: customHint ? `${customHint} (Estimated)` : randomPick.name,
-      foodName: customHint ? `${customHint} (Estimated)` : randomPick.name,
+      name: customHint ? `${customHint} (Demo Estimate)` : randomPick.name,
+      foodName: customHint ? `${customHint} (Demo Estimate)` : randomPick.name,
       isSimulated: true,
+      isDemoFallback: true,
       analyzedAt: new Date().toISOString(),
     };
+  }
+
+  // If Live AI is active but no key could be resolved, inform user clearly
+  if (!activeKey) {
+    throw new Error(
+      'No active Gemini API key found. Please enter your Google Gemini API key in Settings > AI Engine or switch to Demo Mode.'
+    );
   }
 
   // Optimize and extract base64

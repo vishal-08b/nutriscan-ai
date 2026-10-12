@@ -175,9 +175,9 @@ export default function AnalysisResult({
 
         <div className="flex items-center space-x-2">
           {result.isSimulated && (
-            <span className="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20 text-xs">
-              <Info className="w-3.5 h-3.5" />
-              <span>{t('curatedDemo', 'Curated Demo')}</span>
+            <span className="inline-flex items-center space-x-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[11px] sm:text-xs font-semibold">
+              <Info className="w-3.5 h-3.5 shrink-0" />
+              <span>{result.isDemoFallback ? (language === 'hi' ? 'डेमो अनुमान' : 'Demo Estimate') : t('curatedDemo', 'Curated Demo')}</span>
             </span>
           )}
 
@@ -191,6 +191,20 @@ export default function AnalysisResult({
           </button>
         </div>
       </div>
+
+      {result.isDemoFallback && (
+        <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-3 flex items-start space-x-2.5 text-xs text-amber-200">
+          <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <span className="font-bold text-amber-300">
+              {language === 'hi' ? 'डेमो सिमुलेशन परिणाम:' : 'Demo Simulation Mode:'}
+            </span>{' '}
+            {language === 'hi'
+              ? 'डेमो मोड सक्रिय होने के कारण यह अनुमानित नमूना डिश है। वास्तविक लाइव AI स्कैनिंग के लिए सेटिंग्स में लाइव AI सक्रिय करें।'
+              : 'This is a simulated demo dish. To analyze your exact food with live Google Gemini Vision, make sure Live AI is enabled in Settings.'}
+          </div>
+        </div>
+      )}
 
       {/* Main Analysis Card */}
       <div className="bg-slate-900/80 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-md">

@@ -148,12 +148,17 @@ export default function App() {
     setUserPrefs(newPrefs || getUserPreferences());
   };
 
+  const handleToggleMockMode = (newMode) => {
+    const val = typeof newMode === 'boolean' ? newMode : !isMockMode;
+    setStoredMockMode(val);
+    setIsMockMode(val);
+  };
+
   const [lastAnalysisParams, setLastAnalysisParams] = useState(null);
 
   // Switch to smart demo mode and immediately retry analysis of current photo
   const handleSwitchToDemoAndRetry = async () => {
-    setStoredMockMode(true);
-    setIsMockMode(true);
+    handleToggleMockMode(true);
     setAnalysisError(null);
     if (lastAnalysisParams?.imageSrc) {
       await handleAnalyze({
@@ -347,6 +352,8 @@ export default function App() {
                 sciFiHudEnabled={userPrefs.sciFiHudEnabled}
                 autoAnalyzeOnCapture={userPrefs.autoAnalyzeOnCapture}
                 cameraQuality={userPrefs.cameraQuality}
+                isMockMode={isMockMode}
+                onToggleMockMode={handleToggleMockMode}
               />
             )}
           </>

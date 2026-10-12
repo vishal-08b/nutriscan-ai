@@ -640,7 +640,82 @@ export default function SettingsModal({
                   )}
                 </div>
               </div>
-            ) : null}
+            ) : (
+              <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/25 flex items-center justify-center text-amber-400 shrink-0">
+                      <Key className="w-5 h-5 text-amber-400" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-white uppercase tracking-wider">{t('personalKeyHelp', 'Custom Gemini API Key')}</h4>
+                      <p className="text-[11px] text-slate-400 mt-0.5">
+                        {language === 'hi' ? 'लाइव भोजन स्कैनिंग के लिए अपनी जेमिनी एपीआई कुंजी दर्ज करें' : 'Enter your Google Gemini API key to enable live AI food vision'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative">
+                  <input
+                    type={showKey ? 'text' : 'password'}
+                    value={customKey}
+                    onChange={(e) => setCustomKey(e.target.value)}
+                    placeholder={t('personalKeyPlaceholder')}
+                    className="w-full bg-slate-900 border border-slate-800 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-sm text-white pr-20 outline-none font-mono transition"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowKey(!showKey)}
+                    className="absolute right-2 top-2.5 p-1 text-slate-400 hover:text-white cursor-pointer"
+                  >
+                    {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between pt-1">
+                  <a
+                    href="https://aistudio.google.com/app/apikey"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] text-emerald-400 hover:underline"
+                  >
+                    {language === 'hi' ? 'निःशुल्क API Key प्राप्त करें ↗' : 'Get free API Key at Google AI Studio ↗'}
+                  </a>
+                  <button
+                    type="button"
+                    onClick={handleTestApiKey}
+                    disabled={testStatus === 'testing' || !customKey.trim()}
+                    className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer disabled:opacity-50"
+                  >
+                    {testStatus === 'testing' ? t('testingConnection') : t('testConnection')}
+                  </button>
+                </div>
+
+                {testStatus && (
+                  <div
+                    className={`p-3 rounded-xl border text-xs flex flex-col space-y-2 ${
+                      testStatus === 'success'
+                        ? 'bg-emerald-950/40 border-emerald-800 text-emerald-300'
+                        : testStatus === 'error'
+                        ? 'bg-red-950/40 border-red-800 text-red-300'
+                        : 'bg-slate-800 border-slate-700 text-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-2">
+                      {testStatus === 'success' ? (
+                        <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
+                      ) : testStatus === 'error' ? (
+                        <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+                      ) : (
+                        <div className="w-4 h-4 border-2 border-slate-400 border-t-white rounded-full animate-spin shrink-0" />
+                      )}
+                      <span className="font-medium">{testMessage}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Model Failover Selector */}
             <div className="space-y-2">
@@ -653,11 +728,12 @@ export default function SettingsModal({
                 onChange={(e) => setPreferredModel(e.target.value)}
                 className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-3 py-2 text-xs text-white outline-none cursor-pointer"
               >
-                <option value="auto">{language === 'hi' ? 'ऑटो-फेलओवर (अनुशंसित - अधिकतम कोटा)' : 'Auto-Failover (Recommended - prioritized for generous quotas)'}</option>
-                <option value="gemini-2.0-flash">gemini-2.0-flash (1,500 req/day quota)</option>
-                <option value="gemini-2.0-flash-lite">gemini-2.0-flash-lite (fast & high quota)</option>
-                <option value="gemini-2.5-flash">gemini-2.5-flash</option>
-                <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+                <option value="auto">{language === 'hi' ? 'ऑटो-फेलओवर (अनुशंसित - हाई कोटा और स्पीड)' : 'Auto-Failover (Recommended - fast & generous quota)'}</option>
+                <option value="gemini-flash-lite-latest">gemini-flash-lite-latest (Fastest Vision)</option>
+                <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite (High Quota)</option>
+                <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite (Stable)</option>
+                <option value="gemini-3.5-flash">gemini-3.5-flash (High Reasoning)</option>
+                <option value="gemini-3.8-flash">gemini-3.8-flash (Latest Flagship)</option>
               </select>
             </div>
 

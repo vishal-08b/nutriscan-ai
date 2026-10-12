@@ -25,7 +25,9 @@ export default function CameraCapture({
   isAnalyzing,
   sciFiHudEnabled = true,
   autoAnalyzeOnCapture = false,
-  cameraQuality = '1080p'
+  cameraQuality = '1080p',
+  isMockMode = false,
+  onToggleMockMode
 }) {
   const { t, language } = useLanguage();
   const [selectedImage, setSelectedImage] = useState(null);
@@ -298,14 +300,34 @@ export default function CameraCapture({
 
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-4 sm:mb-6">
-          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] sm:text-xs font-semibold mb-2">
-            <Sparkles className="w-3 h-3" />
-            <span>{language === 'hi' ? 'AI फूड विज़न मॉडल' : 'AI Food Vision Model'}</span>
-            {isNative && (
-              <span className="ml-1 pl-1 border-l border-emerald-500/30 text-emerald-300 font-normal flex items-center space-x-1">
-                <Smartphone className="w-3 h-3" />
-                <span>Android App</span>
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-2">
+            <div className={`inline-flex items-center space-x-1.5 px-3 py-1 rounded-full border text-[11px] sm:text-xs font-semibold transition ${
+              isMockMode 
+                ? 'bg-amber-500/10 border-amber-500/30 text-amber-300' 
+                : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+            }`}>
+              <Sparkles className="w-3 h-3" />
+              <span>
+                {isMockMode 
+                  ? (language === 'hi' ? 'डेमो मोड (नमूना डिश)' : 'Demo Mode (Simulated)') 
+                  : (language === 'hi' ? 'लाइव AI विज़न सक्रिय' : 'Live Gemini Vision Active')}
               </span>
+              {isNative && (
+                <span className="ml-1 pl-1 border-l border-emerald-500/30 text-emerald-300 font-normal flex items-center space-x-1">
+                  <Smartphone className="w-3 h-3" />
+                  <span>Android App</span>
+                </span>
+              )}
+            </div>
+
+            {isMockMode && (
+              <button
+                type="button"
+                onClick={() => onToggleMockMode?.(false)}
+                className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-[10px] sm:text-[11px] font-bold cursor-pointer transition active:scale-95"
+              >
+                <span>⚡ {language === 'hi' ? 'लाइव AI चालू करें' : 'Switch to Live AI'}</span>
+              </button>
             )}
           </div>
           <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
