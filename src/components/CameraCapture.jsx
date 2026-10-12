@@ -43,6 +43,7 @@ export default function CameraCapture({
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
   const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
 
   // Stop camera stream cleanup
   const stopCamera = () => {
@@ -84,6 +85,11 @@ export default function CameraCapture({
     stopCamera();
     setCameraError(null);
     try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        // Fallback directly to native camera capture on non-HTTPS or unsupported mobile browsers
+        cameraInputRef.current?.click();
+        return;
+      }
       const constraints = {
         video: {
           facingMode: facing,
@@ -102,7 +108,12 @@ export default function CameraCapture({
       setCameraFacing(facing);
     } catch (err) {
       console.error('Camera access error:', err);
-      setCameraError('Unable to access camera directly in browser. Use Gallery / Upload button or test with samples.');
+      // If permission denied or unavailable, offer fallback camera capture
+      if (cameraInputRef.current) {
+        cameraInputRef.current.click();
+      } else {
+        setCameraError('Unable to access camera directly in browser. Use Gallery / Upload button or test with samples.');
+      }
       setIsCameraActive(false);
     }
   };
@@ -112,7 +123,11 @@ export default function CameraCapture({
     if (isNative) {
       takeNativePhoto(CameraSource.Camera);
     } else {
-      startCamera('environment');
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        cameraInputRef.current?.click();
+      } else {
+        startCamera('environment');
+      }
     }
   };
 
@@ -482,6 +497,14 @@ export default function CameraCapture({
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"
+                className="hidden"
+                onChange={handleFileSelect}
+              />
+              <input
+                ref={cameraInputRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
                 className="hidden"
                 onChange={handleFileSelect}
               />
