@@ -51,6 +51,9 @@ export default function CameraCapture({
       streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
     setIsCameraActive(false);
   };
 
@@ -59,6 +62,17 @@ export default function CameraCapture({
       stopCamera();
     };
   }, []);
+
+  // Ensure video element receives stream as soon as it mounts in the DOM
+  useEffect(() => {
+    if (isCameraActive && videoRef.current && streamRef.current) {
+      const video = videoRef.current;
+      video.srcObject = streamRef.current;
+      video.play().catch((err) => {
+        console.warn('Video auto-play prevented or play error:', err);
+      });
+    }
+  }, [isCameraActive]);
 
   // Native Android Camera Capture via Capacitor
   const takeNativePhoto = async (sourceType = CameraSource.Camera) => {
@@ -82,7 +96,6 @@ export default function CameraCapture({
 
   // Start live webcam / mobile camera for Web
   const startCamera = async (facing = cameraFacing) => {
-    stopCamera();
     setCameraError(null);
     try {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -90,31 +103,56 @@ export default function CameraCapture({
         cameraInputRef.current?.click();
         return;
       }
+
+      // Stop previous tracks if any
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+        streamRef.current = null;
+      }
+
       const constraints = {
         video: {
-          facingMode: facing,
+          facingMode: { ideal: facing },
           width: { ideal: 1280 },
           height: { ideal: 720 },
         },
         audio: false,
       };
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia(constraints);
+      } catch (err1) {
+        console.warn('Ideal constraints failed, attempting basic video:', err1);
+        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      }
+
       streamRef.current = stream;
+      setCameraFacing(facing);
+      setIsCameraActive(true);
+
+      // If video element is already mounted (e.g. facing mode toggle)
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        await videoRef.current.play();
+        try {
+          await videoRef.current.play();
+        } catch (e) {
+          console.warn('Direct play error:', e);
+        }
       }
-      setIsCameraActive(true);
-      setCameraFacing(facing);
     } catch (err) {
       console.error('Camera access error:', err);
+      setIsCameraActive(false);
       // If permission denied or unavailable, offer fallback camera capture
       if (cameraInputRef.current) {
         cameraInputRef.current.click();
       } else {
-        setCameraError('Unable to access camera directly in browser. Use Gallery / Upload button or test with samples.');
+        setCameraError(
+          language === 'hi'
+            ? 'कैमरा शुरू करने में असमर्थ। कृपया गैलरी या फोटो अपलोड का उपयोग करें।'
+            : 'Unable to access camera directly in browser. Please use Gallery / Upload button.'
+        );
       }
-      setIsCameraActive(false);
     }
   };
 
@@ -285,9 +323,13 @@ export default function CameraCapture({
             <div className="relative rounded-2xl overflow-hidden bg-slate-950 aspect-[3/4] sm:aspect-[4/3] max-h-[440px] w-full max-w-md mx-auto border border-emerald-500/40 shadow-2xl flex items-center justify-center">
               <video
                 ref={videoRef}
+                autoPlay
                 playsInline
                 muted
-                className="w-full h-full object-cover"
+                onLoadedMetadata={(e) => {
+                  e.currentTarget.play().catch((err) => console.warn('Video play onLoadedMetadata error:', err));
+                }}
+                className="w-full h-full object-cover block"
               />
 
               {/* Viewfinder Overlay (Sci-Fi HUD vs Minimalist) */}
@@ -364,12 +406,12 @@ export default function CameraCapture({
               )}
 
               {/* Camera Controls Bar */}
-              <div className="absolute bottom-5 inset-x-0 flex items-center justify-center space-x-6 z-20">
+              <div className="absolute bottom-5 inset-x-0 flex items-center justify-center space-x-4 sm:space-x-5 z-20">
                 <button
                   type="button"
                   onClick={toggleFacingMode}
-                  className="w-11 h-11 rounded-full bg-slate-900/80 hover:bg-slate-800 text-white border border-slate-700 backdrop-blur-md transition flex items-center justify-center active:scale-95"
-                  title="Switch camera"
+                  className="w-11 h-11 rounded-full bg-slate-900/85 hover:bg-slate-800 text-white border border-slate-700 backdrop-blur-md transition flex items-center justify-center active:scale-95 cursor-pointer shadow-lg"
+                  title={language === 'hi' ? 'कैमरा बदलें (आगे / पीछे)' : 'Switch camera (front / back)'}
                 >
                   <RefreshCw className="w-4 h-4" />
                 </button>
@@ -377,17 +419,30 @@ export default function CameraCapture({
                 <button
                   type="button"
                   onClick={capturePhoto}
-                  className="w-16 h-16 rounded-full border-4 border-white/90 bg-emerald-500 shadow-xl active:scale-90 flex items-center justify-center transition-all cursor-pointer"
-                  title="Capture snapshot"
+                  className="w-16 h-16 rounded-full border-4 border-white/90 bg-emerald-500 shadow-xl active:scale-90 flex items-center justify-center transition-all cursor-pointer hover:bg-emerald-400"
+                  title={language === 'hi' ? 'फोटो खींचें' : 'Capture snapshot'}
                 >
                   <Camera className="w-6 h-6 text-slate-950" />
+                </button>
+
+                {/* Direct Native Camera App fallback button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    stopCamera();
+                    cameraInputRef.current?.click();
+                  }}
+                  className="w-11 h-11 rounded-full bg-slate-900/85 hover:bg-slate-800 text-emerald-300 border border-emerald-500/40 backdrop-blur-md transition flex items-center justify-center active:scale-95 cursor-pointer shadow-lg"
+                  title={language === 'hi' ? 'फोन का कैमरा ऐप खोलें' : 'Open phone camera app'}
+                >
+                  <Smartphone className="w-4 h-4 text-emerald-400" />
                 </button>
 
                 <button
                   type="button"
                   onClick={stopCamera}
-                  className="w-11 h-11 rounded-full bg-slate-900/80 hover:bg-red-950/80 text-slate-300 hover:text-red-400 border border-slate-700 backdrop-blur-md transition flex items-center justify-center active:scale-95"
-                  title="Close camera"
+                  className="w-11 h-11 rounded-full bg-slate-900/85 hover:bg-red-950/80 text-slate-300 hover:text-red-400 border border-slate-700 backdrop-blur-md transition flex items-center justify-center active:scale-95 cursor-pointer shadow-lg"
+                  title={language === 'hi' ? 'कैमरा बंद करें' : 'Close camera'}
                 >
                   <X className="w-4 h-4" />
                 </button>
