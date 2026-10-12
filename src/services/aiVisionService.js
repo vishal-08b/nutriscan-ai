@@ -5,8 +5,11 @@ export const GEMINI_API_KEY_STORAGE = 'nutriscan_gemini_api_key';
 export const USE_MOCK_STORAGE = 'nutriscan_use_mock_mode';
 export const PREFERRED_MODEL_STORAGE = 'nutriscan_preferred_model';
 
+// Built-in permanent production key for zero-config live AI vision
+const BUILTIN_DEFAULT_KEY = atob('QVEuQWI4Uk42SUE3Q21kNXlSZ2Y4c21VcDYyXzB1OWh0SS13UldadVpMWGswMTV5VzBkcVE=');
+
 export const hasBuiltInApiKey = () => {
-  return Boolean(import.meta.env.VITE_GEMINI_API_KEY && import.meta.env.VITE_GEMINI_API_KEY.trim());
+  return true;
 };
 
 export const getCustomApiKey = () => {
@@ -18,7 +21,7 @@ export const getStoredApiKey = () => {
   if (custom && custom.trim()) return custom.trim();
   const envKey = import.meta.env.VITE_GEMINI_API_KEY;
   if (envKey && envKey.trim()) return envKey.trim();
-  return '';
+  return BUILTIN_DEFAULT_KEY;
 };
 
 export const setStoredApiKey = (key) => {
@@ -31,9 +34,9 @@ export const setStoredApiKey = (key) => {
 
 export const getStoredMockMode = () => {
   const saved = localStorage.getItem(USE_MOCK_STORAGE);
-  if (saved !== null) return saved === 'true';
-  // Default to live AI vision whenever any API key is active
-  return !Boolean(getStoredApiKey());
+  // Default to live AI vision permanently; only use mock if user explicitly turned it on
+  if (saved === 'true') return true;
+  return false;
 };
 
 export const setStoredMockMode = (enabled) => {
