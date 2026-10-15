@@ -27,7 +27,9 @@ export default function CameraCapture({
   autoAnalyzeOnCapture = false,
   cameraQuality = '1080p',
   isMockMode = false,
-  onToggleMockMode
+  onToggleMockMode,
+  scanStats,
+  onOpenUpgrade
 }) {
   const { t, language } = useLanguage();
   const [selectedImage, setSelectedImage] = useState(null);
@@ -319,6 +321,34 @@ export default function CameraCapture({
                 </span>
               )}
             </div>
+
+            {/* Membership Tier & Daily Quota Badge */}
+            {scanStats?.tier === 'pro' ? (
+              <button
+                type="button"
+                onClick={onOpenUpgrade}
+                className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/40 text-emerald-300 text-[11px] sm:text-xs font-bold hover:bg-emerald-500/30 transition cursor-pointer active:scale-95 shadow-sm"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                <span>{language === 'hi' ? '👑 प्रो सदस्य (असीमित)' : '👑 Pro Member (Unlimited)'}</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={onOpenUpgrade}
+                className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-[11px] sm:text-xs font-bold transition cursor-pointer group active:scale-95"
+              >
+                <span className="w-2 h-2 rounded-full bg-amber-400 group-hover:scale-125 transition-transform" />
+                <span>
+                  {language === 'hi' 
+                    ? `⚡ मुफ़्त: आज ${scanStats?.remaining ?? 5}/5 स्कैन शेष` 
+                    : `⚡ Free: ${scanStats?.remaining ?? 5}/5 Scans Left Today`}
+                </span>
+                <span className="text-[10px] text-emerald-400 underline font-black ml-0.5">
+                  {language === 'hi' ? 'अपग्रेड' : 'Upgrade'}
+                </span>
+              </button>
+            )}
 
             {isMockMode && (
               <button

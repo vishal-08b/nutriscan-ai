@@ -18,7 +18,9 @@ export default function Navbar({
   hasApiKey,
   todayCalories,
   dailyGoalCalories,
-  streak = 3
+  streak = 3,
+  scanStats,
+  onOpenUpgrade
 }) {
   const { language, toggleLanguage, t } = useLanguage();
 
@@ -94,6 +96,27 @@ export default function Navbar({
             <Globe className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
             <span>{language === 'en' ? 'हिन्दी' : 'EN'}</span>
           </button>
+
+          {/* Pro / Free Plan Badge Button */}
+          {scanStats?.tier === 'pro' ? (
+            <button
+              onClick={onOpenUpgrade}
+              className="flex items-center space-x-1 px-2.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] sm:text-xs font-extrabold hover:bg-emerald-500/30 transition cursor-pointer active:scale-95 shadow-sm"
+              title={language === 'hi' ? 'प्रो सदस्यता सक्रिय' : 'Pro Membership Active'}
+            >
+              <Sparkles className="w-3 h-3 text-emerald-400" />
+              <span>PRO</span>
+            </button>
+          ) : (
+            <button
+              onClick={onOpenUpgrade}
+              className="flex items-center space-x-1 px-2.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:opacity-95 text-slate-950 font-black text-[11px] sm:text-xs transition shadow-sm cursor-pointer active:scale-95"
+              title={language === 'hi' ? 'प्रो में अपग्रेड करें' : 'Upgrade to Pro'}
+            >
+              <span>⚡ {scanStats?.remaining ?? 5}/5</span>
+              <span className="hidden xs:inline">PRO</span>
+            </button>
+          )}
 
 
 

@@ -5,6 +5,7 @@ import AnalysisResult from './components/AnalysisResult';
 import DailyTracker from './components/DailyTracker';
 import GoalsModal from './components/GoalsModal';
 import SettingsModal from './components/SettingsModal';
+import UpgradeModal from './components/UpgradeModal';
 import { DEFAULT_GOALS, SAMPLE_FOODS } from './data/sampleFoods';
 import { 
   analyzeFoodImage, 
@@ -12,6 +13,10 @@ import {
   getStoredMockMode,
   setStoredMockMode 
 } from './services/aiVisionService';
+import { 
+  getDailyScanStats, 
+  recordScanUsage 
+} from './services/membershipService';
 import { 
   AlertCircle, 
   Camera, 
@@ -38,11 +43,13 @@ export default function App() {
   // Modals
   const [isGoalsOpen, setIsGoalsOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
 
   // Settings status & user preferences
   const [hasApiKey, setHasApiKey] = useState(Boolean(getStoredApiKey()));
   const [isMockMode, setIsMockMode] = useState(getStoredMockMode());
   const [userPrefs, setUserPrefs] = useState(() => getUserPreferences());
+  const [scanStats, setScanStats] = useState(() => getDailyScanStats());
 
   // Goals
   const [goals, setGoals] = useState(() => {
@@ -146,6 +153,7 @@ export default function App() {
     setHasApiKey(Boolean(getStoredApiKey()));
     setIsMockMode(getStoredMockMode());
     setUserPrefs(newPrefs || getUserPreferences());
+    setScanStats(getDailyScanStats());
   };
 
   const handleToggleMockMode = (newMode) => {
@@ -169,6 +177,20 @@ export default function App() {
 
   // Perform AI Food Analysis
   const handleAnalyze = async ({ imageSrc, customHint, presetData }) => {
+    // If not a demo preset, verify daily scan limit
+    if (!presetData) {
+      const currentStats = getDailyScanStats();
+      if (!currentStats.canScan) {
+        setIsUpgradeOpen(true);
+        setAnalysisError(
+          language === 'hi'
+            ? 'आपके आज के 5 मुफ़्त AI स्कैन समाप्त हो गए हैं! असीमित स्कैन और सम्पूर्ण पोषण विश्लेषण के लिए प्रो में अपग्रेड करें (कोड: PRO2026)।'
+            : "You've reached today's 5 Free Scans limit. Upgrade to Pro for unlimited AI scans (Promo Code: PRO2026)!"
+        );
+        return;
+      }
+    }
+
     setIsAnalyzing(true);
     setAnalysisError(null);
     setAnalyzedImageSrc(imageSrc);
@@ -189,6 +211,9 @@ export default function App() {
           customHint,
         });
         setAnalysisResult(result);
+        // Record scan consumption on successful scan
+        recordScanUsage();
+        setScanStats(getDailyScanStats());
       }
     } catch (err) {
       console.error('Analysis failed:', err);
@@ -287,6 +312,8 @@ export default function App() {
         todayCalories={todayCalories}
         dailyGoalCalories={goals.dailyCalories}
         streak={streakDays}
+        scanStats={scanStats}
+        onOpenUpgrade={() => setIsUpgradeOpen(true)}
       />
 
       {/* Main Content Area (touch-pan-y allows 100% unrestricted native vertical scroll everywhere) */}
@@ -354,6 +381,8 @@ export default function App() {
                 cameraQuality={userPrefs.cameraQuality}
                 isMockMode={isMockMode}
                 onToggleMockMode={handleToggleMockMode}
+                scanStats={scanStats}
+                onOpenUpgrade={() => setIsUpgradeOpen(true)}
               />
             )}
           </>
@@ -477,6 +506,17 @@ export default function App() {
         onResetAllData={handleResetAllData}
         meals={meals}
         goals={goals}
+      />
+
+      <UpgradeModal
+        isOpen={isUpgradeOpen}
+        onClose={() => {
+          setIsUpgradeOpen(false);
+          setScanStats(getDailyScanStats());
+        }}
+        onTierChanged={() => {
+          setScanStats(getDailyScanStats());
+        }}
       />
 
     </div>

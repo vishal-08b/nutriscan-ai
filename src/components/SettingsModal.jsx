@@ -26,8 +26,14 @@ import {
   HardDrive,
   Heart,
   Palette,
-  Globe
+  Globe,
+  Crown
 } from 'lucide-react';
+import UpgradeModal from './UpgradeModal';
+import { 
+  getMembershipTier, 
+  getDailyScanStats 
+} from '../services/membershipService';
 import { 
   hasBuiltInApiKey,
   getCustomApiKey,
@@ -77,10 +83,15 @@ export default function SettingsModal({
   // User preferences state (10+ configurable features)
   const [prefs, setPrefs] = useState(() => getUserPreferences());
   const [storageStats, setStorageStats] = useState(() => getStorageStats());
+  const [tier, setTier] = useState(() => getMembershipTier());
+  const [scanStats, setScanStats] = useState(() => getDailyScanStats());
+  const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
 
   useEffect(() => {
     setPrefs(getUserPreferences());
     setStorageStats(getStorageStats());
+    setTier(getMembershipTier());
+    setScanStats(getDailyScanStats());
   }, [isOpen]);
 
   const updatePref = (key, value) => {
@@ -155,13 +166,21 @@ export default function SettingsModal({
         </div>
 
         {/* User Profile Card */}
-        <div className="bg-gradient-to-r from-emerald-950/50 via-slate-950 to-teal-950/40 border border-emerald-500/30 rounded-2xl p-4 flex items-center justify-between shadow-lg">
+        <div className={`border rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-lg transition ${
+          tier === 'pro'
+            ? 'bg-gradient-to-r from-emerald-950/50 via-slate-950 to-teal-950/40 border-emerald-500/30'
+            : 'bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 border-slate-800'
+        }`}>
           <div className="flex items-center space-x-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 text-xl font-black shadow-lg shadow-emerald-500/25 ring-2 ring-emerald-400/40 select-none">
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-slate-950 text-xl font-black shadow-lg ring-2 select-none ${
+              tier === 'pro'
+                ? 'bg-gradient-to-tr from-emerald-500 to-teal-400 shadow-emerald-500/25 ring-emerald-400/40'
+                : 'bg-gradient-to-tr from-slate-700 to-slate-500 text-white shadow-slate-900/50 ring-slate-600'
+            }`}>
               {prefs.userName && prefs.userName.trim() ? (
                 prefs.userName.trim().charAt(0).toUpperCase()
               ) : (
-                <User className="w-6 h-6 text-slate-950" />
+                <User className={`w-6 h-6 ${tier === 'pro' ? 'text-slate-950' : 'text-white'}`} />
               )}
             </div>
             <div>
@@ -169,27 +188,68 @@ export default function SettingsModal({
                 <h4 className="text-base font-extrabold text-white tracking-tight">
                   {prefs.userName && prefs.userName.trim() ? prefs.userName.trim() : t('myProfile')}
                 </h4>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center space-x-1">
-                  <Sparkles className="w-2.5 h-2.5 text-emerald-400" />
-                  <span>{t('proMember')}</span>
-                </span>
-              </div>
-              <p className="text-xs text-slate-400 mt-0.5">
-                {prefs.userName && prefs.userName.trim() ? (
-                  <>{language === 'hi' ? 'लक्ष्य:' : 'Target:'} <span className="text-emerald-400 font-semibold">{prefs.userGoal}</span> • {prefs.dietType}</>
+                
+                {tier === 'pro' ? (
+                  <button
+                    type="button"
+                    onClick={() => setIsUpgradeOpen(true)}
+                    className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center space-x-1 cursor-pointer hover:bg-emerald-500/30 transition"
+                  >
+                    <Sparkles className="w-2.5 h-2.5 text-emerald-400" />
+                    <span>{t('proMember')}</span>
+                  </button>
                 ) : (
-                  <span>{t('personalizeHelp')}</span>
+                  <button
+                    type="button"
+                    onClick={() => setIsUpgradeOpen(true)}
+                    className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700 flex items-center space-x-1 cursor-pointer hover:bg-slate-700 transition"
+                  >
+                    <span>{t('freePlan')}</span>
+                  </button>
                 )}
-              </p>
+              </div>
+
+              <div className="text-xs text-slate-400 mt-0.5 flex flex-wrap items-center gap-1.5">
+                {tier === 'pro' ? (
+                  <span className="text-emerald-400 font-semibold flex items-center space-x-1">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                    <span>{language === 'hi' ? 'असीमित AI विज़न सक्रिय' : 'Unlimited AI Vision Active'}</span>
+                  </span>
+                ) : (
+                  <span className="text-amber-400/90 font-medium flex items-center space-x-1">
+                    <span>⚡ {scanStats.remaining} / 5 {language === 'hi' ? 'दैनिक स्कैन शेष' : 'Free Scans Left Today'}</span>
+                  </span>
+                )}
+                {prefs.userName && prefs.userName.trim() && (
+                  <span className="text-slate-500">• {prefs.userGoal}</span>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="text-right hidden xs:block">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block">{t('edition')}</span>
-            <span className="text-xs text-emerald-400 font-bold flex items-center space-x-1 justify-end">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>{t('fullAccess')}</span>
-            </span>
+          <div className="self-end sm:self-auto shrink-0">
+            {tier === 'pro' ? (
+              <button
+                type="button"
+                onClick={() => setIsUpgradeOpen(true)}
+                className="text-right block cursor-pointer group"
+              >
+                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 block">{t('edition')}</span>
+                <span className="text-xs text-emerald-400 font-bold flex items-center space-x-1 justify-end group-hover:underline">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>{t('fullAccess')}</span>
+                </span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setIsUpgradeOpen(true)}
+                className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 via-emerald-400 to-teal-400 hover:opacity-90 text-slate-950 font-black text-xs shadow-md transition-all active:scale-95 cursor-pointer"
+              >
+                <Crown className="w-3.5 h-3.5 text-slate-950" />
+                <span>{t('upgradeToPro')}</span>
+              </button>
+            )}
           </div>
         </div>
 
@@ -866,6 +926,19 @@ export default function SettingsModal({
         </div>
 
       </div>
+
+      <UpgradeModal
+        isOpen={isUpgradeOpen}
+        onClose={() => {
+          setIsUpgradeOpen(false);
+          setTier(getMembershipTier());
+          setScanStats(getDailyScanStats());
+        }}
+        onTierChanged={(newTier) => {
+          setTier(newTier);
+          setScanStats(getDailyScanStats());
+        }}
+      />
     </div>
   );
 }
