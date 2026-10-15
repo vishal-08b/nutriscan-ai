@@ -664,7 +664,7 @@ export default function CameraCapture({
                 type="button"
                 onClick={handleStartAnalysis}
                 disabled={isAnalyzing}
-                className="flex-1 flex items-center justify-center space-x-2 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-bold text-xs sm:text-sm shadow-lg shadow-emerald-500/25 active:scale-95 transition disabled:opacity-50 cursor-pointer"
+                className="flex-1 flex items-center justify-center space-x-2 py-3 rounded-xl bg-gradient-to-r from-[#00F5A0] via-[#00E5B8] to-[#00D9F5] hover:opacity-95 text-slate-950 font-black text-xs sm:text-sm shadow-lg shadow-[#00F5A0]/25 active:scale-95 transition disabled:opacity-50 cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 text-slate-950" />
                 <span>{language === 'hi' ? 'कैलोरी और पोषण जांचें' : 'Estimate Calories & Macros'}</span>

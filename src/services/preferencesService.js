@@ -14,7 +14,7 @@ export const DEFAULT_USER_PREFERENCES = {
   cameraQuality: '1080p', // '1080p' (Crisp AI) or '720p' (Fast Battery Saver)
   autoAnalyzeOnCapture: false,
   sciFiHudEnabled: true,
-  themeColor: 'emerald', // 'emerald' | 'cyan' | 'violet' | 'amber'
+  themeColor: 'electric-mint', // 'electric-mint' | 'royal-gold' | 'cosmic-cyan' | 'forest-sage'
   hydrationReminders: true,
   mealReminders: false,
   privacyLocalOnly: true,

@@ -33,15 +33,15 @@ export default function Navbar({
           className="flex items-center space-x-2.5 cursor-pointer active:scale-95 transition-transform" 
           onClick={() => setActiveTab('scanner')}
         >
-          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-slate-950 font-bold shrink-0">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-[#00F5A0] via-[#00E5B8] to-[#00D9F5] flex items-center justify-center shadow-lg shadow-[#00F5A0]/25 text-slate-950 font-bold shrink-0">
             <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-slate-950" />
           </div>
           <div>
             <div className="flex items-center space-x-1.5">
-              <span className="font-extrabold text-base sm:text-xl tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+              <span className="font-black text-base sm:text-xl tracking-tight bg-gradient-to-r from-[#00F5A0] via-[#00E5B8] to-[#00D9F5] bg-clip-text text-transparent drop-shadow-[0_2px_14px_rgba(0,245,160,0.3)]">
                 {t('appName')}
               </span>
-              <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] uppercase tracking-wider font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <span className="hidden sm:inline-block px-2.5 py-0.5 text-[10px] uppercase tracking-wider font-extrabold rounded-full bg-[#00F5A0]/15 text-[#00F5A0] border border-[#00F5A0]/30 shadow-sm">
                 {t('indianCuisine')}
               </span>
             </div>

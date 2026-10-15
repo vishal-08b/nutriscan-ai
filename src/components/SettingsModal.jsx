@@ -613,6 +613,100 @@ export default function SettingsModal({
               </label>
             </div>
 
+            {/* Feature 12: Premium Theme & Color Palette Selector */}
+            <div className="bg-slate-950/60 border border-slate-800 rounded-2xl p-4 space-y-3">
+              <div className="space-y-0.5">
+                <span className="text-xs font-bold text-white flex items-center space-x-1.5">
+                  <Palette className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>{language === 'hi' ? 'प्रीमियम थीम व रंग संयोजन' : 'Luxury Color Palette & Theme'}</span>
+                </span>
+                <p className="text-[11px] text-slate-400">
+                  {language === 'hi'
+                    ? 'शीर्ष वैश्विक स्वास्थ्य व बायोमेट्रिक कंपनी थीम में से चुनें'
+                    : 'Select from 4 world-class executive health & biometric brand aesthetics'}
+                </p>
+              </div>
+
+              {/* Theme Grid Cards */}
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                {/* 1. Electric Mint */}
+                <button
+                  type="button"
+                  onClick={() => updatePref('themeColor', 'electric-mint')}
+                  className={`p-3 rounded-xl border text-left transition cursor-pointer relative overflow-hidden ${
+                    (prefs.themeColor || 'electric-mint') === 'electric-mint'
+                      ? 'bg-slate-900 border-[#00F5A0] ring-1 ring-[#00F5A0]/50'
+                      : 'bg-slate-950/80 border-slate-800 hover:border-slate-700'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2 mb-1">
+                    <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-[#00F5A0] to-[#00D9F5] shadow-sm shadow-[#00F5A0]/40 shrink-0" />
+                    <span className="text-xs font-black text-white">Electric Mint</span>
+                  </div>
+                  <p className="text-[10px] text-slate-400 leading-tight">
+                    Ultrahuman & Whoop athletic luxury
+                  </p>
+                </button>
+
+                {/* 2. Royal Champagne Gold */}
+                <button
+                  type="button"
+                  onClick={() => updatePref('themeColor', 'royal-gold')}
+                  className={`p-3 rounded-xl border text-left transition cursor-pointer relative overflow-hidden ${
+                    prefs.themeColor === 'royal-gold'
+                      ? 'bg-slate-900 border-amber-500 ring-1 ring-amber-500/50'
+                      : 'bg-slate-950/80 border-slate-800 hover:border-slate-700'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2 mb-1">
+                    <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-amber-400 to-amber-600 shadow-sm shadow-amber-500/40 shrink-0" />
+                    <span className="text-xs font-black text-white">Royal Gold</span>
+                  </div>
+                  <p className="text-[10px] text-slate-400 leading-tight">
+                    Apple Fitness+ & executive prestige
+                  </p>
+                </button>
+
+                {/* 3. Cosmic Bio-Cyan */}
+                <button
+                  type="button"
+                  onClick={() => updatePref('themeColor', 'cosmic-cyan')}
+                  className={`p-3 rounded-xl border text-left transition cursor-pointer relative overflow-hidden ${
+                    prefs.themeColor === 'cosmic-cyan'
+                      ? 'bg-slate-900 border-cyan-400 ring-1 ring-cyan-400/50'
+                      : 'bg-slate-950/80 border-slate-800 hover:border-slate-700'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2 mb-1">
+                    <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 shadow-sm shadow-cyan-400/40 shrink-0" />
+                    <span className="text-xs font-black text-white">Cosmic Cyan</span>
+                  </div>
+                  <p className="text-[10px] text-slate-400 leading-tight">
+                    Linear & AI studio aesthetic
+                  </p>
+                </button>
+
+                {/* 4. Nordic Forest Sage */}
+                <button
+                  type="button"
+                  onClick={() => updatePref('themeColor', 'forest-sage')}
+                  className={`p-3 rounded-xl border text-left transition cursor-pointer relative overflow-hidden ${
+                    prefs.themeColor === 'forest-sage'
+                      ? 'bg-slate-900 border-emerald-500 ring-1 ring-emerald-500/50'
+                      : 'bg-slate-950/80 border-slate-800 hover:border-slate-700'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2 mb-1">
+                    <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-emerald-500 to-green-600 shadow-sm shadow-emerald-500/40 shrink-0" />
+                    <span className="text-xs font-black text-white">Nordic Sage</span>
+                  </div>
+                  <p className="text-[10px] text-slate-400 leading-tight">
+                    Athletic Greens & organic wellness
+                  </p>
+                </button>
+              </div>
+            </div>
+
           </div>
         )}
 

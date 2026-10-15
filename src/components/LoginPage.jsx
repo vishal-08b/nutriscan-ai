@@ -92,17 +92,17 @@ export default function LoginPage({ onLoginSuccess }) {
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-emerald-500 selection:text-slate-950 relative overflow-hidden px-4 py-6 sm:py-10">
       
       {/* Background Decorative Gradient Blobs */}
-      <div className="absolute -top-36 -left-36 w-96 h-96 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-36 -right-36 w-96 h-96 bg-teal-500/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-950/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-36 -left-36 w-96 h-96 bg-[#00F5A0]/12 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-36 -right-36 w-96 h-96 bg-[#00D9F5]/12 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00F5A0]/5 rounded-full blur-3xl pointer-events-none" />
 
       {/* Top Header Strip with Language Switcher */}
       <header className="max-w-md w-full mx-auto flex items-center justify-between relative z-10">
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-slate-950 font-bold shrink-0">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#00F5A0] via-[#00E5B8] to-[#00D9F5] flex items-center justify-center shadow-lg shadow-[#00F5A0]/25 text-slate-950 font-bold shrink-0">
             <Sparkles className="w-4 h-4 text-slate-950" />
           </div>
-          <span className="font-extrabold text-base tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+          <span className="font-black text-base tracking-tight bg-gradient-to-r from-[#00F5A0] via-[#00E5B8] to-[#00D9F5] bg-clip-text text-transparent drop-shadow-[0_2px_12px_rgba(0,245,160,0.25)]">
             NutriScan AI
           </span>
         </div>
@@ -113,7 +113,7 @@ export default function LoginPage({ onLoginSuccess }) {
           className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition text-xs font-bold cursor-pointer active:scale-95 shadow-sm"
           title="Switch Language / भाषा बदलें"
         >
-          <Globe className="w-3.5 h-3.5 text-emerald-400" />
+          <Globe className="w-3.5 h-3.5 text-[#00F5A0]" />
           <span>{language === 'en' ? 'हिन्दी' : 'English'}</span>
         </button>
       </header>
@@ -124,7 +124,7 @@ export default function LoginPage({ onLoginSuccess }) {
           
           {/* Logo & Headline */}
           <div className="text-center space-y-1.5 mb-6">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 mx-auto flex items-center justify-center text-slate-950 shadow-xl shadow-emerald-500/20">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#00F5A0] via-[#00E5B8] to-[#00D9F5] mx-auto flex items-center justify-center text-slate-950 shadow-xl shadow-[#00F5A0]/25">
               <Flame className="w-7 h-7 text-slate-950" />
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight pt-2">
@@ -146,7 +146,7 @@ export default function LoginPage({ onLoginSuccess }) {
               onClick={() => { setMode('login'); setErrorMessage(''); }}
               className={`py-2 rounded-xl transition cursor-pointer ${
                 mode === 'login'
-                  ? 'bg-emerald-500 text-slate-950 shadow-md font-extrabold'
+                  ? 'bg-gradient-to-r from-[#00F5A0] to-[#00D9F5] text-slate-950 shadow-md shadow-[#00F5A0]/20 font-black'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -157,7 +157,7 @@ export default function LoginPage({ onLoginSuccess }) {
               onClick={() => { setMode('register'); setErrorMessage(''); }}
               className={`py-2 rounded-xl transition cursor-pointer ${
                 mode === 'register'
-                  ? 'bg-emerald-500 text-slate-950 shadow-md font-extrabold'
+                  ? 'bg-gradient-to-r from-[#00F5A0] to-[#00D9F5] text-slate-950 shadow-md shadow-[#00F5A0]/20 font-black'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -270,7 +270,7 @@ export default function LoginPage({ onLoginSuccess }) {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:opacity-95 text-slate-950 font-black text-xs sm:text-sm shadow-lg shadow-emerald-500/25 active:scale-95 transition flex items-center justify-center space-x-2 cursor-pointer mt-2 disabled:opacity-50"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#00F5A0] via-[#00E5B8] to-[#00D9F5] hover:opacity-95 text-slate-950 font-black text-xs sm:text-sm shadow-lg shadow-[#00F5A0]/25 active:scale-95 transition flex items-center justify-center space-x-2 cursor-pointer mt-2 disabled:opacity-50"
             >
               {isLoading ? (
                 <span>{language === 'hi' ? 'कृपया प्रतीक्षा करें...' : 'Verifying...'}</span>

@@ -59,6 +59,12 @@ export default function App() {
   // User Authentication session
   const [authUser, setAuthUser] = useState(() => getAuthenticatedUser());
 
+  // Synchronize high-end theme attribute to DOM root
+  useEffect(() => {
+    const activeTheme = userPrefs?.themeColor || 'electric-mint';
+    document.documentElement.setAttribute('data-theme', activeTheme);
+  }, [userPrefs?.themeColor]);
+
   const handleLogout = () => {
     logoutUser();
     setAuthUser(null);

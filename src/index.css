@@ -1,10 +1,64 @@
 @import "tailwindcss";
 
-:root {
+:root, [data-theme="electric-mint"] {
   --sat: env(safe-area-inset-top, 0px);
   --sab: env(safe-area-inset-bottom, 0px);
   --sal: env(safe-area-inset-left, 0px);
   --sar: env(safe-area-inset-right, 0px);
+
+  /* Obsidian & Electric Mint (The "Ultrahuman / Whoop" Flagship Look) */
+  --color-primary: #00F5A0;
+  --color-primary-hover: #00D9F5;
+  --color-primary-glow: rgba(0, 245, 160, 0.28);
+  --color-accent: #00D9F5;
+  --color-bg-base: #08090E;
+  --color-card-base: #0F121B;
+  --color-card-border: rgba(255, 255, 255, 0.08);
+  --color-badge-bg: rgba(0, 245, 160, 0.12);
+  --color-badge-text: #00F5A0;
+  --color-badge-border: rgba(0, 245, 160, 0.25);
+}
+
+[data-theme="royal-gold"] {
+  /* Midnight Titanium & Royal Champagne Gold (The "Apple Fitness+ Luxury" Look) */
+  --color-primary: #F59E0B;
+  --color-primary-hover: #FCD34D;
+  --color-primary-glow: rgba(245, 158, 11, 0.28);
+  --color-accent: #E2B653;
+  --color-bg-base: #090B11;
+  --color-card-base: #121622;
+  --color-card-border: rgba(245, 158, 11, 0.15);
+  --color-badge-bg: rgba(245, 158, 11, 0.12);
+  --color-badge-text: #FCD34D;
+  --color-badge-border: rgba(245, 158, 11, 0.25);
+}
+
+[data-theme="cosmic-cyan"] {
+  /* Deep Space Cosmic Indigo & Bio-Cyan (The "Linear / OpenAI Studio" Look) */
+  --color-primary: #06B6D4;
+  --color-primary-hover: #38BDF8;
+  --color-primary-glow: rgba(6, 182, 212, 0.28);
+  --color-accent: #6366F1;
+  --color-bg-base: #060814;
+  --color-card-base: #0D1124;
+  --color-card-border: rgba(99, 102, 241, 0.18);
+  --color-badge-bg: rgba(6, 182, 212, 0.12);
+  --color-badge-text: #38BDF8;
+  --color-badge-border: rgba(6, 182, 212, 0.25);
+}
+
+[data-theme="forest-sage"] {
+  /* Matte Carbon & Clean Forest Sage (The "Athletic Greens / Organic Luxury" Look) */
+  --color-primary: #22C55E;
+  --color-primary-hover: #4ADE80;
+  --color-primary-glow: rgba(34, 197, 94, 0.28);
+  --color-accent: #15803D;
+  --color-bg-base: #070B08;
+  --color-card-base: #0F1711;
+  --color-card-border: rgba(34, 197, 94, 0.15);
+  --color-badge-bg: rgba(34, 197, 94, 0.12);
+  --color-badge-text: #4ADE80;
+  --color-badge-border: rgba(34, 197, 94, 0.25);
 }
 
 @layer base {
@@ -16,7 +70,7 @@
     width: 100%;
     height: 100%;
     overflow-x: hidden;
-    background-color: #020617;
+    background-color: var(--color-bg-base);
   }
 
   body {
@@ -28,14 +82,13 @@
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
-    background-color: #020617;
+    background-color: var(--color-bg-base);
     color: #f1f5f9;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Prevent image dragging from intercepting vertical touch scroll in Android WebViews */
   img {
     -webkit-user-drag: none;
     -khtml-user-drag: none;
@@ -64,19 +117,53 @@
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #020617;
+  background: var(--color-bg-base);
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #1a2030;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #28334a;
 }
 
 /* Mobile tap feel */
 button, a {
   -webkit-touch-callout: none;
+}
+
+/* Premium Component Classes */
+.theme-primary-bg {
+  background-color: var(--color-primary);
+}
+.theme-primary-text {
+  color: var(--color-primary);
+}
+.theme-primary-border {
+  border-color: var(--color-primary);
+}
+.theme-card {
+  background-color: var(--color-card-base);
+  border-color: var(--color-card-border);
+}
+.theme-btn-hero {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
+  color: #030712;
+  font-weight: 900;
+  box-shadow: 0 4px 24px var(--color-primary-glow);
+}
+.theme-glow {
+  box-shadow: 0 0 35px -5px var(--color-primary-glow);
+}
+.theme-text-gradient {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.theme-badge {
+  background: var(--color-badge-bg);
+  color: var(--color-badge-text);
+  border: 1px solid var(--color-badge-border);
 }
 
 /* Sci-Fi HUD & Scanner Animations */
