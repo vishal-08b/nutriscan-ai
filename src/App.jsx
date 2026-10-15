@@ -6,6 +6,7 @@ import DailyTracker from './components/DailyTracker';
 import GoalsModal from './components/GoalsModal';
 import SettingsModal from './components/SettingsModal';
 import UpgradeModal from './components/UpgradeModal';
+import LoginPage from './components/LoginPage';
 import { DEFAULT_GOALS, SAMPLE_FOODS } from './data/sampleFoods';
 import { 
   analyzeFoodImage, 
@@ -17,6 +18,10 @@ import {
   getDailyScanStats, 
   recordScanUsage 
 } from './services/membershipService';
+import { 
+  getAuthenticatedUser, 
+  logoutUser 
+} from './services/authService';
 import { 
   AlertCircle, 
   Camera, 
@@ -50,6 +55,14 @@ export default function App() {
   const [isMockMode, setIsMockMode] = useState(getStoredMockMode());
   const [userPrefs, setUserPrefs] = useState(() => getUserPreferences());
   const [scanStats, setScanStats] = useState(() => getDailyScanStats());
+
+  // User Authentication session
+  const [authUser, setAuthUser] = useState(() => getAuthenticatedUser());
+
+  const handleLogout = () => {
+    logoutUser();
+    setAuthUser(null);
+  };
 
   // Goals
   const [goals, setGoals] = useState(() => {
@@ -293,6 +306,18 @@ export default function App() {
     }
   };
 
+  // Enforce Login Gate: User MUST log in before entering the app
+  if (!authUser) {
+    return (
+      <LoginPage
+        onLoginSuccess={(user) => {
+          setAuthUser(user);
+          refreshSettings();
+        }}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-emerald-500 selection:text-slate-950">
       
@@ -506,6 +531,8 @@ export default function App() {
         onResetAllData={handleResetAllData}
         meals={meals}
         goals={goals}
+        currentUser={authUser}
+        onLogout={handleLogout}
       />
 
       <UpgradeModal

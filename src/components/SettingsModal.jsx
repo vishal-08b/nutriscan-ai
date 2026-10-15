@@ -27,7 +27,8 @@ import {
   Heart,
   Palette,
   Globe,
-  Crown
+  Crown,
+  LogOut
 } from 'lucide-react';
 import UpgradeModal from './UpgradeModal';
 import { 
@@ -60,7 +61,9 @@ export default function SettingsModal({
   onSettingsUpdated,
   onResetAllData,
   meals = [],
-  goals
+  goals,
+  currentUser,
+  onLogout
 }) {
   if (!isOpen) return null;
 
@@ -420,6 +423,33 @@ export default function SettingsModal({
                   {t('imperial')}
                 </button>
               </div>
+            </div>
+
+            {/* Account & Session / Log Out */}
+            <div className="bg-slate-950/60 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <span className="text-xs font-bold text-white block">
+                  {language === 'hi' ? 'सक्रिय खाता व प्रमाणीकरण' : 'Active Account & Session'}
+                </span>
+                <p className="text-[11px] text-slate-400 mt-0.5">
+                  {currentUser?.email ? (
+                    <span>{currentUser.name} ({currentUser.email})</span>
+                  ) : (
+                    <span>{language === 'hi' ? 'अतिथि खाता सक्रिय' : 'Guest Account Active'}</span>
+                  )}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  if (onLogout) onLogout();
+                  onClose();
+                }}
+                className="px-3.5 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold transition flex items-center justify-center space-x-1.5 cursor-pointer active:scale-95 shrink-0"
+              >
+                <LogOut className="w-3.5 h-3.5 text-rose-400" />
+                <span>{language === 'hi' ? 'लॉग आउट करें' : 'Log Out'}</span>
+              </button>
             </div>
 
           </div>
